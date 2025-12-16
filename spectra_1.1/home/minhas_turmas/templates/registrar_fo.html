@@ -3,56 +3,116 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Registrar F.O.</title>
-    <link rel="stylesheet" href="{% static 'css/turmas_style.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Registrar Fato - {{ aluno.nome }}</title>
+    <link rel="stylesheet" href="{% static 'registrar_fo.css' %}">
 </head>
 <body>
-    <div class="layout">
-        <aside class="sidebar">
-            <div class="logo">SPECTRA</div>
-            <nav class="nav-menu">
-                <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
-                <a type="button" class="nav-btn active">Minhas Turmas</a>
-                <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
-            </nav>
-            <form method="post" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="logout-link">Logout <span class="icon">➜</span></button>
-            </form>
-        </aside>
 
-        <main class="main-content">
-            <h1 class="page-title">Minhas <span class="highlight-yellow">Turmas</span></h1>
-
-            <div class="content-card action-card">
-                
-                <div class="card-header user-header">
-                    <a href="{% url 'minhas_turmas' %}" class="back-arrow">←</a>
-                    
-                    <div class="user-info">
-                        <div class="avatar-circle"></div> <span class="student-name">{{ aluno.nome }}</span>
-                    </div>
-                    
-                    <span class="class-info">{{ turma_nome }}</span>
-                </div>
-
-                <div class="card-body">
-                    <span class="label-text">Fato Observado:</span>
-                    
-                    <div class="buttons-container">
-                        <button class="btn-fo btn-positive">
-                            <span class="icon-box">+</span> Positivo
-                        </button>
-
-                        <button class="btn-fo btn-negative">
-                            <span class="icon-box">X</span> Negativo
-                        </button>
-                    </div>
-                </div>
-
+    <div class="card-registro">
+        <div class="card-header">
+            <a href="javascript:history.back()" class="btn-voltar">←</a>
+            
+            <div class="avatar-circle"></div>
+            
+            <div class="header-info">
+                <h2>{{ aluno.nome }}</h2>
+                <span>{{ aluno.matricula }}</span>
             </div>
-        </main>
+            
+            <div class="turma-tag">{{ aluno.turma.serie }} {{ aluno.turma.turma }}</div>
+        </div>
+
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div>
+                    <span class="section-label">Fato Observado:</span>
+                    <div class="btn-group-row">
+                        <input type="radio" name="natureza" id="nat_pos" value="Positivo" onclick="showStep2('Positivo')">
+                        <label for="nat_pos" class="btn-option">
+                            <span class="icon-plus"></span> Positivo
+                        </label>
+
+                        <input type="radio" name="natureza" id="nat_neg" value="Negativo" onclick="showStep2('Negativo')">
+                        <label for="nat_neg" class="btn-option">
+                            <span class="icon-close"></span> Negativo
+                        </label>
+                    </div>
+                </div>
+
+                <div id="step-tipo" class="hidden-step">
+                    <span class="section-label">Tipo:</span>
+                    <div class="btn-group-row">
+                        <input type="radio" name="tipo" id="tp_disc" value="Disciplinar" onclick="showStep3()">
+                        <label for="tp_disc" class="btn-option">Disciplinar</label>
+
+                        <input type="radio" name="tipo" id="tp_pedag" value="Pedagogico" onclick="showStep3()">
+                        <label for="tp_pedag" class="btn-option">Pedagógico</label>
+                    </div>
+                </div>
+
+                <div id="step-opcoes" class="hidden-step">
+                    <span class="section-label">O que aconteceu?</span>
+                    <select name="titulo" id="select-motivo">
+                        <option value="">Selecione uma opção...</option>
+                    </select>
+
+                    <span class="section-label" style="margin-top: 15px;">Observação (Opcional):</span>
+                    <textarea name="descricao" rows="3" placeholder="Digite detalhes adicionais aqui..."></textarea>
+
+                    <div class="form-footer">
+                        <button type="submit" class="btn-enviar">Enviar</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
     </div>
+
+    <script>
+        const opcoes = {
+            'Positivo': [
+                "Realizou a tarefa completa",
+                "Participação ativa na aula",
+                "Ajudou um colega",
+                "Comportamento exemplar",
+                "Material completo"
+            ],
+            'Negativo': [
+                "Não fez a tarefa",
+                "Conversa paralela",
+                "Uso de celular indevido",
+                "Chegou atrasado",
+                "Sem material",
+                "Desrespeito ao professor"
+            ]
+        };
+
+        function showStep2(natureza) {
+            document.getElementById('step-tipo').className = 'show-step';
+            
+            // Popula o select com base na escolha
+            const select = document.getElementById('select-motivo');
+            select.innerHTML = '<option value="">Selecione uma opção...</option>';
+            
+            const lista = opcoes[natureza];
+            lista.forEach(opt => {
+                let option = document.createElement('option');
+                option.value = opt;
+                option.text = opt;
+                select.appendChild(option);
+            });
+            
+            // Se mudar a natureza, esconde o passo 3 para obrigar a escolher o tipo de novo
+            document.getElementById('step-opcoes').className = 'hidden-step';
+            document.getElementById('tp_disc').checked = false;
+            document.getElementById('tp_pedag').checked = false;
+        }
+
+        function showStep3() {
+            document.getElementById('step-opcoes').className = 'show-step';
+        }
+    </script>
 </body>
 </html>
