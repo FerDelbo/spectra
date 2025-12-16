@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectra - Meus F.O.'s</title>
+    <link rel="stylesheet" href="{% static 'css/fos_style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="layout">
+        
+        <aside class="sidebar">
+            <div class="logo">SPECTRA</div>
+
+            <nav class="nav-menu">
+                <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
+                <a href="{% url 'minhas_turmas' %}" class="nav-btn">Minhas Turmas</a>
+                <a type="button" class="nav-btn active">Meus F.O.'s</a>
+            </nav>
+
+            <form method="post" action="{% url 'logout' %}" style="margin-top: auto;">
+                {% csrf_token %}
+                <button type="submit" class="logout-link">
+                    Logout <span class="icon">➜</span>
+                </button>
+            </form>
+        </aside>
+
+        <main class="main-content">
+            
+            <a href="{% url 'home' %}" class="back-arrow" style="text-decoration: none; color: white; font-size: 1.5rem; position: absolute; top: 30px; left: 40px;">←</a>
+            
+            <h1 class="page-title">Meus <span class="highlight-yellow">F.O.'s</span></h1>
+
+            <div class="data-card">
+                
+                <div class="card-header">
+                    <a href="{% url 'home' %}" class="back-arrow">←</a>
+                    <div class="search-container">
+                        <input type="text" placeholder="Pesquisa" class="search-input">
+                    </div>
+
+                    <div class="filter-container">
+                        <button type="button" class="filter-btn" id="filterBtn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 21V14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4 10V3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 21V12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 8V3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 21V16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 12V3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M1 14H7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9 8H15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M17 16H23" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        
+                        <div class="filter-options" id="filterOptions">
+                            <p>Opções de filtro...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Natureza</th>
+                                <th>Nome</th>
+                                <th>Turno</th>
+                                <th>Série</th>
+                                <th>Turma</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for fo in meus_fos %}
+                            <tr>
+                                <td class="{% if fo.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
+                                    {{ fo.natureza }}
+                                </td>
+                                <td>{{ fo.nome_aluno }}</td>
+                                <td>{{ fo.turno }}</td>
+                                <td>{{ fo.serie }}</td>
+                                <td>{{ fo.turma }}</td>
+                                <td>{{ fo.data|date:"d/m/Y" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" style="text-align: center;">Nenhum F.O. encontrado.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

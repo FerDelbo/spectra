@@ -1,0 +1,256 @@
+/* --- Reset e Layout Base (Igual aos anteriores) --- */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Poppins', sans-serif; 
+}
+
+body { 
+    height: 100vh; 
+    overflow: hidden; 
+}
+.layout { 
+    display: flex; 
+    height: 100vh; 
+    width: 100%; 
+}
+
+/* Sidebar */
+.sidebar { 
+    width: 280px; 
+    background-color: #f0f0f0; 
+    display: flex; 
+    flex-direction: column; 
+    padding: 40px 30px; 
+    border-top-right-radius: 20px; 
+    border-bottom-right-radius: 20px; 
+}
+
+.logo { 
+    font-weight: 800; 
+    font-size: 1.8rem; 
+    color: #2c3e80; 
+    text-transform: uppercase; 
+    margin-bottom: 60px; 
+}
+.nav-menu { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; flex: 1; 
+}
+
+.nav-btn {
+    display: block;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #5a6b8c;
+    cursor: pointer;
+    padding: 10px 0;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn.active {
+    background: #0044ff;
+    color: #ffd700;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #1e3a8a; /* Azul mais escuro */
+}
+
+.logout-link { 
+    text-decoration: none; 
+    color: #e63946; 
+    font-weight: 600; 
+    font-size: 1.1rem; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    margin-top: auto; 
+}
+
+/* Main Content */
+.main-content { 
+    flex: 1; 
+    background: linear-gradient(135deg, #2c3e80 0%, #1e57c9 50%, #3b82f6 100%); 
+    padding: 30px 60px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+}
+
+.page-title { 
+    color: white; 
+    font-size: 2.2rem; 
+    font-weight: 600; 
+    margin-bottom: 20px;
+}
+.highlight-yellow { 
+    color: #ffd700; 
+    font-weight: 700; 
+}
+
+/* --- ESTILOS DO CARD --- */
+.content-card {
+    background: white;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Azul Escuro */
+.card-header {
+    background-color: #55608f;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza o texto */
+    position: relative;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.back-arrow {
+    position: absolute;
+    left: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.center-viewport {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+}
+
+th { 
+    padding: 15px; 
+    font-weight: 700; 
+    color: #333; border-bottom: 1px solid #ddd; 
+    text-align: center; 
+}
+
+td { 
+    padding: 12px 15px; 
+    font-size: 1rem; color: #444; 
+    border-bottom: 1px solid #eee; 
+    text-align: center; 
+}
+
+/* Efeito ao passar o mouse na linha */
+.clickable-row { 
+    cursor: pointer; 
+    transition: background 0.2s; 
+}
+
+.clickable-row:hover { 
+    background-color: #eef2f6; 
+}
+
+/* --- ESTILOS ESPECÍFICOS DA TELA DE AÇÃO (2ª Imagem) --- */
+.action-card { 
+    min-height: 300px; 
+}
+
+.user-header {
+    justify-content: space-between; /* Espalha os itens */
+    padding: 15px 30px;
+}
+
+.user-info { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+    padding-left: 50px; 
+}
+
+.avatar-circle {
+    width: 45px; height: 45px;
+    background-color: #d9d9d9;
+    border-radius: 50%;
+}
+.class-info { 
+    font-weight: 400; 
+    font-size: 1rem; 
+}
+
+.card-body {
+    flex: 1;
+    background-color: #e6e6e6; /* Fundo cinza claro da 2ª imagem */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px;
+}
+
+.label-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2c3e80;
+    margin-right: 20px;
+}
+
+.buttons-container { 
+    display: flex; 
+    flex-direction: 
+    column; 
+    gap: 15px; 
+}
+
+.btn-fo {
+    border: none;
+    background: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2c3e80;
+    width: 150px;
+}
+
+.icon-box {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px; height: 35px;
+    color: white;
+    border-radius: 5px;
+    font-size: 1.4rem;
+}
+
+.btn-positive .icon-box { 
+    background-color: #00ff00; /* Verde Neon */ 
+}
+.btn-positive { 
+    color: #2c3e80; 
+}
+
+.btn-negative .icon-box {
+ background-color: #ff4444; /* Vermelho */
+}
+
+.btn-negative { 
+    color: #2c3e80; 
+}

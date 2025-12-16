@@ -1,0 +1,134 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* Degradê de fundo similar à imagem */
+    background: linear-gradient(135deg, #2c3e80 0%, #1e57c9 50%, #3b82f6 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* --- Cabeçalho --- */
+header {
+    width: 100%;
+    padding: 30px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute; /* Para ficar fixo no topo */
+    top: 0;
+}
+
+.logo {
+    color: white;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+/* --- Container Central --- */
+.container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    background-color: #f0f0f0; /* Cinza claro */
+    padding: 40px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+/* --- Tipografia --- */
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    line-height: 1.2;
+    color: #000;
+}
+
+.text-blue {
+    color: #0044ff; /* Azul vibrante do "Entre" */
+}
+
+/* --- Inputs Customizados --- */
+.input-group {
+    background-color: #e6e6e6; /* Fundo do input */
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    text-align: left;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.input-group:focus-within {
+    border-color: #0044ff;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.input-group input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    color: #555;
+}
+
+.input-group input::placeholder {
+    color: #888;
+}
+
+/* --- Botões --- */
+.btn-login {
+    width: 100%;
+    background-color: #0044ff;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #0033cc;
+}
+
+.btn-secondary {
+    background: none;
+    border: none;
+    color: #000066; /* Azul escuro */
+    font-weight: 600;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-secondary:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectra Login</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <div class="logo">SPECTRA</div>
+    </header>
+
+    <main class="container">
+        <div class="login-card">
+            
+            <h2><span class="text-blue">Entre</span> na<br>sua conta</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    <div style="color: red; margin-bottom: 10px; font-size: 0.9rem;">
+                        Usuário ou senha incorretos. Tente novamente.
+                    </div>
+                {% endif %}
+
+                <div class="input-group">
+                    <label for="id_username">Usuário / Email</label>
+                    <input type="text" name="username" id="id_username" placeholder="Seu usuário" required autofocus>
+                </div>
+
+                <div class="input-group">
+                    <label for="id_password">Password</label>
+                    <input type="password" name="password" id="id_password" placeholder="*********" required>
+                </div>
+
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+            <button type="button" class="btn-secondary">Não possuo conta</button>
+
+        </div>
+    </main>
+
+</body>
+</html>

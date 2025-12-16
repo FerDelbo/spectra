@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectra Dashboard</title>
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="layout">
+        
+        <aside class="sidebar">
+            <div class="logo">SPECTRA</div>
+
+            <nav class="nav-menu">
+                <a href="{% url 'home' %}" class="nav-btn active">Tela inicial</a>
+                <a href="{% url 'minhas_turmas' %}" class="nav-btn">Minhas Turmas</a>
+                <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
+            </nav>
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-link">
+                    Logout <span class="icon">➜</span>
+                </button>
+            </form>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="top-header">
+                <h1>Bem Vindo, <span class="user-highlight">{{ user.first_name|default:user.username }}!</span></h1>
+            </header>
+
+            <div class="table-card">
+                <div class="card-title">
+                    Atividades recentes
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Natureza</th>
+                                <th>Nome</th>
+                                <th>Turno</th>
+                                <th>Série</th>
+                                <th>Turma</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for atividade in atividades_recentes %}
+                            <tr>
+                                <td class="{% if atividade.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
+                                    {{ atividade.natureza }}
+                                </td>
+                                <td>{{ atividade.nome_aluno }}</td>
+                                <td>{{ atividade.turno }}</td>
+                                <td>{{ atividade.serie }}</td>
+                                <td>{{ atividade.turma }}</td>
+                                <td>{{ atividade.data|date:"d/m/Y" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 20px;">Nenhuma atividade recente encontrada.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer">
+                    <a href="#" class="view-more">Ver mais</a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>
