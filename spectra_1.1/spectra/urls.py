@@ -26,4 +26,5 @@ urlpatterns = [
     path('prof/', include('prof.urls')),
     path('home/', include('home.urls')),
     path('meus_fos/', include('home.meus_fos.urls')),
+    path('minhas-turmas/', include('home.minhas_turmas.urls')),
 ]

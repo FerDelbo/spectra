@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'login',
     'home',
     'home.meus_fos',
+    'home.minhas_turmas',
 ]
 
 MIDDLEWARE = [

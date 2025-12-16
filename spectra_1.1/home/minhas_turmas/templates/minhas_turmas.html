@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Minhas Turmas</title>
+    <link rel="stylesheet" href="{% static 'css/turmas_style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">SPECTRA</div>
+            <nav class="nav-menu">
+                <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
+                <a type="button" class="nav-btn active">Minhas Turmas</a>
+                <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
+            </nav>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-link">
+                    Logout <span class="icon">➜</span>
+                </button>
+            </form>
+        </aside>
+
+        <main class="main-content">
+            <h1 class="page-title">Minhas <span class="highlight-yellow">Turmas</span></h1>
+
+            <div class="content-card">
+                <div class="card-header">
+                    <a href="{% url 'home' %}" class="back-arrow">←</a>
+                    <span class="header-title">{{ nome_turma }}</span> </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">Nº</th> <th style="text-align: left;">Nome</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for aluno in alunos %}
+                            <tr onclick="window.location='{% url 'registrar_fo' aluno.id %}';" class="clickable-row">
+                                <td>{{ forloop.counter }}</td> <td style="text-align: left;">{{ aluno.nome }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2">Nenhum aluno encontrado nesta turma.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

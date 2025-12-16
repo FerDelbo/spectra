@@ -45,20 +45,29 @@ body {
 }
 
 .nav-btn {
-    background: none;
-    border: none;
-    text-align: left;
+    display: block;
+    text-decoration: none;
     font-size: 1.2rem;
     font-weight: 600;
     color: #5a6b8c;
     cursor: pointer;
-    text-decoration: none;
     padding: 10px 0;
-    transition: color 0.3s;
+    border-radius: 5px;
+    transition: background 0.3s;
 }
 
-.nav-btn:hover, .nav-btn.active {
-    color: #1e3a8a; /* Azul ativo */
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn.active {
+    background: #0044ff;
+    color: #ffd700;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #1e3a8a; /* Azul mais escuro */
 }
 
 .logout-link {
@@ -227,4 +236,32 @@ td {
 .table-responsive::-webkit-scrollbar-thumb {
     background: #ccc; 
     border-radius: 4px;
+}
+/* Correção para o botão de Logout dentro do form */
+button.logout-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    padding: 0;
+    width: 100%; /* Ocupa a largura disponível */
+    display: flex; /* Mantém o alinhamento flexbox */
+    justify-content: flex-start; /* Alinha o texto à esquerda */
+}
+
+/* Garante que o container de pesquisa e filtro fiquem lado a lado */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #55608f; /* Fundo Azul Escuro */
+    padding: 15px 30px;
+}
+.back-arrow {
+    position: absolute;
+    left: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    cursor: pointer;
 }

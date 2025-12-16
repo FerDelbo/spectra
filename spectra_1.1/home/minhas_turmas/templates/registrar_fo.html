@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar F.O.</title>
+    <link rel="stylesheet" href="{% static 'css/turmas_style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">SPECTRA</div>
+            <nav class="nav-menu">
+                <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
+                <a type="button" class="nav-btn active">Minhas Turmas</a>
+                <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
+            </nav>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-link">Logout <span class="icon">➜</span></button>
+            </form>
+        </aside>
+
+        <main class="main-content">
+            <h1 class="page-title">Minhas <span class="highlight-yellow">Turmas</span></h1>
+
+            <div class="content-card action-card">
+                
+                <div class="card-header user-header">
+                    <a href="{% url 'minhas_turmas' %}" class="back-arrow">←</a>
+                    
+                    <div class="user-info">
+                        <div class="avatar-circle"></div> <span class="student-name">{{ aluno.nome }}</span>
+                    </div>
+                    
+                    <span class="class-info">{{ turma_nome }}</span>
+                </div>
+
+                <div class="card-body">
+                    <span class="label-text">Fato Observado:</span>
+                    
+                    <div class="buttons-container">
+                        <button class="btn-fo btn-positive">
+                            <span class="icon-box">+</span> Positivo
+                        </button>
+
+                        <button class="btn-fo btn-negative">
+                            <span class="icon-box">X</span> Negativo
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>

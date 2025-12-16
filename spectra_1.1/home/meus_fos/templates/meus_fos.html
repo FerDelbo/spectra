@@ -17,22 +17,28 @@
 
             <nav class="nav-menu">
                 <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
-                <button type="button" class="nav-btn">Minhas Turmas</button>
-                <button type="button" class="nav-btn active">Meus F.O.'s</button>
+                <a href="{% url 'minhas_turmas' %}" class="nav-btn">Minhas Turmas</a>
+                <a type="button" class="nav-btn active">Meus F.O.'s</a>
             </nav>
 
-            <a href="{% url 'logout' %}" class="logout-link">
-                Logout <span class="icon">➜</span>
-            </a>
+            <form method="post" action="{% url 'logout' %}" style="margin-top: auto;">
+                {% csrf_token %}
+                <button type="submit" class="logout-link">
+                    Logout <span class="icon">➜</span>
+                </button>
+            </form>
         </aside>
 
         <main class="main-content">
+            
+            <a href="{% url 'home' %}" class="back-arrow" style="text-decoration: none; color: white; font-size: 1.5rem; position: absolute; top: 30px; left: 40px;">←</a>
             
             <h1 class="page-title">Meus <span class="highlight-yellow">F.O.'s</span></h1>
 
             <div class="data-card">
                 
                 <div class="card-header">
+                    <a href="{% url 'home' %}" class="back-arrow">←</a>
                     <div class="search-container">
                         <input type="text" placeholder="Pesquisa" class="search-input">
                     </div>
@@ -51,13 +57,12 @@
                                 <path d="M17 16H23" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </button>
-
+                        
                         <div class="filter-options" id="filterOptions">
-                            <p>Opções de filtro aparecerão aqui...</p>
+                            <p>Opções de filtro...</p>
                         </div>
                     </div>
                 </div>
-
                 <div class="table-responsive">
                     <table>
                         <thead>
