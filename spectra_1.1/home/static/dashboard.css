@@ -1,0 +1,190 @@
+/* Reset e Fontes */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden; /* Evita scroll na página inteira */
+}
+
+.layout {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* --- SIDEBAR (Esquerda) --- */
+.sidebar {
+    width: 280px;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 30px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    z-index: 10;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.8rem;
+    color: white; /* Na imagem parece branco mas o fundo é claro? Ajustei para contraste */
+    /* Ajuste para ficar igual a imagem: */
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 0 5px rgba(0,0,0,0.2);
+    /* Como o fundo da sidebar é claro, talvez queira mudar a cor da logo para azul escuro: */
+    color: #2c3e80; 
+    margin-bottom: 60px;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1; /* Empurra o logout para baixo */
+}
+
+.nav-btn {
+    display: block;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #5a6b8c;
+    cursor: pointer;
+    padding: 10px 0;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn.active {
+    background: #0044ff;
+    color: #ffd700;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #1e3a8a; /* Azul mais escuro */
+}
+
+.logout-link {
+    text-decoration: none;
+    color: #e63946; /* Vermelho */
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- MAIN CONTENT (Direita) --- */
+.main-content {
+    flex: 1;
+    background: linear-gradient(135deg, #2c3e80 0%, #1e57c9 50%, #3b82f6 100%);
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.top-header h1 {
+    color: white;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.user-highlight {
+    color: #ffd700; /* Amarelo */
+    font-weight: 700;
+}
+
+.title-highlight {
+    color: #ffd700; /* Amarelo */
+    font-weight: 700;
+}
+
+/* --- TABLE CARD --- */
+.table-card {
+    background: white;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 900px;
+    overflow: hidden; /* Para arredondar cantos do header */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    background-color: #55608f; /* Azul acinzentado da imagem */
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.table-responsive {
+    padding: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left; /* Ou center, dependendo da preferencia */
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+/* Centralizar colunas especificas */
+th:nth-child(3), td:nth-child(3), 
+th:nth-child(4), td:nth-child(4),
+th:nth-child(5), td:nth-child(5),
+th:nth-child(6), td:nth-child(6) {
+    text-align: center;
+}
+
+td {
+    padding: 12px 15px;
+    font-size: 0.85rem;
+    color: #444;
+    border-bottom: 1px solid #eee;
+}
+
+/* Cores da Natureza */
+.status-pos {
+    color: #22c55e; /* Verde */
+    font-weight: 600;
+}
+
+.status-neg {
+    color: #ef4444; /* Vermelho */
+    font-weight: 600;
+}
+
+.card-footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #eef2f6;
+}
+
+.view-more {
+    text-decoration: none;
+    color: #1e57c9;
+    font-weight: 700;
+    font-size: 0.9rem;
+}

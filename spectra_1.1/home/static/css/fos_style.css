@@ -1,0 +1,230 @@
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.layout {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* --- SIDEBAR (Igual à tela anterior) --- */
+.sidebar {
+    width: 280px;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 30px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    z-index: 10;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.8rem;
+    color: #2c3e80; 
+    text-transform: uppercase;
+    margin-bottom: 60px;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #5a6b8c;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 10px 0;
+    transition: color 0.3s;
+}
+
+.nav-btn:hover, .nav-btn.active {
+    color: #1e3a8a; /* Azul ativo */
+}
+
+.logout-link {
+    text-decoration: none;
+    color: #e63946;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- CONTEÚDO PRINCIPAL --- */
+.main-content {
+    flex: 1;
+    background: linear-gradient(135deg, #2c3e80 0%, #1e57c9 50%, #3b82f6 100%);
+    padding: 30px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-title {
+    color: white;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.highlight-yellow {
+    color: #ffd700;
+    font-weight: 700;
+}
+.title-highlight {
+    color: #ffd700; /* Amarelo */
+    font-weight: 700;
+}
+
+/* --- CARD DE DADOS --- */
+.data-card {
+    background: white;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 950px;
+    /* Altura fixa ou máxima para permitir scroll na tabela se tiver muitos itens */
+    height: 80%; 
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+/* --- HEADER DO CARD (Pesquisa e Filtro) --- */
+.card-header {
+    background-color: #55608f; /* Azul escuro da imagem */
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Separa pesquisa do filtro */
+    position: relative; /* Para posicionar o dropdown do filtro depois */
+}
+
+.search-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.search-input {
+    width: 60%;
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+    background-color: white;
+}
+
+.search-input::placeholder {
+    color: #ccc;
+    font-weight: 500;
+}
+
+.filter-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    transition: opacity 0.3s;
+}
+
+.filter-btn:hover {
+    opacity: 0.8;
+}
+
+/* Estrutura placeholder do Filtro (oculta) */
+.filter-options {
+    display: none; /* JS vai mudar isso para block */
+    position: absolute;
+    top: 60px;
+    right: 30px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    width: 200px;
+    z-index: 100;
+}
+
+/* --- TABELA --- */
+.table-responsive {
+    flex: 1;
+    overflow-y: auto; /* Permite scroll vertical se a lista for longa */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    position: sticky; /* Mantém o cabeçalho fixo ao rolar */
+    top: 0;
+    background: white;
+    padding: 15px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    z-index: 2;
+}
+
+td {
+    padding: 12px 15px;
+    font-size: 0.85rem;
+    color: #444;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+/* Cores específicas da tabela */
+.status-pos {
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.status-neg {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+/* Estilização da barra de rolagem (opcional, para ficar bonito) */
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+}
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #ccc; 
+    border-radius: 4px;
+}
