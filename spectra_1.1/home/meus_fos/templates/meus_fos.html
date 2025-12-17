@@ -69,29 +69,42 @@
                             <tr>
                                 <th>Natureza</th>
                                 <th>Nome</th>
-                                <th>Turno</th>
                                 <th>Série</th>
                                 <th>Turma</th>
+                                <th>Tipo</th>
                                 <th>Data</th>
-                            </tr>
+                                <th style="text-align: center;">Detalhes</th> </tr>
                         </thead>
                         <tbody>
                             {% for fo in meus_fos %}
-                            <tr>
-                                <td class="{% if fo.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
+                            <tr> <td class="{% if fo.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
                                     {{ fo.natureza }}
                                 </td>
-                                <td>{{ fo.nome_aluno }}</td>
-                                <td>{{ fo.turno }}</td>
-                                <td>{{ fo.serie }}</td>
-                                <td>{{ fo.turma }}</td>
-                                <td>{{ fo.data|date:"d/m/Y" }}</td>
+                                
+                                <td>
+                                    <a href="{% url 'historico_aluno' fo.aluno.id %}">
+                                        {{ fo.aluno.nome }}
+                                    </a>
+                                </td>
+
+                                <td>{{ fo.aluno.matricula }}</td>
+                                <td>{{ fo.aluno.turma }}</td>
+                                <td>{{ fo.tipo }}</td>
+                                <td>{{ fo.data_registro|date:"d/m/Y" }}</td>
+
+                                <td style="text-align: center;">
+                                    <a href="{% url 'observacao_detalhes' fo.id %}" class="btn-visualizar" title="Ver Detalhes">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </a>
+                                </td>
+
                             </tr>
-                            <a href="{% url 'historico_aluno' aluno.id %}">{{ aluno.nome }}</a>
                             {% empty %}
                             <tr>
-                                <td colspan="6" style="text-align: center;">Nenhum F.O. encontrado.</td>
-                            </tr>
+                                <td colspan="7" style="text-align: center;">Nenhum F.O. encontrado.</td> </tr>
                             {% endfor %}
                         </tbody>
                     </table>

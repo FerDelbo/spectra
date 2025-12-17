@@ -4,128 +4,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico - SPECTRA</title>
+    <title>Histórico - {{ aluno.nome }}</title>
+    
     <link rel="stylesheet" href="{% static 'css/historico.css' %}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 
-    <div class="container-geral">
-        <nav class="sidebar">
-            <div class="logo">SPECTRA</div>
-            <ul class="menu">
-                <li><a href="#">Tela inicial</a></li>
-                <li><a href="{% url 'minhas_turmas' %}">Minhas Turmas</a></li>
-                <li><a href="#" class="active">Meus F.O.'s</a></li>
-            </ul>
-            <div class="logout">
-                <a href="#">Logout <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
-            </div>
-        </nav>
-
-        <main class="content">
-            <h1 class="page-title">Meus <span class="highlight">F.O.'s</span></h1>
-
-            <div class="historico-card">
+    <div class="card">
+        
+        <header class="card-header">
+            <div class="header-left">
+                <a href="javascript:history.back()" class="back-btn">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
                 
-                <div class="card-header">
-                    <a href="{% url 'minhas_turmas' %}" class="btn-voltar">
-                        <i class="fa-solid fa-arrow-left"></i>
-                    </a>
-
-                    <div class="avatar-circle"></div>
-
-                    <div class="aluno-info">
-                        <h2>Claudinei Roberto Machado</h2>
-                    </div>
-
-                    <div class="turma-info">
-                        <span>2ª A TDS</span>
-                    </div>
+                <div class="avatar-circle">
+                    {{ aluno.nome|slice:":1" }}
                 </div>
-
-                <div class="card-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Natureza</th>
-                                <th>Fato Observado</th>
-                                <th>Observações</th>
-                                <th>Data</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="natureza positivo">Positivo</td>
-                                <td>Participação ativa</td>
-                                <td></td>
-                                <td>28/11/2025</td>
-                            </tr>
-                            <tr>
-                                <td class="natureza positivo">Positivo</td>
-                                <td>Auxiliou um colega</td>
-                                <td></td>
-                                <td>28/11/2025</td>
-                            </tr>
-                            <tr>
-                                <td class="natureza negativo">Negativo</td>
-                                <td>Chegou atrasado</td>
-                                <td></td>
-                                <td>28/11/2025</td>
-                            </tr>
-                            <tr>
-                                <td class="natureza positivo">Positivo</td>
-                                <td>Entregou objeto alheio</td>
-                                <td>Entregou um celular</td>
-                                <td>27/11/2025</td>
-                            </tr>
-                            <tr>
-                                <td class="natureza positivo">Positivo</td>
-                                <td>Entregou objeto alheio</td>
-                                <td>Entregou uma carteira</td>
-                                <td>25/11/2025</td>
-                            </tr>
-                            <tr>
-                                <td class="natureza negativo">Negativo</td>
-                                <td>Chegou atrasado</td>
-                                <td></td>
-                                <td>25/11/2025</td>
-                            </tr>
-                            <tr>
-                                <td class="natureza positivo">Positivo</td>
-                                <td>Participação ativa</td>
-                                <td></td>
-                                <td>21/11/2025</td>
-                            </tr>
-                             <tr>
-                                <td class="natureza negativo">Negativo</td>
-                                <td>Chegou atrasado</td>
-                                <td></td>
-                                <td>21/11/2025</td>
-                            </tr>
-                             <tr>
-                                <td class="natureza positivo">Positivo</td>
-                                <td>Auxiliou um colega</td>
-                                <td></td>
-                                <td>20/11/2025</td>
-                            </tr>
-                             <tr>
-                                <td class="natureza positivo">Positivo</td>
-                                <td>Participação ativa</td>
-                                <td></td>
-                                <td>20/11/2025</td>
-                            </tr>
-                             <tr>
-                                <td class="natureza positivo">Positivo</td>
-                                <td>Entregou objeto alheio</td>
-                                <td>Entregou um óculos</td>
-                                <td>18/11/2025</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                
+                <div class="student-info">
+                    <h2>{{ aluno.nome }}</h2>
+                    <p>{{ aluno.matricula }}{{ aluno.turma }}</p>
                 </div>
             </div>
-        </main>
+
+            <div class="header-right">
+                <span>Histórico Completo</span>
+            </div>
+        </header>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Natureza</th>
+                            <th>Tipo</th>
+                            <th>O que aconteceu</th>
+                            <th>Data</th>
+                            <th style="text-align: center;">Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fo in fos %}
+                        <tr>
+                            <td class="{% if fo.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
+                                {{ fo.natureza }}
+                            </td>
+                            
+                            <td style="font-weight: 500;">{{ fo.tipo }}</td>
+
+                            <td>{{ fo.titulo|default:"-" }}</td>
+                            
+                            <td style="color: #666;">{{ fo.data_registro|date:"d/m/Y" }}</td>
+
+                            <td style="text-align: center;">
+                                <a href="{% url 'observacao_detalhes' fo.id %}" class="btn-visualizar" title="Ver Detalhes">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="empty-msg">
+                                Nenhum histórico encontrado.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
 </body>

@@ -265,3 +265,21 @@ button.logout-link {
     font-size: 1.5rem;
     cursor: pointer;
 }
+/* Estilo do botão de ícone */
+.btn-visualizar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #555; /* Cinza escuro */
+    transition: all 0.2s ease;
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+/* Efeito ao passar o mouse */
+.btn-visualizar:hover {
+    color: #4a90e2; /* Fica azul (cor do tema) */
+    background-color: rgba(74, 144, 226, 0.1); /* Fundo azul bem clarinho */
+    transform: scale(1.1); /* Aumenta um pouquinho */
+}
