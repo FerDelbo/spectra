@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico - SPECTRA</title>
+    <link rel="stylesheet" href="{% static 'css/historico.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container-geral">
+        <nav class="sidebar">
+            <div class="logo">SPECTRA</div>
+            <ul class="menu">
+                <li><a href="#">Tela inicial</a></li>
+                <li><a href="{% url 'minhas_turmas' %}">Minhas Turmas</a></li>
+                <li><a href="#" class="active">Meus F.O.'s</a></li>
+            </ul>
+            <div class="logout">
+                <a href="#">Logout <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+            </div>
+        </nav>
+
+        <main class="content">
+            <h1 class="page-title">Meus <span class="highlight">F.O.'s</span></h1>
+
+            <div class="historico-card">
+                
+                <div class="card-header">
+                    <a href="{% url 'minhas_turmas' %}" class="btn-voltar">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+
+                    <div class="avatar-circle"></div>
+
+                    <div class="aluno-info">
+                        <h2>Claudinei Roberto Machado</h2>
+                    </div>
+
+                    <div class="turma-info">
+                        <span>2ª A TDS</span>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Natureza</th>
+                                <th>Fato Observado</th>
+                                <th>Observações</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="natureza positivo">Positivo</td>
+                                <td>Participação ativa</td>
+                                <td></td>
+                                <td>28/11/2025</td>
+                            </tr>
+                            <tr>
+                                <td class="natureza positivo">Positivo</td>
+                                <td>Auxiliou um colega</td>
+                                <td></td>
+                                <td>28/11/2025</td>
+                            </tr>
+                            <tr>
+                                <td class="natureza negativo">Negativo</td>
+                                <td>Chegou atrasado</td>
+                                <td></td>
+                                <td>28/11/2025</td>
+                            </tr>
+                            <tr>
+                                <td class="natureza positivo">Positivo</td>
+                                <td>Entregou objeto alheio</td>
+                                <td>Entregou um celular</td>
+                                <td>27/11/2025</td>
+                            </tr>
+                            <tr>
+                                <td class="natureza positivo">Positivo</td>
+                                <td>Entregou objeto alheio</td>
+                                <td>Entregou uma carteira</td>
+                                <td>25/11/2025</td>
+                            </tr>
+                            <tr>
+                                <td class="natureza negativo">Negativo</td>
+                                <td>Chegou atrasado</td>
+                                <td></td>
+                                <td>25/11/2025</td>
+                            </tr>
+                            <tr>
+                                <td class="natureza positivo">Positivo</td>
+                                <td>Participação ativa</td>
+                                <td></td>
+                                <td>21/11/2025</td>
+                            </tr>
+                             <tr>
+                                <td class="natureza negativo">Negativo</td>
+                                <td>Chegou atrasado</td>
+                                <td></td>
+                                <td>21/11/2025</td>
+                            </tr>
+                             <tr>
+                                <td class="natureza positivo">Positivo</td>
+                                <td>Auxiliou um colega</td>
+                                <td></td>
+                                <td>20/11/2025</td>
+                            </tr>
+                             <tr>
+                                <td class="natureza positivo">Positivo</td>
+                                <td>Participação ativa</td>
+                                <td></td>
+                                <td>20/11/2025</td>
+                            </tr>
+                             <tr>
+                                <td class="natureza positivo">Positivo</td>
+                                <td>Entregou objeto alheio</td>
+                                <td>Entregou um óculos</td>
+                                <td>18/11/2025</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

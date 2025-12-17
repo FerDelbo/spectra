@@ -87,6 +87,7 @@
                                 <td>{{ fo.turma }}</td>
                                 <td>{{ fo.data|date:"d/m/Y" }}</td>
                             </tr>
+                            <a href="{% url 'historico_aluno' aluno.id %}">{{ aluno.nome }}</a>
                             {% empty %}
                             <tr>
                                 <td colspan="6" style="text-align: center;">Nenhum F.O. encontrado.</td>

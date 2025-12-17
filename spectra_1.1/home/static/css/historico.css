@@ -1,0 +1,190 @@
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%); /* Gradiente azul escuro */
+    color: white;
+    overflow: hidden; /* Evita barra de rolagem na página inteira */
+}
+
+.container-geral {
+    display: flex;
+    height: 100%;
+}
+
+/* --- BARRA LATERAL (SIDEBAR) --- */
+.sidebar {
+    width: 250px;
+    background-color: #e6e6e6; /* Cinza claro/Branco gelo conforme o design do menu */
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    color: #1a1a40; /* Texto escuro no menu claro */
+}
+
+/* Caso a sua sidebar anterior fosse transparente ou azul, ajuste a cor acima */
+/* Baseado na imagem, o fundo do menu parece claro (branco/cinza) */
+
+.sidebar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    color: #1a1a40; 
+    text-transform: uppercase;
+}
+
+.sidebar .menu {
+    list-style: none;
+    flex: 1;
+}
+
+.sidebar .menu li {
+    margin-bottom: 20px;
+}
+
+.sidebar .menu a {
+    text-decoration: none;
+    color: #1a1a40;
+    font-size: 18px;
+    font-weight: 500;
+    display: block;
+    padding: 10px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.sidebar .menu a:hover, .sidebar .menu a.active {
+    background-color: transparent;
+    color: #3b4cca; /* Azul destaque */
+    font-weight: bold;
+}
+
+.sidebar .logout {
+    margin-top: auto;
+}
+
+.sidebar .logout a {
+    text-decoration: none;
+    color: #ff4d4d;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- CONTEÚDO PRINCIPAL --- */
+.content {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto; /* Permite rolar se a tela for pequena */
+}
+
+.page-title {
+    font-size: 32px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.page-title .highlight {
+    color: #ffd700; /* Amarelo ouro para o "F.O.'s" */
+}
+
+/* --- CARD DO HISTÓRICO --- */
+.historico-card {
+    width: 100%;
+    max-width: 900px;
+    border-radius: 15px;
+    overflow: hidden; /* Para respeitar as bordas arredondadas */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background-color: white;
+}
+
+/* Cabeçalho do Card (Parte Azul com Info do Aluno) */
+.card-header {
+    background-color: #484b6a; /* Azul arroxeado conforme imagem */
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: white;
+}
+
+.btn-voltar {
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.avatar-circle {
+    width: 60px;
+    height: 60px;
+    background-color: #d3d3d3; /* Cinza do avatar */
+    border-radius: 50%;
+}
+
+.aluno-info {
+    flex: 1; /* Ocupa o espaço disponível empurrando a turma pra direita */
+}
+
+.aluno-info h2 {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.turma-info {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Corpo do Card (Tabela) */
+.card-body {
+    background-color: white;
+    padding: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #333; /* Texto preto/cinza escuro */
+}
+
+th {
+    text-align: left;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+    font-size: 16px;
+    color: #000;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
+}
+
+/* Cores específicas da Natureza */
+.natureza.positivo {
+    color: #00cc00; /* Verde */
+    font-weight: bold;
+}
+
+.natureza.negativo {
+    color: #ff4d4d; /* Vermelho */
+    font-weight: bold;
+}
+
+/* Remove a borda da última linha */
+tr:last-child td {
+    border-bottom: none;
+}
