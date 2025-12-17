@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Aluno(models.Model):
     nome = models.CharField(max_length=100, verbose_name="Nome Completo")
     # Adicionei matricula pois seu HTML usa {{ aluno.matricula }}
-    matricula = models.CharField(max_length=20, verbose_name="Matrícula", unique=True, null=True, blank=True)
+    matricula = models.CharField(max_length=20, verbose_name="Matrícula")
     turma = models.CharField(max_length=50, verbose_name="Turma") 
     criado_em = models.DateTimeField(auto_now_add=True)
 
