@@ -78,7 +78,7 @@
             <div class="logo">SPECTRA</div>
             <nav class="nav-menu">
                 <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
-                <a href="{% url 'minhas_turmas' %}" class="nav-btn active">Minhas Turmas</a>
+                <a href="{% url 'listar_series' %}" class="nav-btn active">Minhas Turmas</a>
                 <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
             </nav>
             <form method="post" action="{% url 'logout' %}">
@@ -95,7 +95,7 @@
             </div>
             <div class="content-card">
                 <div class="card-header">
-                    <a href="{% url 'minhas_turmas' %}" class="back-arrow">←</a>
+                    <a href="{% url 'listar_turmas_por_serie' serie_nome=turma.serie %}" class="back-arrow">←</a>
                     <span class="header-title">{{turma.serie}}{{ turma.turma }}</span>
                 </div>
 

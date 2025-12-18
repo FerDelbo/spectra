@@ -12,9 +12,23 @@ class AlunoAdmin(admin.ModelAdmin):
 
 @admin.register(Turma)
 class TurmaAdmin(admin.ModelAdmin):
-    list_display = ('serie', 'turma', 'professor')
-    list_filter = ('professor',)
-    search_fields = ('turma',)
+    # ERRO ANTIGO: list_display = ('turma', 'serie', 'professor') 
+    # OCORRIA PORQUE 'professor' AGORA É UMA LISTA, NÃO UM ÚNICO NOME.
+    
+    # SOLUÇÃO: Usar a função 'ver_professores' criada abaixo
+    list_display = ('serie', 'turma', 'ver_professores')
+    
+    # Adicione a busca para facilitar
+    search_fields = ('serie', 'turma', 'professor__first_name')
+
+    # Esta função transforma a lista de professores em um texto único (ex: "Ana, João")
+    def ver_professores(self, obj):
+        # Pega todos os professores daquela turma
+        lista = obj.professor.all()
+        # Junta os nomes com vírgula
+        return ", ".join([p.first_name for p in lista])
+    
+    ver_professores.short_description = "Professores"
 
 @admin.register(FO)
 class FOAdmin(admin.ModelAdmin):

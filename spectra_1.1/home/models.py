@@ -6,11 +6,7 @@ from django.contrib.auth.models import User
 class Turma(models.Model):
     serie = models.CharField(max_length=20, verbose_name="Série", blank=True, null=True)
     turma = models.CharField(max_length=50, verbose_name="Turma") # Ex: "A TDS"
-    
-    # Campo opcional para ajudar no título do card (ex: "2ª Série")
-    
-    
-    professor = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Professor Responsável")
+    professor = models.ManyToManyField(User, verbose_name="Professores Responsáveis", related_name="turmas")
 
     def __str__(self):
         return f"{self.turma}"
