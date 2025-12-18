@@ -1,0 +1,189 @@
+/* --- RESET E LAYOUT GERAL (Estilo Dark) --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif; /* Fonte atualizada */
+}
+
+body {
+    min-height: 100vh;
+    width: 100%;
+    /* Mesmo degradê do Dashboard e Login */
+    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: #333;
+}
+
+/* --- CARD PRINCIPAL (Estilo Clean) --- */
+.card {
+    background-color: #fff;
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4); /* Sombra mais profunda */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* --- CABEÇALHO --- */
+.card-header {
+    background-color: #485586; /* Azul intermediário do tema */
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espaçamento um pouco maior */
+}
+
+.header-right span {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    font-weight: 400;
+}
+
+/* Botão Voltar */
+.back-btn {
+    text-decoration: none;
+    color: rgba(255,255,255,0.8);
+    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    transform: translateX(-2px);
+}
+
+/* Avatar */
+.avatar-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #e2e8f0; /* Cinza claro suave */
+    color: #485586; /* Azul do tema */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+.student-info h2 { 
+    font-size: 1.1rem; 
+    font-weight: 600; 
+    margin-bottom: 2px; 
+}
+
+.student-info p { 
+    font-size: 0.85rem; 
+    opacity: 0.8; 
+    font-weight: 400;
+}
+
+/* --- CORPO E TABELA --- */
+.card-body {
+    padding: 0; /* Removido padding geral para a tabela encostar nas bordas se necessário */
+    background-color: white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-responsive { 
+    width: 100%; 
+    overflow-x: auto; 
+    padding-bottom: 10px;
+}
+
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    font-size: 0.95rem; 
+}
+
+thead tr { 
+    background-color: #f8f9fa; /* Fundo cinza claro */
+    border-bottom: 2px solid #e9ecef; 
+}
+
+th { 
+    text-align: center; /* Centralizado padrão */
+    padding: 15px 20px;
+    color: #666; 
+    font-weight: 600; 
+    font-size: 0.8rem; 
+    text-transform: uppercase; 
+}
+
+td { 
+    padding: 15px 20px; 
+    border-bottom: 1px solid #f0f0f0; 
+    vertical-align: middle; 
+    color: #333;
+    text-align: center;
+}
+
+tr:last-child td { 
+    border-bottom: none; 
+}
+
+/* --- CORES ESPECÍFICAS DA NATUREZA --- */
+.status-pos {
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.status-neg {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+/* Botão Olho (Visualizar) */
+.btn-visualizar { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: #555; 
+    background-color: transparent; 
+    width: 35px; 
+    height: 35px; 
+    border-radius: 6px; 
+    transition: all 0.2s; 
+    text-decoration: none;
+}
+
+.btn-visualizar:hover { 
+    color: #485586; 
+    background-color: #f0f2f5; 
+    transform: none; /* Estilo mais sóbrio */
+}
+
+/* Mensagem de vazio */
+.empty-msg { 
+    text-align: center; 
+    color: #999; 
+    font-style: italic; 
+    padding: 40px; 
+    font-size: 0.9rem;
+}

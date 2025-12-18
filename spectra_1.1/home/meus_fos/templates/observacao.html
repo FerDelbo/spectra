@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Observação</title>
+    <link rel="stylesheet" href="{% static 'css/observacao.css' %}">
+</head>
+<body>
+
+    <div class="card">
+        <header class="card-header">
+            <div class="header-left">
+                <a href="javascript:history.back()" class="back-btn">←</a>
+                
+                <div class="avatar-circle">
+                    {{ fo.aluno.nome|slice:":1" }}
+                </div>
+                
+                <div class="student-info">
+                    <h2>{{ fo.aluno.nome }}</h2>
+                    <p>{{ fo.aluno.matricula }}{{ fo.aluno.turma }}</p>
+                </div>
+            </div>
+
+            <div class="teacher-info">
+                <span class="teacher-label">Registrado por:</span>
+                <span class="teacher-name">
+                    {% if fo.usuario.get_full_name %}
+                        {{ fo.usuario.get_full_name }}
+                    {% else %}
+                        {{ fo.usuario.username }}
+                    {% endif %}
+                </span>
+            </div>
+        </header>
+
+        <div class="card-body">
+
+            <div>
+                <label>Fato Observado:</label>
+                <div class="tags-container">
+                    {% if fo.natureza == 'Positivo' %}
+                        <div class="tag natureza-positivo">
+                            <span>+</span> Positivo
+                        </div>
+                    {% else %}
+                        <div class="tag natureza-negativo">
+                            <span>X</span> Negativo
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div>
+                <label>Tipo:</label>
+                <div class="tags-container">
+                    <div class="tag active-blue">
+                        {{ fo.tipo }}
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label>O que aconteceu?</label>
+                <input type="text" class="read-only-field" value="{{ fo.titulo }}" readonly>
+            </div>
+
+            <div>
+                <label>Observação (Detalhes):</label>
+                <textarea class="read-only-textarea" readonly>{{ fo.descricao|default:"Sem observações adicionais." }}</textarea>
+            </div>
+
+            <div class="footer-info">
+                Registrado em: {{ fo.data_registro|date:"d/m/Y H:i" }}
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

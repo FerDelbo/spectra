@@ -37,7 +37,7 @@
 
             <div class="table-card">
                 <div class="card-title">
-                    Atividades recentes
+                    Últimos registros
                 </div>
 
                 <div class="table-responsive">
@@ -45,28 +45,39 @@
                         <thead>
                             <tr>
                                 <th>Natureza</th>
-                                <th>Nome</th>
-                                <th>Turno</th>
+                                <th>Nome do Aluno</th>
                                 <th>Série</th>
                                 <th>Turma</th>
+                                <th>Tipo</th>
                                 <th>Data</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for atividade in atividades_recentes %}
+                            {% for fo in fos_recentes %}
                             <tr>
-                                <td class="{% if atividade.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
-                                    {{ atividade.natureza }}
+                                <td class="{% if fo.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
+                                    {{ fo.natureza }}
                                 </td>
-                                <td>{{ atividade.nome_aluno }}</td>
-                                <td>{{ atividade.turno }}</td>
-                                <td>{{ atividade.serie }}</td>
-                                <td>{{ atividade.turma }}</td>
-                                <td>{{ atividade.data|date:"d/m/Y" }}</td>
+                                
+                                <td style="font-weight: 500; color: #333;">
+                                    {{ fo.aluno.nome }}
+                                </td>
+                                
+                                <td>{{ fo.aluno.matricula }}</td>
+                                
+                                <td>{{ fo.aluno.turma }}</td>
+                                
+                                <td>{{ fo.tipo }}</td>
+                                
+                                <td style="color: #666;">
+                                    {{ fo.data_registro|date:"d/m/Y" }}
+                                </td>
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="6" style="text-align: center; padding: 20px;">Nenhuma atividade recente encontrada.</td>
+                                <td colspan="6" style="text-align: center; padding: 40px; color: #999; font-style: italic;">
+                                    Nenhum F.O. registrado recentemente.
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -74,7 +85,7 @@
                 </div>
 
                 <div class="card-footer">
-                    <a href="#" class="view-more">Ver mais</a>
+                    <a href="{% url 'meus_fos' %}" class="view-more">Ver histórico completo &rarr;</a>
                 </div>
             </div>
 

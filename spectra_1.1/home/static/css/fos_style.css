@@ -1,4 +1,4 @@
-/* Reset Básico */
+/* --- RESET E LAYOUT --- */
 * {
     margin: 0;
     padding: 0;
@@ -17,74 +17,88 @@ body {
     width: 100%;
 }
 
-/* --- SIDEBAR (Igual à tela anterior) --- */
+/* --- SIDEBAR (Estilo Dark do Dashboard) --- */
 .sidebar {
-    width: 280px;
-    background-color: #f0f0f0;
+    width: 260px; /* Ajustado levemente */
+    background-color: #1a1a40; /* MUDANÇA: Azul escuro */
+    color: white;
     display: flex;
     flex-direction: column;
-    padding: 40px 30px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
     z-index: 10;
+    /* Removido border-radius para ficar igual ao dashboard */
+    border-radius: 0; 
 }
 
 .logo {
-    font-weight: 800;
     font-size: 1.8rem;
-    color: #2c3e80; 
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: center;
+    letter-spacing: 2px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 20px;
     text-transform: uppercase;
-    margin-bottom: 60px;
 }
 
 .nav-menu {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px; /* Espaçamento ajustado */
     flex: 1;
 }
 
 .nav-btn {
-    display: block;
     text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #5a6b8c;
-    cursor: pointer;
-    padding: 10px 0;
-    border-radius: 5px;
-    transition: background 0.3s;
+    color: rgba(255,255,255,0.7);
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
 }
 
 .nav-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    padding-left: 20px; /* Efeito deslize */
 }
 
 .nav-btn.active {
-    background: #0044ff;
-    color: #ffd700;
-}
-
-.nav-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #1e3a8a; /* Azul mais escuro */
+    background-color: #485586;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .logout-link {
-    text-decoration: none;
-    color: #e63946;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ff6b6b;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1rem;
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between; /* Ajuste para seta ficar na ponta */
+    padding: 15px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    transition: color 0.3s;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* --- CONTEÚDO PRINCIPAL --- */
+.logout-link:hover {
+    color: #ff4c4c;
+}
+
+/* --- CONTEÚDO PRINCIPAL (Fundo Degradê Escuro) --- */
 .main-content {
     flex: 1;
-    background: linear-gradient(135deg, #2c3e80 0%, #1e57c9 50%, #3b82f6 100%);
-    padding: 30px 60px;
+    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%); /* MUDANÇA: O mesmo degradê do Dashboard */
+    padding: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -92,45 +106,58 @@ body {
 
 .page-title {
     color: white;
-    font-size: 2.2rem;
-    font-weight: 600;
-    margin-bottom: 20px;
+    font-size: 1.5rem; /* Tamanho padronizado */
+    font-weight: 400;
+    margin-bottom: 25px;
     text-align: center;
+    width: 100%;
+    max-width: 950px;
 }
 
-.highlight-yellow {
-    color: #ffd700;
-    font-weight: 700;
-}
-.title-highlight {
-    color: #ffd700; /* Amarelo */
+.highlight-yellow, .title-highlight {
+    color: #a5b4fc; /* Azul claro para destaque (padrão novo) ou mantenha #ffd700 */
     font-weight: 700;
 }
 
 /* --- CARD DE DADOS --- */
 .data-card {
     background: white;
-    border-radius: 15px;
+    border-radius: 12px;
     width: 100%;
     max-width: 950px;
-    /* Altura fixa ou máxima para permitir scroll na tabela se tiver muitos itens */
-    height: 80%; 
+    height: 80%;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     overflow: hidden;
 }
 
-/* --- HEADER DO CARD (Pesquisa e Filtro) --- */
+/* --- HEADER DO CARD --- */
 .card-header {
-    background-color: #55608f; /* Azul escuro da imagem */
-    padding: 15px 30px;
+    background-color: #485586; /* Azul do cabeçalho do Dashboard */
+    padding: 20px 30px;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Separa pesquisa do filtro */
-    position: relative; /* Para posicionar o dropdown do filtro depois */
+    justify-content: space-between;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
+/* Seta de Voltar */
+.back-arrow {
+    position: relative; /* Ajuste para fluxo flex */
+    left: auto;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-right: 15px;
+}
+.back-arrow:hover {
+    color: white;
+}
+
+/* Input de Pesquisa */
 .search-container {
     flex: 1;
     display: flex;
@@ -139,21 +166,28 @@ body {
 
 .search-input {
     width: 60%;
-    padding: 8px 20px;
-    border-radius: 20px;
+    padding: 10px 20px;
+    border-radius: 8px;
     border: none;
     outline: none;
     text-align: center;
     font-size: 0.9rem;
-    color: #555;
+    color: #333;
+    background-color: rgba(255,255,255,0.9); /* Branco levemente transparente */
+    transition: background 0.3s;
+}
+
+.search-input:focus {
     background-color: white;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
 }
 
 .search-input::placeholder {
-    color: #ccc;
+    color: #888;
     font-weight: 500;
 }
 
+/* Botão de Filtro */
 .filter-btn {
     background: none;
     border: none;
@@ -161,32 +195,35 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px;
-    transition: opacity 0.3s;
+    padding: 8px;
+    border-radius: 5px;
+    color: white; /* Ícone branco */
+    transition: background 0.3s;
 }
 
 .filter-btn:hover {
-    opacity: 0.8;
+    background-color: rgba(255,255,255,0.1);
 }
 
-/* Estrutura placeholder do Filtro (oculta) */
 .filter-options {
-    display: none; /* JS vai mudar isso para block */
+    display: none;
     position: absolute;
-    top: 60px;
+    top: 65px;
     right: 30px;
     background: white;
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
     width: 200px;
     z-index: 100;
+    border: 1px solid #eee;
 }
 
 /* --- TABELA --- */
 .table-responsive {
     flex: 1;
-    overflow-y: auto; /* Permite scroll vertical se a lista for longa */
+    overflow-y: auto;
+    width: 100%;
 }
 
 table {
@@ -195,27 +232,29 @@ table {
 }
 
 th {
-    position: sticky; /* Mantém o cabeçalho fixo ao rolar */
+    position: sticky;
     top: 0;
-    background: white;
-    padding: 15px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #333;
-    border-bottom: 1px solid #ddd;
+    background: #f8f9fa; /* Cinza claro */
+    padding: 15px 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    border-bottom: 2px solid #e9ecef;
     text-align: center;
     z-index: 2;
 }
 
 td {
-    padding: 12px 15px;
-    font-size: 0.85rem;
-    color: #444;
-    border-bottom: 1px solid #eee;
+    padding: 15px 20px;
+    font-size: 0.9rem;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
     text-align: center;
+    vertical-align: middle;
 }
 
-/* Cores específicas da tabela */
+/* Cores de Status atualizadas */
 .status-pos {
     color: #22c55e;
     font-weight: 600;
@@ -226,7 +265,7 @@ td {
     font-weight: 600;
 }
 
-/* Estilização da barra de rolagem (opcional, para ficar bonito) */
+/* Scrollbar Bonita */
 .table-responsive::-webkit-scrollbar {
     width: 8px;
 }
@@ -237,31 +276,24 @@ td {
     background: #ccc; 
     border-radius: 4px;
 }
-/* Correção para o botão de Logout dentro do form */
-button.logout-link {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    padding: 0;
-    width: 100%; /* Ocupa a largura disponível */
-    display: flex; /* Mantém o alinhamento flexbox */
-    justify-content: flex-start; /* Alinha o texto à esquerda */
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #bbb; 
 }
 
-/* Garante que o container de pesquisa e filtro fiquem lado a lado */
-.card-header {
-    display: flex;
+/* Botão Visualizar (Olho) */
+.btn-visualizar {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    background-color: #55608f; /* Fundo Azul Escuro */
-    padding: 15px 30px;
-}
-.back-arrow {
-    position: absolute;
-    left: 20px;
-    color: white;
+    justify-content: center;
+    color: #666;
+    transition: all 0.2s ease;
     text-decoration: none;
-    font-size: 1.5rem;
-    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.btn-visualizar:hover {
+    color: #485586;
+    background-color: #f0f0f0;
+    transform: none; /* Removido o zoom exagerado, mantendo sutil */
 }

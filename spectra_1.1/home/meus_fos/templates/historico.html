@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico - {{ aluno.nome }}</title>
+    
+    <link rel="stylesheet" href="{% static 'css/historico.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="card">
+        
+        <header class="card-header">
+            <div class="header-left">
+                <a href="javascript:history.back()" class="back-btn">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                
+                <div class="avatar-circle">
+                    {{ aluno.nome|slice:":1" }}
+                </div>
+                
+                <div class="student-info">
+                    <h2>{{ aluno.nome }}</h2>
+                    <p>{{ aluno.matricula }}{{ aluno.turma }}</p>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <span>Histórico Completo</span>
+            </div>
+        </header>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Natureza</th>
+                            <th>Tipo</th>
+                            <th>O que aconteceu</th>
+                            <th>Data</th>
+                            <th style="text-align: center;">Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fo in fos %}
+                        <tr>
+                            <td class="{% if fo.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
+                                {{ fo.natureza }}
+                            </td>
+                            
+                            <td style="font-weight: 500;">{{ fo.tipo }}</td>
+
+                            <td>{{ fo.titulo|default:"-" }}</td>
+                            
+                            <td style="color: #666;">{{ fo.data_registro|date:"d/m/Y" }}</td>
+
+                            <td style="text-align: center;">
+                                <a href="{% url 'observacao_detalhes' fo.id %}" class="btn-visualizar" title="Ver Detalhes">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="empty-msg">
+                                Nenhum histórico encontrado.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

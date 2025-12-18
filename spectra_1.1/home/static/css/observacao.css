@@ -1,0 +1,200 @@
+/* --- ESTILOS GERAIS (Identidade Visual Dark) --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif; /* Fonte atualizada */
+    /* Degradê padrão do tema */
+    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- CARD PRINCIPAL (Estilo Clean) --- */
+.card {
+    background-color: #ffffff; /* Branco puro */
+    width: 100%;
+    max-width: 600px;
+    border-radius: 12px; /* Arredondamento padrão */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4); /* Sombra mais profunda */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- CABEÇALHO --- */
+.card-header {
+    background-color: #485586; /* Azul do tema */
+    color: white;
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.back-btn {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn:hover {
+    color: white;
+    opacity: 1;
+}
+
+.avatar-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #e2e8f0; /* Cinza claro */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #485586; /* Azul do tema */
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.student-info h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.student-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    font-weight: 400;
+}
+
+/* --- INFO DO PROFESSOR --- */
+.teacher-info {
+    text-align: right;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.teacher-label {
+    display: block;
+    opacity: 0.8;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.teacher-name {
+    font-weight: 600;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+/* --- CONTEÚDO DO CARD --- */
+.card-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: white;
+}
+
+label {
+    display: block;
+    color: #485586; /* Azul do tema */
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+/* --- TAGS (Natureza e Tipo) --- */
+.tags-container {
+    display: flex;
+    gap: 15px;
+}
+
+.tag {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+/* Estilos Ativos (Cores padronizadas) */
+.tag.natureza-positivo {
+    background-color: #dcfce7; /* Verde claro */
+    color: #166534;
+    border-color: #22c55e;
+}
+
+.tag.natureza-negativo {
+    background-color: #fee2e2; /* Vermelho claro */
+    color: #991b1b;
+    border-color: #ef4444;
+}
+
+.tag.active-blue {
+    background-color: #e0e7ff; /* Azul claro */
+    color: #1e1b4b;
+    border-color: #485586;
+}
+
+/* --- INPUTS DE LEITURA --- */
+.read-only-field {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #f8f9fa; /* Fundo cinza para leitura */
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #333;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.read-only-textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #333;
+    min-height: 120px;
+    resize: none;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.5;
+}
+
+/* --- RODAPÉ COM DATA --- */
+.footer-info {
+    text-align: right;
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 10px;
+    font-style: italic;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+}

@@ -1,4 +1,4 @@
-/* Reset e Fontes */
+/* --- RESET E FONTES --- */
 * {
     margin: 0;
     padding: 0;
@@ -8,133 +8,144 @@
 
 body {
     height: 100vh;
-    overflow: hidden; /* Evita scroll na página inteira */
+    overflow: hidden; /* Impede rolagem na página inteira, apenas no conteúdo */
 }
 
+/* --- LAYOUT PRINCIPAL (Sidebar + Conteúdo) --- */
 .layout {
     display: flex;
     height: 100vh;
     width: 100%;
 }
 
-/* --- SIDEBAR (Esquerda) --- */
+/* --- SIDEBAR (Barra Lateral) --- */
 .sidebar {
-    width: 280px;
-    background-color: #f0f0f0;
+    width: 260px;
+    background-color: #1a1a40; /* Azul escuro do tema */
+    color: white;
     display: flex;
     flex-direction: column;
-    padding: 40px 30px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+    padding: 20px;
+    flex-shrink: 0; /* Garante que a sidebar não encolha */
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
     z-index: 10;
 }
 
 .logo {
-    font-weight: 800;
     font-size: 1.8rem;
-    color: white; /* Na imagem parece branco mas o fundo é claro? Ajustei para contraste */
-    /* Ajuste para ficar igual a imagem: */
-    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: center;
+    letter-spacing: 2px;
     color: #fff;
-    text-shadow: 0 0 5px rgba(0,0,0,0.2);
-    /* Como o fundo da sidebar é claro, talvez queira mudar a cor da logo para azul escuro: */
-    color: #2c3e80; 
-    margin-bottom: 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 20px;
 }
 
 .nav-menu {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    flex: 1; /* Empurra o logout para baixo */
+    gap: 10px;
+    flex: 1;
 }
 
 .nav-btn {
-    display: block;
     text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #5a6b8c;
-    cursor: pointer;
-    padding: 10px 0;
-    border-radius: 5px;
-    transition: background 0.3s;
+    color: rgba(255,255,255,0.7);
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
 }
 
 .nav-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    padding-left: 20px; /* Efeito de deslize */
 }
 
 .nav-btn.active {
-    background: #0044ff;
-    color: #ffd700;
+    background-color: #485586;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-.nav-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #1e3a8a; /* Azul mais escuro */
-}
-
+/* Logout */
 .logout-link {
-    text-decoration: none;
-    color: #e63946; /* Vermelho */
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ff6b6b;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1rem;
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    transition: color 0.3s;
+    width: 100%;
 }
 
-/* --- MAIN CONTENT (Direita) --- */
+.logout-link:hover {
+    color: #ff4c4c;
+}
+
+/* --- CONTEÚDO PRINCIPAL (Direita) --- */
 .main-content {
-    flex: 1;
-    background: linear-gradient(135deg, #2c3e80 0%, #1e57c9 50%, #3b82f6 100%);
-    padding: 40px 60px;
+    flex: 1; /* Ocupa o resto da tela */
+    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%); /* Fundo degradê */
+    overflow-y: auto; /* Permite rolar se a tabela for grande */
+    padding: 30px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Centraliza o card horizontalmente */
+}
+
+/* Cabeçalho do Conteúdo */
+.top-header {
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 25px;
+    color: white;
 }
 
 .top-header h1 {
-    color: white;
-    font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 30px;
+    font-size: 1.5rem;
+    font-weight: 400;
 }
 
 .user-highlight {
-    color: #ffd700; /* Amarelo */
     font-weight: 700;
+    color: #a5b4fc; /* Um tom azul claro para destaque */
 }
 
-.title-highlight {
-    color: #ffd700; /* Amarelo */
-    font-weight: 700;
-}
-
-/* --- TABLE CARD --- */
+/* --- CARD BRANCO (VITRINE) --- */
 .table-card {
-    background: white;
-    border-radius: 15px;
+    background-color: white;
     width: 100%;
-    max-width: 900px;
-    overflow: hidden; /* Para arredondar cantos do header */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-width: 1000px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    overflow: hidden; /* Para os cantos arredondados */
     display: flex;
     flex-direction: column;
 }
 
 .card-title {
-    background-color: #55608f; /* Azul acinzentado da imagem */
-    color: white;
-    text-align: center;
-    padding: 15px;
-    font-size: 1.2rem;
+    padding: 20px 25px;
+    font-size: 1.1rem;
     font-weight: 600;
+    color: #485586;
+    border-bottom: 1px solid #eee;
 }
 
+/* --- TABELA --- */
 .table-responsive {
-    padding: 0;
+    width: 100%;
+    overflow-x: auto;
 }
 
 table {
@@ -142,49 +153,60 @@ table {
     border-collapse: collapse;
 }
 
-th {
-    text-align: left; /* Ou center, dependendo da preferencia */
-    padding: 12px 15px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #333;
-    border-bottom: 1px solid #ddd;
+thead tr {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
 }
-/* Centralizar colunas especificas */
-th:nth-child(3), td:nth-child(3), 
-th:nth-child(4), td:nth-child(4),
-th:nth-child(5), td:nth-child(5),
-th:nth-child(6), td:nth-child(6) {
-    text-align: center;
+
+th {
+    text-align: left;
+    padding: 15px 20px;
+    color: #666;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
 }
 
 td {
-    padding: 12px 15px;
-    font-size: 0.85rem;
-    color: #444;
-    border-bottom: 1px solid #eee;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+    font-size: 0.9rem;
+    vertical-align: middle;
 }
 
-/* Cores da Natureza */
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status (Cores do texto apenas, conforme pedido anterior) */
 .status-pos {
-    color: #22c55e; /* Verde */
+    color: #22c55e;
     font-weight: 600;
 }
 
 .status-neg {
-    color: #ef4444; /* Vermelho */
+    color: #ef4444;
     font-weight: 600;
 }
 
+/* Rodapé do Card */
 .card-footer {
-    text-align: center;
-    padding: 15px;
-    background-color: #eef2f6;
+    padding: 15px 25px;
+    background-color: #f8f9fa;
+    text-align: right;
+    border-top: 1px solid #eee;
 }
 
 .view-more {
     text-decoration: none;
-    color: #1e57c9;
-    font-weight: 700;
+    color: #485586;
+    font-weight: 600;
     font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.view-more:hover {
+    color: #2c3e50;
+    text-decoration: underline;
 }
