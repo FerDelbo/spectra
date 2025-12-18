@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{% static 'registrar_fo.css' %}">
 </head>
 <body>
-
     <div class="card-registro">
         <div class="card-header">
             <a href="javascript:history.back()" class="btn-voltar">←</a>
@@ -51,7 +50,6 @@
                         <label for="tp_pedag" class="btn-option">Pedagógico</label>
                     </div>
                 </div>
-
                 <div id="step-opcoes" class="hidden-step">
                     <span class="section-label">O que aconteceu?</span>
                     <select name="titulo" id="select-motivo">
@@ -113,6 +111,20 @@
         function showStep3() {
             document.getElementById('step-opcoes').className = 'show-step';
         }
+        // Função para remover alertas automaticamente após 4 segundos
+        document.addEventListener("DOMContentLoaded", function() {
+            const alerts = document.querySelectorAll('.alert');
+            if (alerts.length > 0) {
+                setTimeout(function() {
+                    alerts.forEach(function(alert) {
+                        alert.style.transition = "opacity 0.5s, transform 0.5s";
+                        alert.style.opacity = "0";
+                        alert.style.transform = "translateY(-20px)";
+                        setTimeout(() => alert.remove(), 500);
+                    });
+                }, 4000); // 4000ms = 4 segundos
+            }
+        });
     </script>
 </body>
 </html>

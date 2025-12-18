@@ -237,3 +237,75 @@ textarea {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
+
+/* --- MENSAGENS FLUTUANTES --- */
+/* registrar_fo.css */
+
+/* Container fixo para as mensagens ficarem sobrepostas */
+.messages-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999; /* Garante que fique acima de tudo */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 300px;
+}
+
+/* Estilo base do alerta */
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: sans-serif;
+    font-size: 14px;
+    opacity: 1; /* Necessário para a animação de saída funcionar */
+    transition: opacity 0.5s, transform 0.5s;
+    border-left: 5px solid #ccc;
+}
+
+/* Ícone */
+.alert-icon {
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+/* Cores para Sucesso (success) */
+.alert.success {
+    border-left-color: #28a745;
+    background-color: #d4edda;
+    color: #155724;
+}
+.alert.success .alert-icon {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Cores para Erro (error/danger) */
+.alert.error, .alert.danger {
+    border-left-color: #dc3545;
+    background-color: #f8d7da;
+    color: #721c24;
+}
+.alert.error .alert-icon {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Cores para Aviso (warning) */
+.alert.warning {
+    border-left-color: #ffc107;
+    background-color: #fff3cd;
+    color: #856404;
+}

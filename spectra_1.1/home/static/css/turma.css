@@ -21,7 +21,7 @@ body {
 }
 
 /* ============================================================
-   2. SIDEBAR (Design Dark - Igual ao Dashboard)
+   2. SIDEBAR (Padrão do Sistema)
    ============================================================ */
 .sidebar {
     width: 260px;
@@ -99,22 +99,36 @@ body {
 }
 
 /* ============================================================
-   3. CONTEÚDO PRINCIPAL
+   3. CONTEÚDO PRINCIPAL (Main)
    ============================================================ */
-/* Procure essa classe no seu código e altere */
 .main-content {
     flex: 1;
     background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
     padding: 30px;
-    
     display: flex;
     flex-direction: column;
-    /* REMOVIDO: align-items: center; */
-    
+    /* REMOVIDO align-items: center para evitar bugs de layout */
     overflow-y: auto;
 }
 
-/* --- CABEÇALHO COM SETA DE VOLTAR (NOVO) --- */
+/* Título da Página */
+.page-title {
+    color: white;
+    font-size: 1.5rem; /* Tamanho padronizado */
+    font-weight: 400;
+    margin-bottom: 25px;
+    text-align: center;
+    width: 100%;
+    max-width: 950px;
+}
+.highlight-yellow, .title-highlight {
+    color: #a5b4fc; /* Azul claro para destaque (padrão novo) ou mantenha #ffd700 */
+    font-weight: 700;
+}
+
+/* ============================================================
+   4. CARD DA TABELA
+   ============================================================ */
 .header-bar {
     display: flex;
     align-items: center;
@@ -130,130 +144,145 @@ body {
     position: relative;
 }
 
-/* A Seta de Voltar */
-.btn-voltar {
-    position: relative; /* Ajuste para fluxo flex */
-    left: auto;
-    color: rgba(255,255,255,0.8);
-    text-decoration: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin-right: 15px;
-    top: 50%;
-    transform: translateY(-50%); /* Garante o centro vertical exato */
-    
-    transition: transform 0.2s, color 0.2s;
-}
-
-.btn-voltar:hover {
-    transform: translateY(-50%) scale(1.2); /* Efeito de zoom leve */
-    color: #a5b4fc;
-}
-
-/* Título Centralizado */
-.page-title, .titulo-header {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 400;
-    text-align: center;
-    width: 100%;
-    /* Margem removida aqui pois o header-bar já tem margin-bottom */
-    margin-bottom: 0; 
-}
-
-/* ============================================================
-   4. AGRUPAMENTO DAS TURMAS (Wrapper Centralizado)
-   ============================================================ */
-.content-wrapper {
+.content-card {
+    background-color: white;
     width: 100%;
     max-width: 950px;
-    
-    /* ADICIONE ISTO PARA CENTRALIZAR O BLOCO NA TELA: */
-    margin-left: auto;
-    margin-right: auto;
-    
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    overflow: hidden; /* Garante que o header não saia das bordas arredondadas */
     display: flex;
     flex-direction: column;
-    gap: 40px; 
-}
-/* O "Bloco" da Série */
-.serie-container {
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    overflow: hidden;
-    width: 100%;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    
+    /* Centraliza o card na tela */
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
 }
 
-/* --- CABEÇALHO DA SÉRIE --- */
-.serie-header {
+/* Cabeçalho do Card (Onde fica a seta e o nome da Série) */
+.card-header {
     background-color: #485586;
-    padding: 15px 25px;
+    color: white;
+    padding: 20px 25px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Centraliza o texto "X Série" */
+    justify-content: center; /* Centraliza o título da série */
     position: relative;
-    gap: 15px;
-    color: white;
-    font-weight: 600;
-    font-size: 1.1rem;
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Corpo onde ficam os cards das turmas */
-.serie-body {
-    padding: 30px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center; /* Centraliza os botões dentro do bloco */
+.header-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 1px;
 }
 
-/* ============================================================
-   5. O CARD DA TURMA (Botão Branco)
-   ============================================================ */
-.card-turma {
-    background-color: #ffffff; /* Fundo Branco */
-    width: 180px;
-    height: 110px;
-    border-radius: 10px;
+/* Botão Voltar (Seta) */
+.back-arrow {
+    position: absolute;
+    left: 25px; /* Fixado à esquerda */
+    color: rgba(255,255,255,0.8);
     text-decoration: none;
-    
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: transform 0.2s, box-shadow 0.2s;
+    gap: 5px;
 }
 
-.card-turma:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-
-/* Texto da Turma */
-.card-nome {
-    color: #485586; /* Azul Escuro */
-    font-size: 1.6rem;
-    font-weight: 700;
+.back-arrow:hover {
+    color: white;
+    transform: translateX(-3px);
 }
 
 /* ============================================================
-   6. COMPATIBILIDADE
+   5. TABELA DE ALUNOS
    ============================================================ */
-.data-card {
-    background: white;
-    border-radius: 12px;
+.table-responsive {
     width: 100%;
-    max-width: 950px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    overflow-x: auto;
 }
 
-.highlight-yellow, .title-highlight {
-    color: #a5b4fc; /* Azul claro para destaque (padrão novo) ou mantenha #ffd700 */
-    font-weight: 700;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+/* Cabeçalho da Tabela */
+thead {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+}
+
+th {
+    padding: 18px 20px;
+    text-align: left;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Corpo da Tabela */
+td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+/* Linha Clicável */
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.clickable-row:hover {
+    background-color: #f1f5f9; /* Cinza bem claro no hover */
+}
+
+.clickable-row:hover .action-text {
+    transform: translateX(5px); /* Move a setinha para a direita */
+    color: #485586;
+}
+
+/* Colunas Específicas */
+.col-num {
+    width: 60px;
+    text-align: center;
+}
+
+.col-action {
+    width: 160px;
+    text-align: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+/* Texto de Ação (Registrar FO) */
+.action-text {
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+/* Mensagem de Vazio */
+.empty-message {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+    font-style: italic;
 }
