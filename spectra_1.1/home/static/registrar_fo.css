@@ -1,65 +1,106 @@
 /* home/static/registrar_fo.css */
 
-/* Fundo da página */
+/* --- CONFIGURAÇÕES GERAIS E FUNDO (Estilo Dark) --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif; /* Fonte atualizada */
+}
+
 body {
-    background: linear-gradient(135deg, #2c3e80 0%, #4facfe 100%);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Mesmo degradê do Dashboard e Login */
+    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
     height: 100vh;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-y: auto; /* Garante rolagem se a tela for pequena */
 }
 
-/* O Cartão Principal */
+/* --- O CARTÃO PRINCIPAL (Estilo Clean) --- */
 .card-registro {
-    background: #f0f0f0;
+    background: white; /* Fundo branco puro */
     width: 700px;
-    border-radius: 15px;
+    border-radius: 12px; /* Arredondamento suave padrão */
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4); /* Sombra mais profunda */
     position: relative;
+    margin: 20px; /* Margem de segurança para telas menores */
 }
 
+/* --- CABEÇALHO DO CARD --- */
 .card-header {
-    background: #4a569d;
+    background-color: #485586; /* Azul intermediário do tema */
     color: white;
-    padding: 15px 20px;
+    padding: 20px 25px;
     display: flex;
     align-items: center;
     gap: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .btn-voltar {
-    color: white;
+    color: rgba(255,255,255,0.8);
     text-decoration: none;
     font-size: 24px;
     margin-right: 10px;
+    transition: color 0.2s;
+    display: flex; /* Centralizar ícone */
+    align-items: center;
+}
+
+.btn-voltar:hover {
+    color: white;
 }
 
 .avatar-circle {
-    width: 60px;
-    height: 60px;
-    background-color: #d1d1d1;
+    width: 50px; /* Ajuste leve para proporção */
+    height: 50px;
+    background-color: #e2e8f0; /* Cinza claro suave */
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #485586;
+    font-weight: 700;
 }
 
-.header-info h2 { margin: 0; font-size: 18px; font-weight: 600; }
-.header-info span { font-size: 14px; opacity: 0.9; }
-.turma-tag { margin-left: auto; font-weight: bold; }
+.header-info h2 { 
+    margin: 0; 
+    font-size: 1.1rem; 
+    font-weight: 600; 
+}
 
-/* Corpo do Formulário */
+.header-info span { 
+    font-size: 0.9rem; 
+    opacity: 0.8; 
+    font-weight: 400;
+}
+
+.turma-tag { 
+    margin-left: auto; 
+    font-weight: 600; 
+    background: rgba(255,255,255,0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* --- CORPO DO FORMULÁRIO --- */
 .card-body {
-    padding: 30px;
-    text-align: left; /* Alinhamento à esquerda */
+    padding: 30px 40px;
+    text-align: left;
+    background-color: white;
 }
 
 /* Rótulos das seções */
 .section-label {
-    font-weight: bold;
-    color: #2c3e80;
-    font-size: 16px;
-    margin-bottom: 10px;
+    font-weight: 600;
+    color: #485586; /* Azul do tema */
+    font-size: 1rem;
+    margin-bottom: 12px;
     display: block;
 }
 
@@ -67,76 +108,132 @@ body {
 .btn-group-row {
     display: flex;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    flex-wrap: wrap; /* Segurança para mobile */
 }
 
 /* Esconder o rádio padrão */
-input[type="radio"] { display: none; }
+input[type="radio"] { 
+    display: none; 
+}
 
-/* Estilo dos Botões de Opção */
+/* Estilo dos Botões de Opção (Unselected) */
 .btn-option {
     padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: bold;
-    border: 2px solid #ccc;
-    background: white;
+    font-weight: 500;
+    border: 1px solid #ddd; /* Borda mais sutil */
+    background: #f8f9fa;
     color: #555;
-    transition: 0.3s;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    font-size: 0.95rem;
 }
 
-/* Cores ao selecionar Natureza */
-input[id="nat_pos"]:checked + label { background: #e8f5e9; border-color: #00c853; color: #00c853; }
-input[id="nat_neg"]:checked + label { background: #ffebee; border-color: #d32f2f; color: #d32f2f; }
+.btn-option:hover {
+    background: #eee;
+    transform: translateY(-2px);
+}
 
-/* Cores ao selecionar Tipo */
+/* --- ESTADOS SELECIONADOS (Cores do Tema) --- */
+
+/* Natureza Positiva (Verde) */
+input[id="nat_pos"]:checked + label { 
+    background: #dcfce7; /* Fundo verde bem claro */
+    border-color: #22c55e; 
+    color: #166534; 
+    box-shadow: 0 2px 5px rgba(34, 197, 94, 0.2);
+}
+
+/* Natureza Negativa (Vermelho) */
+input[id="nat_neg"]:checked + label { 
+    background: #fee2e2; /* Fundo vermelho bem claro */
+    border-color: #ef4444; 
+    color: #991b1b; 
+    box-shadow: 0 2px 5px rgba(239, 68, 68, 0.2);
+}
+
+/* Tipo (Azul do Tema) */
 input[name="tipo"]:checked + label {
-    background: #e3f2fd; border-color: #2c3e80; color: #2c3e80;
+    background: #e0e7ff; /* Azul bem claro */
+    border-color: #485586; 
+    color: #1a1a40;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(72, 85, 134, 0.2);
 }
 
-/* Ícones simulados via CSS */
-.icon-plus::before { content: "✚"; margin-right: 5px; }
-.icon-close::before { content: "✖"; margin-right: 5px; }
+/* Ícones simulados */
+.icon-plus::before { content: "+"; font-weight: bold; }
+.icon-close::before { content: "×"; font-weight: bold; font-size: 1.2rem; }
 
 /* Inputs e Selects */
 select, textarea {
     width: 100%;
-    padding: 10px;
+    padding: 12px 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    margin-bottom: 15px;
-    font-family: inherit;
-    box-sizing: border-box;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif; /* Força a fonte nos inputs */
+    font-size: 0.95rem;
+    color: #333;
+    background-color: #fcfcfc;
+    outline: none;
+    transition: border-color 0.3s;
 }
 
-/* Animações */
-.hidden-step { display: none; opacity: 0; transition: opacity 0.5s; }
-.show-step { display: block; opacity: 1; animation: fadeIn 0.5s; }
+select:focus, textarea:focus {
+    border-color: #485586;
+    background-color: white;
+}
+
+textarea {
+    resize: vertical; /* Permite redimensionar apenas verticalmente */
+    min-height: 100px;
+}
+
+/* --- ANIMAÇÕES --- */
+.hidden-step { 
+    display: none; 
+    opacity: 0; 
+}
+
+.show-step { 
+    display: block; 
+    animation: fadeIn 0.4s ease-out forwards;
+}
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Botão Enviar */
+/* --- RODAPÉ / BOTÃO ENVIAR --- */
 .form-footer {
     display: flex;
     justify-content: flex-end;
     margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
 }
 
 .btn-enviar {
-    background-color: #2c3e80;
+    background-color: #1a1a40; /* Botão principal escuro (Sidebar color) */
     color: #ffffff;
-    padding: 12px 30px;
+    padding: 12px 35px;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-.btn-enviar:hover { background-color: #1a254d; }
+
+.btn-enviar:hover { 
+    background-color: #485586; /* Fica mais claro no hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
