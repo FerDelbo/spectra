@@ -6,23 +6,15 @@
     <title>Minhas Turmas</title>
     <link rel="stylesheet" href="{% static 'css/turmas_style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Adicionei este estilo inline para garantir que o cursor mude ao passar o mouse */
-        .clickable-row {
-            cursor: pointer;
-        }
-        .clickable-row:hover {
-            background-color: #f5f5f5; /* Ou a cor de hover do seu tema */
-        }
-    </style>
 </head>
 <body>
     <div class="layout">
+        
         <aside class="sidebar">
             <div class="logo">SPECTRA</div>
             <nav class="nav-menu">
                 <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
-                <a href="#" class="nav-btn active">Minhas Turmas</a>
+                <a href="{% url 'minhas_turmas' %}" class="nav-btn active">Minhas Turmas</a>
                 <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
             </nav>
             <form method="post" action="{% url 'logout' %}">
@@ -34,40 +26,40 @@
         </aside>
 
         <main class="main-content">
-            <h1 class="page-title" style="text-align: center;">Minhas <span class="highlight-yellow">Turmas</span></h1>
-
-            <div class="content-card">
-                <div class="card-header">
-                    <a href="{% url 'home' %}" class="back-arrow">←</a>
-                    <span class="header-title">{{ nome_turma }}</span>
-                </div>
-
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 10%;">Nº</th>
-                                <th style="text-align: left;">Nome</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for aluno in alunos %}
-                            <tr onclick="window.location='{% url 'registrar_fo' aluno.id %}';" class="clickable-row">
-                                <td>{{ forloop.counter }}</td> 
-                                
-                                <td style="text-align: left;">{{ aluno.nome }} </td> 
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="2" style="text-align: center; padding: 20px;">
-                                    Nenhum aluno encontrado nesta turma.
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+            
+            <div class="header-bar">
+              
+                <h1 class="page-title">Minhas <span class="highlight-yellow">Turmas</span></h1>
             </div>
+
+            <div class="content-wrapper">
+                
+                {% regroup turmas|dictsort:"serie" by serie as turmas_por_serie %}
+
+                {% for grupo in turmas_por_serie %}
+                
+                <div class="serie-container">
+                    
+                    <div class="serie-header">
+                        <span>{{ grupo.grouper }}</span>
+                        <a href="{% url 'home' %}" class="btn-voltar" style="text-decoration: none; color: white; font-size: 1.5rem; position: absolute; top: 30px; left: 40px;">←</a>  
+                    </div>
+
+                    <div class="serie-body">
+                        {% for turma in grupo.list %}
+                            <a href="{% url 'lista_alunos' turma.id %}" class="card-turma">
+                                <span class="card-nome">{{ turma.turma }}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% empty %}
+                    <p style="color: white; text-align: center;">Nenhuma turma cadastrada.</p>
+                {% endfor %}
+
+            </div>
+
         </main>
     </div>
 </body>

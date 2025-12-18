@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Alunos - {{ turma.turma }}</title>
+    <link rel="stylesheet" href="{% static 'css/turma.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">SPECTRA</div>
+            <nav class="nav-menu">
+                <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
+                <a href="{% url 'minhas_turmas' %}" class="nav-btn active">Minhas Turmas</a>
+                <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
+            </nav>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-link">
+                    Logout <span class="icon">➜</span>
+                </button>
+            </form>
+        </aside>
+
+        <main class="main-content">
+            <div class="header-bar">
+                <h1 class="page-title">Minhas <span class="highlight-yellow">Turmas</span></h1>
+            </div>
+            <div class="content-card">
+                <div class="card-header">
+                    <a href="{% url 'minhas_turmas' %}" class="back-arrow">←</a>
+                    <span class="header-title">{{turma.serie}}{{ turma.turma }}</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="col-num">Nº</th>
+                                <th class="text-left">Nome do Aluno</th>
+                                <th class="col-action">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for aluno in alunos %}
+                            <tr onclick="window.location='{% url 'registrar_fo' aluno.id %}';" class="clickable-row">
+                                <td class="text-center">{{ forloop.counter }}</td> 
+                                <td class="text-left">{{ aluno.nome }}</td>
+                                <td class="text-center">
+                                    <span class="action-text">Registrar FO ➜</span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="empty-message">
+                                    Nenhum aluno cadastrado nesta turma.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,25 +1,35 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from home.models import Aluno, FO  # Supondo que você tenha um modelo Aluno
+from home.models import Aluno, FO, Turma
 
-def index(request):
-    # Como o modelo está importado, isso funciona perfeitamente:
-    alunos = Aluno.objects.filter(turma="2ª A TDS")
-    return render(request, 'minhas_turmas/index.html', {'alunos': alunos})
-
+# --- TELA 1: DASHBOARD (Menu com os Cards das Turmas) ---
 @login_required
 def minhas_turmas(request):
-    # Busca os alunos do banco de dados
-    alunos = Aluno.objects.all()  # Ou filtrar por turma do professor, se necessário
-    
-    return render(request, 'minhas_turmas.html', {
-        'alunos': alunos,
-        'nome_turma': '2ª A TDS'
+    # Busca apenas as turmas do professor logado
+    turmas = Turma.objects.filter(professor=request.user).order_by('turma')
+    return render(request, 'minhas_turmas.html', {'turmas': turmas})
+
+# --- TELA 2: LISTA DE ALUNOS (Ao clicar no Card) ---
+@login_required
+def lista_alunos(request, turma_id):
+    # Pega a turma pelo ID
+    turma_selecionada = get_object_or_404(Turma, id=turma_id)
+
+    # SEGURANÇA: Se a turma não for desse professor, volta pro menu
+    if turma_selecionada.professor != request.user:
+        return redirect('minhas_turmas')
+
+    # Pega os alunos dessa turma específica
+    alunos = Aluno.objects.filter(turma=turma_selecionada)
+
+    return render(request, 'lista_alunos.html', {
+        'turma': turma_selecionada,
+        'alunos': alunos
     })
 
+# --- AÇÃO: REGISTRAR FO ---
 @login_required
 def registrar_fo(request, aluno_id):
-    # Busca o aluno pelo ID ou retorna erro 404 se não existir
     aluno = get_object_or_404(Aluno, id=aluno_id)
 
     if request.method == 'POST':
@@ -27,27 +37,17 @@ def registrar_fo(request, aluno_id):
         tipo = request.POST.get('tipo')
         titulo = request.POST.get('titulo')
         descricao = request.POST.get('descricao')
-        
-        # O CAMPO MATRICULA NÃO DEVE SER ALTERADO AQUI.
-        # Se você queria atualizar a matrícula do aluno, teria que ser:
-        # aluno.matricula = ... e depois aluno.save(). 
-        # Mas para registrar um Fato, essa linha é desnecessária. Removi.
 
-        # 2. Cria e salva o objeto no banco de dados
-        novo_fo = FO(
-            usuario=request.user,  # <--- CORREÇÃO PRINCIPAL: Adicionado o usuário logado
+        FO.objects.create(
+            usuario=request.user,
             aluno=aluno,
             natureza=natureza,
             tipo=tipo,
             titulo=titulo,
             descricao=descricao
         )
-        novo_fo.save()
+        
+        # Volta para a lista de alunos da turma correta
+        return redirect('lista_alunos', turma_id=aluno.turma.id)
 
-        # 3. Redireciona. 
-        # ATENÇÃO: Certifique-se de que a URL 'minhas_turmas' existe no urls.py.
-        # Se você ainda não criou a url 'historico_aluno', mude para 'minhas_turmas' ou 'home'
-        return redirect('minhas_turmas') 
-
-    # Se for GET (apenas carregando a página)
     return render(request, 'registrar_fo.html', {'aluno': aluno})
