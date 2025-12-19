@@ -18,8 +18,10 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path
 from django.urls import include
+from maincard import views as maincard_views
 
 urlpatterns = [
+    path('maincard/', include('maincard.urls')),
     path('login/', include('login.urls')),
     path('logout/', auth_views.LogoutView.as_view(next_page='/login/'), name='logout'),
     path('admin/', admin.site.urls),
@@ -27,4 +29,5 @@ urlpatterns = [
     path('home/', include('home.urls')),
     path('meus_fos/', include('home.meus_fos.urls')),
     path('minhas-turmas/', include('home.minhas_turmas.urls')),
+    path('', maincard_views.index, name='landing'),
 ]

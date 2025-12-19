@@ -1,0 +1,110 @@
+{% load static %} <!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Spectra · UtiuSys</title>
+  <link rel="stylesheet" href="{% static 'maincard.css' %}"> 
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="logo-text">UtiuSys</span>
+      </div>
+      <nav class="nav-actions">
+        <a class="login-btn" href="{% url 'login' %}">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-media" aria-hidden="true">
+         
+        </div>
+        <h1 class="hero-title">EDUCAÇÃO PARANÁ</h1>
+      </div>
+    </section>
+
+    <section class="intro">
+      <div class="container">
+        <h2>O Registro de Aula que Transforma o <span class="highlight">Feedback</span> em Ação.</h2>
+        <p class="lead">O Spectra é a ferramenta essencial da UtiuSys para documentar, analisar e gerenciar os fatos positivos e negativos do dia a dia dos seus alunos.</p>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container features-grid">
+        <article class="feature">
+          <h3>Ocorrências Positivas &amp; Negativas</h3>
+          <p>Categorize fatos com apenas dois cliques para manter um histórico acionável por aluno.</p>
+        </article>
+        <article class="feature">
+          <h3>Perfis de Alunos Detalhados</h3>
+          <p>Visualize trajetória e evolução comportamental/ acadêmica em um dashboard unificado.</p>
+        </article>
+        <article class="feature">
+          <h3>Relatórios Inteligentes</h3>
+          <p>Identifique padrões de comportamento para intervenções pedagógicas mais precisas.</p>
+        </article>
+        <article class="feature">
+          <h3>Compartilhamento Eficiente</h3>
+          <p>Envie relatórios selecionados para a coordenação ou pais de forma segura e imediata.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="media-card">
+      <div class="container">
+        <div class="card big">
+          {% load static %} 
+          <video controls playsinline preload="metadata" class="media-video">
+            <source src="{% static 'video.mp4' %}" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="card cta-card">
+          <h2>Pronto para <span class="highlight">Mudar a Forma</span> como Você Gerencia a Sala de Aula?</h2>
+        </div>
+      </div>
+    </section>
+
+    <section class="login-mock">
+      <div class="container">
+        <div class="card login-preview">
+          <h4>Entre na sua conta</h4>
+          
+          <form>
+            <label>Email</label>
+            <input type="email" placeholder="exemploemail@gmail.com" />
+            <label>Password</label>
+            <input type="password" value="password" />
+            <button class="primary" type="button" href="{% url 'login' %}">Login</button>
+            <a class="muted small" href="#">Não possuo conta</a>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="contact">
+        <p class="name">Gabrielpcovessi@gmail.com</p>
+        <p class="phone">+55 (44) 99933-1304</p>
+      </div>
+      <div class="links">
+        <a href="#">Política de Privacidade</a>
+        <span class="divider">|</span>
+        <a href="#">Termos de Uso</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'home',
     'home.meus_fos',
     'home.minhas_turmas',
+    'maincard',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +127,8 @@ STATICFILES_DIRS = [BASE_DIR / 'login' / 'static', BASE_DIR / 'home' / 'static']
 LOGIN_REDIRECT_URL = '/home/'
 
 #para onde ir apos logout
-LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/maincard/'
+
+LOGIN_URL = '/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
