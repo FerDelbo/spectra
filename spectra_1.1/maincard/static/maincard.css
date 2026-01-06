@@ -112,7 +112,7 @@ body{
     line-height:0.95;
     letter-spacing:4px;
     font-weight:800;
-    color:rgba(0,0,0,0.45);
+    color:var(--accent);
     text-align:center;
     margin:0;
     padding:0

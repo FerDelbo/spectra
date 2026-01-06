@@ -17,7 +17,7 @@
 
             <nav class="nav-menu">
                 <a href="{% url 'home' %}" class="nav-btn active">Tela inicial</a>
-                <a href="{% url 'listar_series' %}" class="nav-btn">Minhas Turmas</a>
+                <a href="{% url 'minhas_turmas' %}" class="nav-btn">Minhas Turmas</a>
                 <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
             </nav>
 
@@ -45,6 +45,7 @@
                         <thead>
                             <tr>
                                 <th>Natureza</th>
+                                <th>Colégio</th>
                                 <th>Nome do Aluno</th>
                                 <th>Série</th>
                                 <th>Turma</th>
@@ -59,13 +60,15 @@
                                     {{ fo.natureza }}
                                 </td>
                                 
-                                <td style="font-weight: 500; color: #333;">
-                                    {{ fo.aluno.nome }}
+                                <td >
+                                    {{ fo.aluno.colegio }}
                                 </td>
+
+                                <td style="font-weight: 500; color: #333;">{{ fo.aluno.nome }}</td>
                                 
-                                <td>{{ fo.aluno.matricula }}</td>
+                                <td>{{ fo.aluno.turma.serie }}</td>
                                 
-                                <td>{{ fo.aluno.turma }}</td>
+                                <td>{{ fo.aluno.turma.turma }}</td>
                                 
                                 <td>{{ fo.tipo }}</td>
                                 

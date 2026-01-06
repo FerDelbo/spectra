@@ -17,7 +17,7 @@
 
             <nav class="nav-menu">
                 <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
-                <a href="{% url 'listar_series' %}" class="nav-btn">Minhas Turmas</a>
+                <a href="{% url 'minhas_turmas' %}" class="nav-btn">Minhas Turmas</a>
                 <a type="button" class="nav-btn active">Meus F.O.'s</a>
             </nav>
 
@@ -68,6 +68,7 @@
                         <thead>
                             <tr>
                                 <th>Natureza</th>
+                                <th>Colégio</th>
                                 <th>Nome</th>
                                 <th>Série</th>
                                 <th>Turma</th>
@@ -80,15 +81,15 @@
                             <tr> <td class="{% if fo.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
                                     {{ fo.natureza }}
                                 </td>
-                                
+                                <td>{{ fo.aluno.colegio }}</td>
                                 <td>
                                     <a href="{% url 'historico_aluno' fo.aluno.id %}">
                                         {{ fo.aluno.nome }}
                                     </a>
                                 </td>
 
-                                <td>{{ fo.aluno.matricula }}</td>
-                                <td>{{ fo.aluno.turma }}</td>
+                                <td>{{ fo.aluno.turma.serie }}</td>
+                                <td>{{ fo.aluno.turma.turma }}</td>
                                 <td>{{ fo.tipo }}</td>
                                 <td>{{ fo.data_registro|date:"d/m/Y" }}</td>
 

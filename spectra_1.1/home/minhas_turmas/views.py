@@ -1,37 +1,50 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from home.models import Aluno, FO, Turma
+from home.models import Aluno, FO, Turma, Colegio
 from django.contrib import messages
+from django.urls import reverse
 
 # --- TELA 1: DASHBOARD (Menu com os Cards das Turmas) ---
 @login_required
 def minhas_turmas(request):
-    # Busca apenas as turmas do professor logado
-    turmas = Turma.objects.filter(professor=request.user).order_by('turma')
-    return render(request, 'minhas_turmas.html', {'turmas': turmas})
+    colegio_escolhido = Colegio.objects.filter(turma__professor=request.user).distinct()
+    turmas_do_professor = Turma.objects.filter(professor=request.user)
+    series_disponiveis = turmas_do_professor.values_list('serie', flat=True).distinct()
+    turmas_letras = turmas_do_professor.values_list('turma', flat=True).distinct()
+    alunos_filtrados = None
+    turma_selecionada = None
 
-# --- TELA 2: LISTA DE ALUNOS (Ao clicar no Card) ---
-@login_required
-def lista_alunos(request, turma_id):
-    # 1. Busca a turma pelo ID ou dá erro 404 se não existir
-    turma = get_object_or_404(Turma, id=turma_id)
-    
-    # 2. Busca apenas os alunos que pertencem a essa turma
-    alunos = Aluno.objects.filter(turma=turma).order_by('nome')
-    
+    # 3. Se o usuário clicou no botão "Buscar" (GET request com parametros)
+    if request.GET.get('colegio') and request.GET.get('serie') and request.GET.get('turma'):
+        colegio_escolhido = request.GET.get('colegio')
+        serie_escolhida = request.GET.get('serie')
+        turma_escolhida = request.GET.get('turma')
+        
+        # Tenta achar a turma específica
+        try:
+            turma_obj = turmas_do_professor.get(serie=serie_escolhida, turma=turma_escolhida, colegio__colegio=colegio_escolhido)
+            alunos_filtrados = Aluno.objects.filter(turma=turma_obj).order_by('nome')
+            turma_selecionada = turma_obj
+        except Turma.DoesNotExist:
+            alunos_filtrados = []
+
     context = {
-        'turma': turma,
-        'alunos': alunos
+        'colegios_opcoes': colegio_escolhido,
+        'series_opcoes': series_disponiveis,
+        'turmas_opcoes': turmas_letras,
+        'alunos': alunos_filtrados,
+        'turma_atual': turma_selecionada
     }
     
-    # 3. Renderiza o template da lista de alunos
-    return render(request, 'lista_alunos.html', context)
+    return render(request, 'minhas_turmas.html', context)
 
 # --- AÇÃO: REGISTRAR FO ---
 @login_required
 def registrar_fo(request, aluno_id):
     aluno = get_object_or_404(Aluno, id=aluno_id)
-
+    turma = aluno.turma
+    url_base = reverse('minhas_turmas')
+    parametros = f"?serie={turma.serie}&turma={turma.turma}&colegio=padrao"
     if request.method == 'POST':
         try:
             natureza = request.POST.get('natureza')
@@ -52,35 +65,6 @@ def registrar_fo(request, aluno_id):
             # MENSAGEM DE ERRO (caso algo dê errado no código)
             messages.error(request, f'Erro ao registrar: {str(e)}')    
         
-        # Volta para a lista de alunos da turma correta
-        return redirect('lista_alunos', turma_id=aluno.turma.id)
+        return redirect(f"{url_base}{parametros}")
 
     return render(request, 'registrar_fo.html', {'aluno': aluno})
-
-@login_required
-def listar_series(request):
-    """
-    Tela 1: Busca todas as turmas do professor e agrupa pelas Séries únicas.
-    """
-    series = Turma.objects.filter(professor=request.user)\
-                          .values_list('serie', flat=True)\
-                          .distinct()\
-                          .order_by('serie')
-    
-    return render(request, 'listar_series.html', {'series': series})
-
-@login_required
-def listar_turmas_por_serie(request, serie_nome):
-    """
-    Tela 2: Mostra as turmas (A, B, C...) da série clicada anteriormente.
-    """
-    # Filtra turmas que pertencem ao professor E à série escolhida
-    turmas = Turma.objects.filter(professor=request.user, serie=serie_nome)
-    
-    context = {
-        'serie_atual': serie_nome,
-        'turmas': turmas
-    }
-    # Aqui você usa o seu template antigo de minhas_turmas
-    # Apenas certifique-se de que ele itera sobre 'turmas'
-    return render(request, 'minhas_turmas.html', context)
