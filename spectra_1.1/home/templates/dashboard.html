@@ -45,8 +45,8 @@
                         <thead>
                             <tr>
                                 <th>Natureza</th>
-                                <th>Nome do Aluno</th>
                                 <th>Colégio</th>
+                                <th>Nome do Aluno</th>
                                 <th>Série</th>
                                 <th>Turma</th>
                                 <th>Tipo</th>
@@ -60,11 +60,11 @@
                                     {{ fo.natureza }}
                                 </td>
                                 
-                                <td style="font-weight: 500; color: #333;">
-                                    {{ fo.aluno.nome }}
+                                <td >
+                                    {{ fo.aluno.colegio }}
                                 </td>
 
-                                <td>{{ fo.aluno.colegio }}</td>
+                                <td style="font-weight: 500; color: #333;">{{ fo.aluno.nome }}</td>
                                 
                                 <td>{{ fo.aluno.turma.serie }}</td>
                                 

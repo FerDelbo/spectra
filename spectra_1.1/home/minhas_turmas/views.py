@@ -7,8 +7,8 @@ from django.urls import reverse
 # --- TELA 1: DASHBOARD (Menu com os Cards das Turmas) ---
 @login_required
 def minhas_turmas(request):
-    colegios_opcoes = Colegio.objects.filter(turma__professor=request.user).distinct()
-    turmas_do_professor = Turma.objects.filter(professor=request.user).distinct()
+    colegio_escolhido = Colegio.objects.filter(turma__professor=request.user).distinct()
+    turmas_do_professor = Turma.objects.filter(professor=request.user)
     series_disponiveis = turmas_do_professor.values_list('serie', flat=True).distinct()
     turmas_letras = turmas_do_professor.values_list('turma', flat=True).distinct()
     alunos_filtrados = None
@@ -29,7 +29,7 @@ def minhas_turmas(request):
             alunos_filtrados = []
 
     context = {
-        'colegios_opcoes': colegios_opcoes,
+        'colegios_opcoes': colegio_escolhido,
         'series_opcoes': series_disponiveis,
         'turmas_opcoes': turmas_letras,
         'alunos': alunos_filtrados,

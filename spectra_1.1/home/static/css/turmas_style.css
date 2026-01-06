@@ -307,12 +307,14 @@ body {
 .tabela-header {
     background-color: rgba(0,0,0,0.3);
     padding: 15px 40px; /* Padding Lateral Grande */
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 150px;
     justify-content: space-between;
     color: #ccc;
     font-size: 0.9rem;
     font-weight: bold;
     border-bottom: 1px solid rgba(255,255,255,0.05);
+    text-align: center;
 }
 
 /* Linha de cada Aluno (Retângulo Branco) */
@@ -321,7 +323,8 @@ body {
     /* Aqui está o segredo: Padding generoso para não colar na borda */
     padding: 20px 40px; 
     border-bottom: 1px solid #ddd;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 150px;
     justify-content: space-between;
     align-items: center;
     transition: background-color 0.2s;
@@ -340,8 +343,8 @@ body {
 
 /* Botão Registrar */
 .btn-acao-registrar {
-    background-color: #ffcc00;
-    color: #333;
+    background-color: #6c5ce7;
+    color: #ddd;
     padding: 10px 30px; /* Botão mais largo */
     border-radius: 6px;
     text-decoration: none;
@@ -349,11 +352,14 @@ body {
     font-size: 0.9rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     transition: transform 0.2s, background-color 0.2s;
+    justify-self: center;
+    text-align: center;
+    display: inline-block;
 }
 
 .btn-acao-registrar:hover {
     transform: scale(1.05);
-    background-color: #ffd633;
+    background-color: #5b4cc4;
 }
 
 .msg-vazio {

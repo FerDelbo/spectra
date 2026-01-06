@@ -68,6 +68,7 @@
                         <thead>
                             <tr>
                                 <th>Natureza</th>
+                                <th>Colégio</th>
                                 <th>Nome</th>
                                 <th>Série</th>
                                 <th>Turma</th>
@@ -80,7 +81,7 @@
                             <tr> <td class="{% if fo.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
                                     {{ fo.natureza }}
                                 </td>
-                                
+                                <td>{{ fo.aluno.colegio }}</td>
                                 <td>
                                     <a href="{% url 'historico_aluno' fo.aluno.id %}">
                                         {{ fo.aluno.nome }}

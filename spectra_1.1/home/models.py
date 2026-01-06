@@ -76,7 +76,6 @@ class FO(models.Model):
     
 class Colegio(models.Model):
     colegio = models.CharField(max_length=100, verbose_name="Nome do Colégio", blank=True, default="")
-
     def __str__(self):
         return self.colegio
 
