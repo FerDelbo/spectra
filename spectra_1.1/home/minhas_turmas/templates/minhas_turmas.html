@@ -3,63 +3,107 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Minhas Turmas</title>
+    <title>Painel de Séries</title>
     <link rel="stylesheet" href="{% static 'css/turmas_style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="layout">
-        
         <aside class="sidebar">
             <div class="logo">SPECTRA</div>
             <nav class="nav-menu">
                 <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
-                <a href="{% url 'listar_series' %}" class="nav-btn active">Minhas Turmas</a>
+                <a href="#" class="nav-btn active">Minhas Turmas</a>
                 <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
             </nav>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="logout-link">
-                    Logout <span class="icon">➜</span>
-                </button>
+                <button type="submit" class="logout-link">Logout <span class="icon">➜</span></button>
             </form>
         </aside>
 
         <main class="main-content">
             
             <div class="header-bar">
-              
-                <h1 class="page-title">Minhas <span class="highlight-yellow">Turmas</span></h1>
+                <h1 class="page-title">Filtrar <span class="highlight-yellow">Turmas</span></h1>
             </div>
 
             <div class="content-wrapper">
                 
-                {% regroup turmas|dictsort:"serie" by serie as turmas_por_serie %}
-
-                {% for grupo in turmas_por_serie %}
-                
                 <div class="serie-container">
                     
                     <div class="serie-header">
-                        <span>{{ grupo.grouper }}</span>
-                        <a href="{% url 'listar_series' %}" class="btn-voltar" style="text-decoration: none; color: white; font-size: 1.5rem; position: absolute; top: 30px; left: 40px;">←</a>  
+                        <span>Seleção de Classe</span>
+                        <a href="{% url 'home' %}" class="btn-voltar" style="text-decoration: none; color: white; font-size: 1.5rem; position: absolute; top: 30px; left: 40px;">←</a> 
                     </div>
 
-                    <div class="serie-body">
-                        {% for turma in turmas %}
-                            <a href="{% url 'lista_alunos' turma.id %}" class="card-turma">
-                                <span class="card-nome">{{ turma.turma }}</span>
-                            </a>
-                        {% endfor %}
-                    </div>
-                </div>
+                    <div class="serie-body form-body">
+                        <form method="GET" action="." class="filter-form">
+                            
+                            <div class="form-group">
+                                <label for="colegio">Colégio</label>
+                                <select id="colegio" name="colegio" class="custom-select">
+                                    <option value="" disabled selected>Colégio...</option>
+                                    {% for c in colegios_opcoes %}
+                                        <option value="{{ c }}" {% if request.GET.colegio == c %}selected{% endif %}>{{ c }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-                {% empty %}
-                    <p style="color: white; text-align: center;">Nenhuma turma cadastrada.</p>
-                {% endfor %}
+                            <div class="form-group">
+                                <label for="serie">Série</label>
+                                <select id="serie" name="serie" class="custom-select" required>
+                                    <option value="" disabled selected>Série...</option>
+                                    {% for s in series_opcoes %}
+                                        <option value="{{ s }}" {% if request.GET.serie == s %}selected{% endif %}>{{ s }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-            </div>
+                            <div class="form-group">
+                                <label for="turma">Turma</label>
+                                <select id="turma" name="turma" class="custom-select" required>
+                                    <option value="" disabled selected>Turma...</option>
+                                    {% for t in turmas_opcoes %}
+                                        <option value="{{ t }}" {% if request.GET.turma == t %}selected{% endif %}>{{ t }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
+                            <div class="form-group btn-container">
+                                <button type="submit" class="btn-buscar">EXECUTAR BUSCA</button>
+                            </div>
+                        </form>
+                    </div> {% if alunos is not None %}
+                        <div class="resultados-wrapper">
+                            <h2 class="titulo-resultados">
+                                Alunos da <span class="highlight-yellow">{{ turma_atual.serie }} {{ turma_atual.turma }}</span>
+                            </h2>
+
+                            {% if alunos %}
+                                <div class="tabela-container">
+                                    
+                                    <div class="tabela-header">
+                                        <span>NOME DO ALUNO</span>
+                                        <span>AÇÃO</span>
+                                    </div>
+
+                                    {% for aluno in alunos %}
+                                        <div class="aluno-row">
+                                            <span class="aluno-nome">{{ aluno.nome }}</span>
+                                            <a href="{% url 'registrar_fo' aluno.id %}" class="btn-acao-registrar">
+                                                Registrar
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="msg-vazio">Nenhum aluno encontrado nesta turma.</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                </div> </div>
         </main>
     </div>
 </body>

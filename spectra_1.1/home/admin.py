@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Aluno, FO, Turma
+from .models import Aluno, FO, Turma, Colegio
 
 # @admin.register já faz o registro automaticamente
 # Não precisa usar admin.site.register() lá embaixo
@@ -44,3 +44,7 @@ class FOAdmin(admin.ModelAdmin):
     def get_aluno_turma(self, obj):
         return obj.aluno.turma
     
+@admin.register(Colegio)
+class ColegioAdmin(admin.ModelAdmin):
+    list_display = ('colegio',) # Mostra o nome na lista
+    search_fields = ('colegio',) # Permite pesquisar pelo nome

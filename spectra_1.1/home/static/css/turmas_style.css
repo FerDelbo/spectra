@@ -101,38 +101,30 @@ body {
 /* ============================================================
    3. CONTEÚDO PRINCIPAL
    ============================================================ */
-/* Procure essa classe no seu código e altere */
 .main-content {
     flex: 1;
     background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
     padding: 30px;
-    
     display: flex;
     flex-direction: column;
-    /* REMOVIDO: align-items: center; */
-    
     overflow-y: auto;
 }
 
-/* --- CABEÇALHO COM SETA DE VOLTAR (NOVO) --- */
+/* --- CABEÇALHO --- */
 .header-bar {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     max-width: 950px;
-    
-    /* ADICIONE ISTO PARA CENTRALIZAR O BLOCO NA TELA: */
     margin-left: auto;
     margin-right: auto;
-    
     margin-bottom: 30px;
     position: relative;
 }
 
-/* A Seta de Voltar */
 .btn-voltar {
-    position: relative; /* Ajuste para fluxo flex */
+    position: relative;
     left: auto;
     color: rgba(255,255,255,0.8);
     text-decoration: none;
@@ -140,24 +132,21 @@ body {
     cursor: pointer;
     margin-right: 15px;
     top: 50%;
-    transform: translateY(-50%); /* Garante o centro vertical exato */
-    
+    transform: translateY(-50%);
     transition: transform 0.2s, color 0.2s;
 }
 
 .btn-voltar:hover {
-    transform: translateY(-50%) scale(1.2); /* Efeito de zoom leve */
+    transform: translateY(-50%) scale(1.2);
     color: #a5b4fc;
 }
 
-/* Título Centralizado */
 .page-title, .titulo-header {
     color: white;
     font-size: 1.5rem;
     font-weight: 400;
     text-align: center;
     width: 100%;
-    /* Margem removida aqui pois o header-bar já tem margin-bottom */
     margin-bottom: 0; 
 }
 
@@ -167,16 +156,13 @@ body {
 .content-wrapper {
     width: 100%;
     max-width: 950px;
-    
-    /* ADICIONE ISTO PARA CENTRALIZAR O BLOCO NA TELA: */
     margin-left: auto;
     margin-right: auto;
-    
     display: flex;
     flex-direction: column;
     gap: 40px; 
 }
-/* O "Bloco" da Série */
+
 .serie-container {
     background-color: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -184,15 +170,18 @@ body {
     overflow: hidden;
     width: 100%;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    
+    /* Importante para a estrutura flexível interna */
+    display: flex;
+    flex-direction: column;
 }
 
-/* --- CABEÇALHO DA SÉRIE --- */
 .serie-header {
     background-color: #485586;
     padding: 15px 25px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Centraliza o texto "X Série" */
+    justify-content: center;
     position: relative;
     gap: 15px;
     color: white;
@@ -201,59 +190,180 @@ body {
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Corpo onde ficam os cards das turmas */
 .serie-body {
     padding: 30px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center; /* Centraliza os botões dentro do bloco */
+    flex-direction: column; /* Força coluna para o form */
 }
 
 /* ============================================================
-   5. O CARD DA TURMA (Botão Branco)
+   5. COMPONENTES DO FORMULÁRIO
    ============================================================ */
-.card-turma {
-    background-color: #ffffff; /* Fundo Branco */
-    width: 180px;
-    height: 110px;
-    border-radius: 10px;
-    text-decoration: none;
-    
+.highlight-yellow, .title-highlight {
+    color: #a5b4fc;
+    font-weight: 700;
+}
+
+.filter-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 20px;
+    align-items: end;
+}
+
+.form-group {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: transform 0.2s, box-shadow 0.2s;
+    gap: 8px;
 }
 
-.card-turma:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+.form-group label {
+    color: #ccc;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
-/* Texto da Turma */
-.card-nome {
-    color: #485586; /* Azul Escuro */
-    font-size: 1.6rem;
-    font-weight: 700;
+.custom-select {
+    background-color: #2c2f48;
+    border: 1px solid #44476a;
+    color: white;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: 12px auto;
+}
+
+.custom-select:focus {
+    border-color: #6c5ce7;
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+}
+
+.btn-buscar {
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    height: 46px;
+}
+
+.btn-buscar:hover {
+    background-color: #5b4cc4;
+    transform: translateY(-2px);
 }
 
 /* ============================================================
-   6. COMPATIBILIDADE
+   6. RESPONSIVIDADE
    ============================================================ */
-.data-card {
-    background: white;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 950px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+@media (max-width: 768px) {
+    .filter-form {
+        grid-template-columns: 1fr;
+    }
+    .btn-buscar {
+        width: 100%;
+    }
 }
 
-.highlight-yellow, .title-highlight {
-    color: #a5b4fc; /* Azul claro para destaque (padrão novo) ou mantenha #ffd700 */
+/* ============================================================
+   7. RESULTADOS DA BUSCA (NOVO)
+   ============================================================ */
+
+/* Container geral que envolve a lista */
+.resultados-wrapper {
+    /* Borda superior que funciona como a linha divisória */
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    background-color: rgba(0,0,0,0.2); /* Um pouco mais escuro para destaque */
+    width: 100%;
+    padding-bottom: 20px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Título da seção */
+.titulo-resultados {
+    color: white;
+    margin: 30px 0 20px 0;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+/* Container da Tabela */
+.tabela-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* O Cabeçalho (Cinza escuro transparente) */
+.tabela-header {
+    background-color: rgba(0,0,0,0.3);
+    padding: 15px 40px; /* Padding Lateral Grande */
+    display: flex;
+    justify-content: space-between;
+    color: #ccc;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Linha de cada Aluno (Retângulo Branco) */
+.aluno-row {
+    background-color: #f9f9f9;
+    /* Aqui está o segredo: Padding generoso para não colar na borda */
+    padding: 20px 40px; 
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.aluno-row:hover {
+    background-color: #fff; /* Fica puro branco ao passar o mouse */
+}
+
+/* Nome do Aluno */
+.aluno-nome {
+    color: #333; /* Cor escura para contrastar com fundo branco */
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* Botão Registrar */
+.btn-acao-registrar {
+    background-color: #ffcc00;
+    color: #333;
+    padding: 10px 30px; /* Botão mais largo */
+    border-radius: 6px;
+    text-decoration: none;
     font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-acao-registrar:hover {
+    transform: scale(1.05);
+    background-color: #ffd633;
+}
+
+.msg-vazio {
+    color: #ccc;
+    text-align: center;
+    padding: 40px;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

@@ -4,28 +4,36 @@ from django.contrib.auth.models import User
 # --- MODELO 1: TURMA ---
 # Necessário para criar os botões (A TDS, B TDS) e vincular ao Professor
 class Turma(models.Model):
-    serie = models.CharField(max_length=20, verbose_name="Série", blank=True, null=True)
+    serie_choices = [
+        ('6º', '6º'),
+        ('7º', '7º'),
+        ('8º', '8º'),
+        ('9º', '9º'),
+        ('1ª', '1ª'),
+        ('2ª', '2ª'),
+        ('3ª', '3ª'),
+    ]
+    colegio = models.ForeignKey('Colegio', on_delete=models.CASCADE, verbose_name="Colégio", blank=True, null=True)
+    serie = models.CharField(max_length=20, verbose_name="Série", choices=serie_choices)
     turma = models.CharField(max_length=50, verbose_name="Turma") # Ex: "A TDS"
     professor = models.ManyToManyField(User, verbose_name="Professores Responsáveis", related_name="turmas")
 
     def __str__(self):
-        return f"{self.turma}"
+        return f"{self.get_serie_display()} - {self.turma}"
 
     class Meta:
         verbose_name = "Turma"
         verbose_name_plural = "Turmas"
+        unique_together = ('serie', 'turma', 'colegio')
 
 
 # --- MODELO 2: ALUNO ---
 class Aluno(models.Model):
     nome = models.CharField(max_length=100, verbose_name="Nome Completo")
-    
     # MANTIDO COMO 'matricula' (mas você usará para guardar a Série)
     matricula = models.CharField(max_length=20, verbose_name="Série")
-    
-    # Vínculo com a Turma criada acima
     turma = models.ForeignKey(Turma, on_delete=models.CASCADE, verbose_name="Turma")
-    
+    colegio = models.ForeignKey('Colegio', on_delete=models.CASCADE, verbose_name="Colégio")
     criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -34,7 +42,7 @@ class Aluno(models.Model):
         ordering = ['nome']
 
     def __str__(self):
-        return f"{self.nome} - {self.turma.turma}"
+        return f"{self.nome} - {self.turma}"
 
 
 # --- MODELO 3: FO ---
@@ -51,11 +59,10 @@ class FO(models.Model):
 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE) 
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, verbose_name="Aluno")
-    
+    colegio = models.ForeignKey('Colegio', on_delete=models.CASCADE, verbose_name="Colégio", blank=True, null=True)
     natureza = models.CharField(max_length=10, choices=NATUREZA_CHOICES)
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, verbose_name="Tipo")
     titulo = models.CharField(max_length=100, verbose_name="O que aconteceu?")
-    
     descricao = models.TextField(blank=True, null=True, verbose_name="Observação")
     data_registro = models.DateTimeField(auto_now_add=True, verbose_name="Data do Registro")
 
@@ -66,3 +73,13 @@ class FO(models.Model):
 
     def __str__(self):
         return f"{self.aluno.nome} - {self.titulo}"
+    
+class Colegio(models.Model):
+    colegio = models.CharField(max_length=100, verbose_name="Nome do Colégio", blank=True, default="")
+
+    def __str__(self):
+        return self.colegio
+
+    class Meta:
+        verbose_name = "Colégio"
+        verbose_name_plural = "Colégios"
