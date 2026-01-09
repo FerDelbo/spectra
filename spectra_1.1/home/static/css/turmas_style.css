@@ -246,6 +246,13 @@ body {
     box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
 }
 
+.custom-select option {
+    background-color: #2c2f48;
+    color: white;
+    word-wrap: normal;
+    white-space: nowrap;
+}
+
 .btn-buscar {
     background-color: #6c5ce7;
     color: white;
