@@ -1,0 +1,245 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Processo | Spectra</title>
+    <link rel="stylesheet" href="{% static 'css/processo.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <main class="container">
+        
+        <div class="ticket-card">
+            
+            <header class="card-header">
+                <div class="header-content">
+                    <a href="{% url 'processo' %}" class="back-btn" title="Voltar">←</a>
+                    
+                    <div class="student-profile">
+                        <div class="avatar-circle">
+                            {{ fo.aluno.nome|slice:":1" }}
+                        </div>
+                        <div class="student-info">
+                            <h2>{{ fo.aluno.nome }}</h2>
+                            <p class="subtitle">{{ fo.aluno.turma.serie }} - {{ fo.aluno.turma.turma }} | {{ fo.aluno.colegio }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <span class="label">Aberto por:</span>
+                        <span class="value">
+                            {{ fo.usuario.get_full_name|default:fo.usuario.username }}
+                        </span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Data:</span>
+                        <span class="value">{{ fo.data_registro|date:"d/m/Y H:i" }}</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="card-body">
+
+                <div class="status-bar">
+                    <div class="status-group">
+                        <span class="label-sm">Natureza</span>
+                        {% if fo.natureza == 'Positivo' %}
+                            <span class="badge badge-pos">Positivo</span>
+                        {% else %}
+                            <span class="badge badge-neg">Negativo</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="status-group">
+                        <span class="label-sm">Tipo</span>
+                        <span class="badge badge-info">{{ fo.tipo }}</span>
+                    </div>
+
+                    <div class="status-group">
+                        <span class="label-sm">Situação Atual</span>
+                        <span class="badge badge-status status-{{ fo.status|slugify }}">
+                            {{ fo.status }}
+                        </span>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <section class="original-report">
+                    <h3 class="section-title">Relato do Professor</h3>
+                    
+                    <div class="field-group">
+                        <label>O que aconteceu? (Título)</label>
+                        <div class="read-only-box title-box">{{ fo.titulo }}</div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>Observação Detalhada</label>
+                        <div class="read-only-box desc-box">
+                            {{ fo.descricao|default:"Sem observações adicionais."|linebreaksbr }}
+                        </div>
+                    </div>
+                </section>
+
+                <section class="treatment-area">
+                    <h3 class="section-title">
+                        {% if can_treat %} Tratativa e Solução {% else %} Dados da Resolução {% endif %}
+                    </h3>
+
+                    {% if fo.status == 'Concluído' %}
+                        <div class="conclusion-banner">
+                            <span class="check-icon">✓</span>
+                            <div>
+                                <strong>Processo Concluído</strong><br>
+                                <small>Encerrado em: {{ fo.data_atualizacao|date:"d/m/Y H:i" }}</small>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if can_treat %}
+                        <form method="post" class="treatment-form">
+                            {% csrf_token %}
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="status">Atualizar Status</label>
+                                    <select name="status" id="status" class="form-control select-input">
+                                        <option value="Em aberto" {% if fo.status == 'Em aberto' %}selected{% endif %}>Em aberto</option>
+                                        <option value="Em andamento" {% if fo.status == 'Em andamento' %}selected{% endif %}>Em andamento</option>
+                                        <option value="Concluído" {% if fo.status == 'Concluído' %}selected{% endif %}>Concluído</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Responsável Atual</label>
+                                    <input type="text" class="form-control read-only" value="{% if fo.responsavel %}{{ fo.responsavel.get_full_name|default:fo.responsavel.username }}{% else %}Não atribuído{% endif %}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="relatorio">Relatório Técnico / Providências</label>
+                                <textarea name="relatorio" id="relatorio" class="form-control textarea-edit" rows="5" placeholder="Descreva as ações tomadas...">{{ fo.relatorio|default:"" }}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="evidencias">Evidências / Anexos (Links)</label>
+                                <textarea name="evidencias" id="evidencias" class="form-control textarea-edit" rows="2" placeholder="Cole links ou descreva onde os arquivos estão arquivados">{{ fo.evidencias|default:"" }}</textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-save">Salvar e Atualizar F.O.</button>
+                            </div>
+                        </form>
+
+                    {% else %}
+                        <div class="readonly-treatment">
+                            <div class="field-group">
+                                <label>Relatório da Coordenação</label>
+                                <div class="read-only-box treatment-box">
+                                    {% if fo.relatorio %}
+                                        {{ fo.relatorio|linebreaksbr }}
+                                    {% else %}
+                                        <em style="color: #999;">Aguardando tratativa...</em>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {% if fo.evidencias %}
+                            <div class="field-group">
+                                <label>Evidências Anexadas</label>
+                                <div class="read-only-box">
+                                    {{ fo.evidencias|urlize|linebreaksbr }}
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            {% if fo.responsavel %}
+                            <div class="footer-meta">
+                                <small>Tratado por: <strong>{{ fo.responsavel.get_full_name }}</strong></small>
+                                {% if fo.data_atualizacao %}
+                                <small> • Última atualização: {{ fo.data_atualizacao|date:"d/m/Y H:i" }}</small>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </section>
+
+                <section class="history-area">
+                    <h3 class="section-title">Linha do Tempo do Processo</h3>
+                    
+                    <div class="timeline">
+                        <div class="timeline-node start-node">
+                            <div class="node-marker"></div>
+                            <div class="node-content">
+                                <span class="node-date">{{ fo.data_registro|date:"d/m/Y • H:i" }}</span>
+                                <strong>Abertura do Processo</strong>
+                                <p class="node-text">Processo registrado por {{ fo.usuario.get_full_name|default:fo.usuario.username }}.</p>
+                            </div>
+                        </div>
+
+                        {% for entry in fo.historico.all reversed %}
+                        <div class="timeline-node">
+                            <div class="node-marker"></div>
+                            <div class="node-content">
+                                <div class="node-header">
+                                    <span class="t-user">{{ entry.usuario.get_full_name|default:entry.usuario.username }}</span>
+                                    <span class="t-date">{{ entry.data_alteracao|date:"d/m/Y • H:i" }}</span>
+                                </div>
+                                
+                                <p class="node-text">{{ entry.descricao }}</p>
+                                
+                                {% if entry.campo_alterado %}
+                                    <div class="t-change-box">
+                                        {% if entry.campo_alterado == 'status' %}
+                                            <span class="t-tag tag-status">Alterou Status</span>
+                                            <div class="status-change-visual">
+                                                <span class="old-val">{{ entry.valor_anterior }}</span>
+                                                <span class="arrow">↓</span>
+                                                <span class="new-val">{{ entry.valor_novo }}</span>
+                                            </div>
+                                        {% elif entry.campo_alterado == 'relatorio' %}
+                                            <span class="t-tag tag-update">Atualizou Relatório</span>
+                                        {% elif entry.campo_alterado == 'evidencias' %}
+                                            <span class="t-tag tag-file">Anexou Evidências</span>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        {% if fo.status == 'Concluído' %}
+                        <div class="timeline-node end-node">
+                            <div class="node-marker"><span class="check">✓</span></div>
+                            <div class="node-content conclusion-content">
+                                <strong>Processo Concluído</strong>
+                                <p class="node-text">O processo foi finalizado em {{ fo.data_atualizacao|date:"d/m/Y às H:i" }}.</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                    </div>
+                </section>
+
+                {% if fo.status == 'Concluído' and user_type == 'Pedagogo' or user_type == 'Monitor' and fo.tipo == 'Disciplinar' %}
+                <section class="reopen-section">
+                    <form method="post" class="reopen-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="reabrir_caso" value="1">
+                        <button type="submit" class="btn-reopen" onclick="return confirm('Tem certeza que deseja reabrir este caso?')">Reabrir Caso</button>
+                    </form>
+                </section>
+                {% endif %}
+
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
