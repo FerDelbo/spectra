@@ -57,12 +57,42 @@ class FO(models.Model):
         ('Pedagogico', 'Pedagógico'),
     ]
 
+    TITULO_CHOICES = [
+        ('Participação em aula', 'Participação em aula'),
+        ('Comportamento exemplar', 'Comportamento exemplar'),
+        ('Atraso', 'Atraso'),
+        ('Falta de material', 'Falta de material'),
+        ('Distração', 'Distração'),
+        ('Outro', 'Outro'),
+    ]
+
+    TITULO_POSITIVO_DISCIPLINAR_CHOICES = [
+        ('Cumpriu ativamente com todas as atribuições, quando Chefe de Turma e ou Subchefe de Turma', 'Cumpriu ativamente com todas as atribuições, quando Chefe de Turma e ou Subchefe de Turma'),
+        ('Outro', 'Outro'),
+    ]
+
+    TITULO_POSITIVO_PEDAGOGICO_CHOICES = [
+        ('Participação em aula', 'Participação em aula'),
+        ('Outro', 'Outro'),
+    ]
+
+    TITULO_NEGATIVO_DISCIPLINAR_CHOICES = [
+        ('Distração', 'Distração'),
+        ('Outro', 'Outro'),
+    ]
+
+    TITULO_NEGATIVO_PEDAGOGICO_CHOICES = [
+        ('Atraso', 'Atraso'),
+        ('Falta de material', 'Falta de material'),
+        ('Outro', 'Outro'),
+    ]
+
     usuario = models.ForeignKey(User, on_delete=models.CASCADE) 
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, verbose_name="Aluno")
     colegio = models.ForeignKey('Colegio', on_delete=models.CASCADE, verbose_name="Colégio", blank=True, null=True)
     natureza = models.CharField(max_length=10, choices=NATUREZA_CHOICES)
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, verbose_name="Tipo")
-    titulo = models.CharField(max_length=100, verbose_name="O que aconteceu?")
+    titulo = models.CharField(max_length=100, verbose_name="O que aconteceu?", choices=TITULO_CHOICES)
     descricao = models.TextField(blank=True, null=True, verbose_name="Observação")
     data_registro = models.DateTimeField(auto_now_add=True, verbose_name="Data do Registro")
 

@@ -52,7 +52,7 @@
                 </div>
                 <div id="step-opcoes" class="hidden-step">
                     <span class="section-label">O que aconteceu?</span>
-                    <select name="titulo" id="select-motivo">
+                    <select name="titulo" id="select-motivo" class="titulo-select">
                         <option value="">Selecione uma opção...</option>
                     </select>
 
@@ -69,38 +69,8 @@
     </div>
 
     <script>
-        const opcoes = {
-            'Positivo': [
-                "Realizou a tarefa completa",
-                "Participação ativa na aula",
-                "Ajudou um colega",
-                "Comportamento exemplar",
-                "Material completo"
-            ],
-            'Negativo': [
-                "Não fez a tarefa",
-                "Conversa paralela",
-                "Uso de celular indevido",
-                "Chegou atrasado",
-                "Sem material",
-                "Desrespeito ao professor"
-            ]
-        };
-
         function showStep2(natureza) {
             document.getElementById('step-tipo').className = 'show-step';
-            
-            // Popula o select com base na escolha
-            const select = document.getElementById('select-motivo');
-            select.innerHTML = '<option value="">Selecione uma opção...</option>';
-            
-            const lista = opcoes[natureza];
-            lista.forEach(opt => {
-                let option = document.createElement('option');
-                option.value = opt;
-                option.text = opt;
-                select.appendChild(option);
-            });
             
             // Se mudar a natureza, esconde o passo 3 para obrigar a escolher o tipo de novo
             document.getElementById('step-opcoes').className = 'hidden-step';
@@ -109,6 +79,25 @@
         }
 
         function showStep3() {
+            const natureza = document.querySelector('input[name="natureza"]:checked').value;
+            const tipo = document.querySelector('input[name="tipo"]:checked').value;
+            
+            // Busca as opções de título via AJAX
+            fetch('{% url "get_titulos" %}?natureza=' + encodeURIComponent(natureza) + '&tipo=' + encodeURIComponent(tipo))
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('select-motivo');
+                    select.innerHTML = '<option value="">Selecione uma opção...</option>';
+                    
+                    data.titulos.forEach(titulo => {
+                        let option = document.createElement('option');
+                        option.value = titulo;
+                        option.text = titulo;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar títulos:', error));
+            
             document.getElementById('step-opcoes').className = 'show-step';
         }
         // Função para remover alertas automaticamente após 4 segundos

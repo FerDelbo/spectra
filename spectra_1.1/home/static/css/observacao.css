@@ -181,11 +181,14 @@ label {
     border-radius: 8px;
     font-size: 0.95rem;
     color: #333;
-    min-height: 120px;
+    min-height: 40px; /* Ajustado para auto-ajuste */
     resize: none;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
     line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 /* --- RODAPÉ COM DATA --- */

@@ -184,9 +184,25 @@ select, textarea {
     transition: border-color 0.3s;
 }
 
+.titulo-select option {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    word-break: break-all;
+}
+
 select:focus, textarea:focus {
     border-color: #485586;
     background-color: white;
+}
+
+.titulo-select option {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    word-break: break-all;
 }
 
 textarea {

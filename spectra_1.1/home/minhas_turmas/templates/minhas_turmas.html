@@ -54,7 +54,7 @@
                                 <label for="serie">Série</label>
                                 <select id="serie" name="serie" class="custom-select" required>
                                     <option value="" disabled selected>Série...</option>
-                                    {% for s in series_opcoes %}
+                                    {% for s in series_filtrados %}
                                         <option value="{{ s }}" {% if request.GET.serie == s %}selected{% endif %}>{{ s }}</option>
                                     {% endfor %}
                                 </select>
@@ -64,7 +64,7 @@
                                 <label for="turma">Turma</label>
                                 <select id="turma" name="turma" class="custom-select" required>
                                     <option value="" disabled selected>Turma...</option>
-                                    {% for t in turmas_opcoes %}
+                                    {% for t in turmas_filtrados %}
                                         <option value="{{ t }}" {% if request.GET.turma == t %}selected{% endif %}>{{ t }}</option>
                                     {% endfor %}
                                 </select>
@@ -106,5 +106,41 @@
                 </div> </div>
         </main>
     </div>
+    <script>
+        document.getElementById('colegio').addEventListener('change', function() {
+            const colegio = this.value;
+            if (colegio) {
+                fetch('{% url "get_series" %}?colegio=' + encodeURIComponent(colegio))
+                    .then(response => response.json())
+                    .then(data => {
+                        const serieSelect = document.getElementById('serie');
+                        serieSelect.innerHTML = '<option value="" disabled selected>Série...</option>';
+                        data.series.forEach(serie => {
+                            serieSelect.innerHTML += `<option value="${serie}">${serie}</option>`;
+                        });
+                        // Limpar turmas quando colégio muda
+                        document.getElementById('turma').innerHTML = '<option value="" disabled selected>Turma...</option>';
+                    })
+                    .catch(error => console.error('Erro ao carregar séries:', error));
+            }
+        });
+
+        document.getElementById('serie').addEventListener('change', function() {
+            const colegio = document.getElementById('colegio').value;
+            const serie = this.value;
+            if (colegio && serie) {
+                fetch('{% url "get_turmas" %}?colegio=' + encodeURIComponent(colegio) + '&serie=' + encodeURIComponent(serie))
+                    .then(response => response.json())
+                    .then(data => {
+                        const turmaSelect = document.getElementById('turma');
+                        turmaSelect.innerHTML = '<option value="" disabled selected>Turma...</option>';
+                        data.turmas.forEach(turma => {
+                            turmaSelect.innerHTML += `<option value="${turma}">${turma}</option>`;
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar turmas:', error));
+            }
+        });
+    </script>
 </body>
 </html>
