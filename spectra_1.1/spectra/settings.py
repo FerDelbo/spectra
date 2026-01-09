@@ -125,6 +125,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'login' / 'static', BASE_DIR / 'home' / 'static']
 
+# Media files (uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 #para onde ir apos login bem-sucedido
 LOGIN_REDIRECT_URL = '/home/'
 

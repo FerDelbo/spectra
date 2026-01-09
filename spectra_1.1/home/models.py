@@ -166,6 +166,19 @@ class FOHistory(models.Model):
     def __str__(self):
         return f"{self.fo} - {self.campo_alterado} em {self.data_alteracao}"
 
+class Anexo(models.Model):
+    fo = models.ForeignKey(FO, on_delete=models.CASCADE, related_name='anexos')
+    arquivo = models.FileField(upload_to='anexos/')
+    nome = models.CharField(max_length=100, blank=True)
+    data_upload = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.nome or self.arquivo.name
+
+    class Meta:
+        verbose_name = "Anexo"
+        verbose_name_plural = "Anexos"
+
 class Colegio(models.Model):
     colegio = models.CharField(max_length=100, verbose_name="Nome do Colégio", blank=True, default="")
     def __str__(self):

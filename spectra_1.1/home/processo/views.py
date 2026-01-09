@@ -1,9 +1,24 @@
-from django.shortcuts import render, get_object_or_404
+import os
+from io import BytesIO
+from PIL import Image
+from django.core.files.base import ContentFile
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from home.models import FO, FOHistory
+from home.models import FO, FOHistory, Anexo
 from prof.models import UserProfile
 from django.contrib import messages
-from django.shortcuts import redirect
+
+# Função Auxiliar para Compressão de Imagem
+def compress_image(image):
+    im = Image.open(image)
+    if im.mode in ("RGBA", "P"):
+        im = im.convert("RGB")
+    
+    im_io = BytesIO()
+    # Salva com qualidade reduzida para economizar espaço
+    im.save(im_io, 'JPEG', quality=60, optimize=True)
+    new_image = ContentFile(im_io.getvalue(), name=image.name)
+    return new_image
 
 def get_user_type(user):
     try:
@@ -16,15 +31,11 @@ def get_user_type(user):
 def processo_view(request):
     user_type = get_user_type(request.user)
     
-    # Filtrar F.O. baseados no tipo de usuário
     if user_type == 'Professor':
-        # Professores veem apenas os próprios F.O.
         fos = FO.objects.filter(usuario=request.user)
     elif user_type == 'Monitor':
-        # Monitores veem F.O. de tipo Disciplinar
         fos = FO.objects.filter(tipo='Disciplinar')
     elif user_type == 'Pedagogo':
-        # Pedagogos veem todos os F.O.
         fos = FO.objects.all()
     else:
         fos = FO.objects.none()
@@ -62,67 +73,128 @@ def processo_detalhes(request, fo_id):
             )
             fo.status = 'Em andamento'
             fo.save()
-            messages.success(request, 'Processo reaberto!')
+            # MENSAGEM COM TAG 'reaberto' PARA APARECER NESTA PÁGINA
+            messages.success(request, 'Processo reaberto!', extra_tags='reaberto')
             return redirect('processo_detalhes', fo_id=fo.id)
 
-    # 3. Lógica de permissão de edição (Tratativa)
-    # Se estiver concluído, ninguém edita (can_treat = False)
+    # 3. Lógica de permissão de edição
     can_treat = False
     if fo.status != 'Concluído':
         if user_type == 'Pedagogo' or (user_type == 'Monitor' and fo.tipo == 'Disciplinar'):
             can_treat = True
 
-    # 4. Salvar Alterações e Gerar Histórico (Apenas o que mudou)
-    if request.method == 'POST' and can_treat and 'reabrir_caso' not in request.POST:
-        new_status = request.POST.get('status')
-        new_relatorio = request.POST.get('relatorio', '').strip()
-        new_evidencias = request.POST.get('evidencias', '').strip()
+    # 4. Processamento de POST (Salvar ou Excluir Anexo)
+    if request.method == 'POST' and can_treat:
         
-        has_changes = False
-
-        # Verifica mudança no Status
-        if fo.status != new_status:
-            FOHistory.objects.create(
-                fo=fo, usuario=request.user, campo_alterado='status',
-                valor_anterior=fo.status, valor_novo=new_status,
-                descricao=f'Status alterado para {new_status}.'
-            )
-            fo.status = new_status
-            has_changes = True
-
-        # Verifica mudança no Relatório (Compara strings limpas)
-        old_relatorio = (fo.relatorio or '').strip()
-        if old_relatorio != new_relatorio:
-            FOHistory.objects.create(
-                fo=fo, usuario=request.user, campo_alterado='relatorio',
-                valor_anterior=old_relatorio, valor_novo=new_relatorio,
-                descricao='O relatório técnico foi atualizado.'
-            )
-            fo.relatorio = new_relatorio
-            has_changes = True
-
-        # Verifica mudança nas Evidências
-        old_evidencias = (fo.evidencias or '').strip()
-        if old_evidencias != new_evidencias:
-            FOHistory.objects.create(
-                fo=fo, usuario=request.user, campo_alterado='evidencias',
-                valor_anterior=old_evidencias, valor_novo=new_evidencias,
-                descricao='Novas evidências ou links foram anexados.'
-            )
-            fo.evidencias = new_evidencias
-            has_changes = True
-
-        if has_changes:
-            fo.responsavel = request.user
-            fo.save()
-            messages.success(request, 'F.O. atualizada com sucesso!')
-        else:
-            messages.info(request, 'Nenhuma alteração detectada.')
+        # --- SUB-LÓGICA: EXCLUIR ANEXO ---
+        if 'excluir_anexo' in request.POST:
+            anexo_id = request.POST.get('anexo_id')
+            anexo = get_object_or_404(Anexo, id=anexo_id, fo=fo)
+            nome_arq = anexo.nome
+            anexo.delete()
             
-        return redirect('processo')
+            FOHistory.objects.create(
+                fo=fo, usuario=request.user, campo_alterado='anexos',
+                valor_anterior=nome_arq, valor_novo='Removido',
+                descricao=f'O anexo "{nome_arq}" foi excluído.'
+            )
+            # Tag 'reaberto' usada aqui para que o feedback apareça na página de detalhes
+            messages.success(request, 'Anexo removido.', extra_tags='reaberto')
+            return redirect('processo_detalhes', fo_id=fo.id)
+
+        # --- LÓGICA: SALVAR ALTERAÇÕES ---
+        if 'reabrir_caso' not in request.POST:
+            new_status = request.POST.get('status')
+            new_relatorio = request.POST.get('relatorio', '').strip()
+            new_evidencias = request.POST.get('evidencias', '').strip()
+            
+            has_changes = False
+
+            # Status
+            if fo.status != new_status:
+                FOHistory.objects.create(
+                    fo=fo, usuario=request.user, campo_alterado='status',
+                    valor_anterior=fo.status, valor_novo=new_status,
+                    descricao=f'Status alterado para {new_status}.'
+                )
+                fo.status = new_status
+                has_changes = True
+
+            # Relatório
+            old_relatorio = (fo.relatorio or '').strip()
+            if old_relatorio != new_relatorio:
+                FOHistory.objects.create(
+                    fo=fo, usuario=request.user, campo_alterado='relatorio',
+                    valor_anterior=old_relatorio, valor_novo=new_relatorio,
+                    descricao='O relatório técnico foi atualizado.'
+                )
+                fo.relatorio = new_relatorio
+                has_changes = True
+
+            # Evidências (Texto/Links)
+            old_evidencias = (fo.evidencias or '').strip()
+            if old_evidencias != new_evidencias:
+                FOHistory.objects.create(
+                    fo=fo, usuario=request.user, campo_alterado='evidencias',
+                    valor_anterior=old_evidencias, valor_novo=new_evidencias,
+                    descricao='Novas evidências ou links foram anexados.'
+                )
+                fo.evidencias = new_evidencias
+                has_changes = True
+
+            # Anexos (Arquivos) com Validação e Compressão
+            if 'anexos' in request.FILES:
+                anexos_enviados = request.FILES.getlist('anexos')
+                arquivos_salvos = 0
+                
+                for f in anexos_enviados:
+                    if f.size > 5 * 1024 * 1024:
+                        messages.error(request, f"Arquivo {f.name} ignorado: excede 5MB.")
+                        continue
+                    
+                    ext = os.path.splitext(f.name)[1].lower()
+                    if ext not in ['.jpg', '.jpeg', '.png', '.pdf']:
+                        messages.error(request, f"Arquivo {f.name} ignorado: formato inválido.")
+                        continue
+
+                    if ext in ['.jpg', '.jpeg', '.png']:
+                        try:
+                            f = compress_image(f)
+                        except:
+                            pass 
+
+                    Anexo.objects.create(fo=fo, arquivo=f, nome=f.name)
+                    arquivos_salvos += 1
+
+                if arquivos_salvos > 0:
+                    FOHistory.objects.create(
+                        fo=fo, usuario=request.user, campo_alterado='anexos',
+                        valor_anterior='', valor_novo=f'{arquivos_salvos} arquivo(s)',
+                        descricao=f'Foram adicionados {arquivos_salvos} novos anexos.'
+                    )
+                    has_changes = True
+
+            if has_changes:
+                fo.responsavel = request.user
+                fo.save()
+                # MENSAGEM COM TAG 'atualizado' PARA APARECER NA PÁGINA DA LISTA (PROCESSO)
+                messages.success(request, 'F.O. atualizada com sucesso!', extra_tags='atualizado')
+                return redirect('processo')
+            else:
+                messages.info(request, 'Nenhuma alteração detectada.', extra_tags='reaberto')
+                return redirect('processo_detalhes', fo_id=fo.id)
+
+    # Organização de Anexos por Tipo para o Template
+    anexos_fotos = fo.anexos.filter(arquivo__icontains='.jpg') | \
+                   fo.anexos.filter(arquivo__icontains='.jpeg') | \
+                   fo.anexos.filter(arquivo__icontains='.png')
+    
+    anexos_docs = fo.anexos.exclude(id__in=anexos_fotos)
 
     return render(request, 'processo_detalhes.html', {
         'fo': fo, 
         'can_treat': can_treat, 
-        'user_type': user_type
+        'user_type': user_type,
+        'anexos_fotos': anexos_fotos,
+        'anexos_docs': anexos_docs
     })

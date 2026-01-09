@@ -35,7 +35,18 @@
             <a href="{% url 'home' %}" class="back-arrow" style="text-decoration: none; color: white; font-size: 1.5rem; position: absolute; top: 30px; left: 40px;">←</a>
 
             <h1 class="page-title">Processo de <span class="highlight-yellow">F.O.'s</span></h1>
-
+            {% if messages %}
+                <div class="messages-container" style="padding: 0 40px; margin-bottom: 20px;">
+                    {% for message in messages %}
+                        {# Filtra para mostrar apenas se a tag 'atualizado' estiver presente #}
+                        {% if 'atualizado' in message.extra_tags %}
+                            <div class="alert alert-{{ message.tags }}" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb;">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
             <div class="data-card">
 
                 <div class="card-header">
@@ -117,6 +128,15 @@
             </div>
         </main>
     </div>
-
+<script>
+    setTimeout(function() {
+        let alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.style.transition = "opacity 0.5s ease";
+            alert.style.opacity = "0";
+            setTimeout(() => alert.remove(), 500);
+        });
+    }, 4000);
+</script>
 </body>
 </html>

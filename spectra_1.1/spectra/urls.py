@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path
 from django.urls import include
+from django.conf import settings
+from django.conf.urls.static import static
 from maincard import views as maincard_views
 
 urlpatterns = [
@@ -30,4 +32,4 @@ urlpatterns = [
     path('meus_fos/', include('home.meus_fos.urls')),
     path('minhas-turmas/', include('home.minhas_turmas.urls')),
     path('', maincard_views.index, name='landing'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
