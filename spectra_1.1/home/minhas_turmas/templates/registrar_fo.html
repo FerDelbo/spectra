@@ -52,9 +52,10 @@
                 </div>
                 <div id="step-opcoes" class="hidden-step">
                     <span class="section-label">O que aconteceu?</span>
-                    <select name="titulo" id="select-motivo" class="titulo-select">
-                        <option value="">Selecione uma opção...</option>
-                    </select>
+                    <input type="text" name="titulo" id="select-motivo" list="titulos-list" placeholder="Selecione ou digite uma opção..." class="titulo-input">
+                    <datalist id="titulos-list">
+                        <!-- Opções serão populadas via JS -->
+                    </datalist>
 
                     <span class="section-label" style="margin-top: 15px;">Observação (Opcional):</span>
                     <textarea name="descricao" rows="3" placeholder="Digite detalhes adicionais aqui..."></textarea>
@@ -86,14 +87,13 @@
             fetch('{% url "get_titulos" %}?natureza=' + encodeURIComponent(natureza) + '&tipo=' + encodeURIComponent(tipo))
                 .then(response => response.json())
                 .then(data => {
-                    const select = document.getElementById('select-motivo');
-                    select.innerHTML = '<option value="">Selecione uma opção...</option>';
+                    const datalist = document.getElementById('titulos-list');
+                    datalist.innerHTML = '';
                     
                     data.titulos.forEach(titulo => {
                         let option = document.createElement('option');
                         option.value = titulo;
-                        option.text = titulo;
-                        select.appendChild(option);
+                        datalist.appendChild(option);
                     });
                 })
                 .catch(error => console.error('Erro ao carregar títulos:', error));

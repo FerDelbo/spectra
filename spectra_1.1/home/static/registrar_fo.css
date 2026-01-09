@@ -93,6 +93,7 @@ body {
     padding: 30px 40px;
     text-align: left;
     background-color: white;
+    padding-bottom: 100px; /* Espaço extra para dropdowns abrirem para baixo */
 }
 
 /* Rótulos das seções */
@@ -192,17 +193,37 @@ select, textarea {
     word-break: break-all;
 }
 
-select:focus, textarea:focus {
+.titulo-select {
+    position: relative;
+    margin-bottom: 50px; /* Espaço extra para o dropdown abrir para baixo */
+    z-index: 10;
+}
+
+.titulo-input {
+    width: 100%;
+    min-width: 300px; /* Largura mínima para caber textos longos */
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    color: #333;
+    background-color: #fcfcfc;
+    outline: none;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.titulo-input:focus {
     border-color: #485586;
     background-color: white;
 }
 
-.titulo-select option {
-    word-wrap: break-word;
+datalist option {
     white-space: normal;
+    word-wrap: break-word;
     overflow-wrap: break-word;
-    max-width: 100%;
-    word-break: break-all;
 }
 
 textarea {
