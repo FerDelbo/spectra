@@ -8,6 +8,7 @@ from django.http import JsonResponse
 # --- TELA 1: DASHBOARD (Menu com os Cards das Turmas) ---
 @login_required
 def minhas_turmas(request):
+    # Filtrar turmas do professor logado
     colegio_escolhido = Colegio.objects.filter(turma__professor=request.user).distinct()
     turmas_do_professor = Turma.objects.filter(professor=request.user)
     series_disponiveis = turmas_do_professor.values_list('serie', flat=True).distinct()
@@ -15,11 +16,11 @@ def minhas_turmas(request):
     alunos_filtrados = None
     turma_selecionada = None
 
-    # Inicializar variáveis filtradas
+    # Inicializar variáveis filtradas com valores padrão
     series_filtrados = series_disponiveis
     turmas_filtrados = turmas_letras
 
-    # Verificar se há parâmetros GET para filtrar
+    # Verificar se há parâmetros GET para filtrar opções dinamicamente
     colegio_param = request.GET.get('colegio')
     serie_param = request.GET.get('serie')
 
@@ -31,7 +32,7 @@ def minhas_turmas(request):
         # Filtrar turmas com base na série escolhida e no colégio
         turmas_filtrados = turmas_do_professor.filter(colegio__colegio=colegio_param, serie=serie_param).values_list('turma', flat=True).distinct()
 
-    # 3. Se o usuário clicou no botão "Buscar" (GET request com parametros)
+    # Processar busca quando todos os parâmetros são fornecidos
     if request.GET.get('colegio') and request.GET.get('serie') and request.GET.get('turma'):
         colegio_escolhido = request.GET.get('colegio')
         serie_escolhida = request.GET.get('serie')
