@@ -15,6 +15,7 @@
                 <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
                 <a href="#" class="nav-btn active">Minhas Turmas</a>
                 <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
+                <a href="{% url 'processo' %}" class="nav-btn">Processo</a>
             </nav>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}

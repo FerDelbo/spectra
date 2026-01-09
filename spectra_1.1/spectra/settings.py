@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'home',
     'home.meus_fos',
     'home.minhas_turmas',
+    'home.processo',
     'maincard',
+    'prof',
 ]
 
 MIDDLEWARE = [

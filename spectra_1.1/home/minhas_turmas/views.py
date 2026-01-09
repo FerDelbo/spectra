@@ -4,12 +4,20 @@ from home.models import Aluno, FO, Turma, Colegio
 from django.contrib import messages
 from django.urls import reverse
 from django.http import JsonResponse
+from prof.models import UserProfile
+
+def get_user_type(user):
+    try:
+        profile = user.userprofile
+        return profile.user_type.nome if profile.user_type else None
+    except:
+        return None
 
 # --- TELA 1: DASHBOARD (Menu com os Cards das Turmas) ---
 @login_required
 def minhas_turmas(request):
     # Filtrar turmas do professor logado
-    colegio_escolhido = Colegio.objects.filter(turma__professor=request.user).distinct()
+    colegios_disponiveis = Colegio.objects.filter(turma__professor=request.user).distinct().values_list('colegio', flat=True)
     turmas_do_professor = Turma.objects.filter(professor=request.user)
     series_disponiveis = turmas_do_professor.values_list('serie', flat=True).distinct()
     turmas_letras = turmas_do_professor.values_list('turma', flat=True).distinct()
@@ -47,7 +55,7 @@ def minhas_turmas(request):
             alunos_filtrados = []
 
     context = {
-        'colegios_opcoes': colegio_escolhido,
+        'colegios_opcoes': colegios_disponiveis,
         'series_opcoes': series_disponiveis,
         'turmas_opcoes': turmas_letras,
         'alunos': alunos_filtrados,
@@ -98,24 +106,40 @@ def registrar_fo(request, aluno_id):
     turma = aluno.turma
     url_base = reverse('minhas_turmas')
     parametros = f"?serie={turma.serie}&turma={turma.turma}&colegio=padrao"
+    
+    user_type = get_user_type(request.user)
+    
     if request.method == 'POST':
         try:
             natureza = request.POST.get('natureza')
             tipo = request.POST.get('tipo')
             titulo = request.POST.get('titulo')
             descricao = request.POST.get('descricao')
-
+            
+            # Verificar permissões para registrar
+            can_register = False
+            if user_type == 'Professor':
+                can_register = True
+            elif user_type == 'Monitor' and tipo == 'Disciplinar':
+                can_register = True
+            elif user_type == 'Pedagogo':
+                can_register = True
+            
+            if not can_register:
+                messages.error(request, 'Você não tem permissão para registrar este tipo de F.O.')
+                return redirect(f"{url_base}{parametros}")
+            
             FO.objects.create(
                 usuario=request.user,
                 aluno=aluno,
                 natureza=natureza,
                 tipo=tipo,
                 titulo=titulo,
-                descricao=descricao
+                descricao=descricao,
+                status='Em aberto'
             )
             messages.success(request, f"Fato registrado para {aluno.nome} com sucesso!")
         except Exception as e:
-            # MENSAGEM DE ERRO (caso algo dê errado no código)
             messages.error(request, f'Erro ao registrar: {str(e)}')    
         
         return redirect(f"{url_base}{parametros}")

@@ -4,22 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spectra - Meus F.O.'s</title>
-    <link rel="stylesheet" href="{% static 'css/fos_style.css' %}">
+    <title>Spectra - Processo de F.O.'s</title>
+    <link rel="stylesheet" href="{% static 'css/processo.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="layout">
-        
+
         <aside class="sidebar">
             <div class="logo">SPECTRA</div>
 
             <nav class="nav-menu">
                 <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
                 <a href="{% url 'minhas_turmas' %}" class="nav-btn">Minhas Turmas</a>
-                <a href="{% url 'meus_fos' %}" class="nav-btn active">Meus F.O.'s</a>
-                <a href="{% url 'processo' %}" class="nav-btn">Processo</a>
+                <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
+                <a href="{% url 'processo' %}" class="nav-btn active">Processo</a>
             </nav>
 
             <form method="post" action="{% url 'logout' %}" style="margin-top: auto;">
@@ -31,13 +31,13 @@
         </aside>
 
         <main class="main-content">
-            
+
             <a href="{% url 'home' %}" class="back-arrow" style="text-decoration: none; color: white; font-size: 1.5rem; position: absolute; top: 30px; left: 40px;">←</a>
-            
-            <h1 class="page-title">Meus <span class="highlight-yellow">F.O.'s</span></h1>
+
+            <h1 class="page-title">Processo de <span class="highlight-yellow">F.O.'s</span></h1>
 
             <div class="data-card">
-                
+
                 <div class="card-header">
                     <a href="{% url 'home' %}" class="back-arrow">←</a>
                     <div class="search-container">
@@ -58,7 +58,7 @@
                                 <path d="M17 16H23" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </button>
-                        
+
                         <div class="filter-options" id="filterOptions">
                             <p>Opções de filtro...</p>
                         </div>
@@ -74,11 +74,12 @@
                                 <th>Série</th>
                                 <th>Turma</th>
                                 <th>Tipo</th>
+                                <th>Status</th>
                                 <th>Data</th>
                                 <th style="text-align: center;">Detalhes</th> </tr>
                         </thead>
                         <tbody>
-                            {% for fo in meus_fos %}
+                            {% for fo in fos %}
                             <tr> <td class="{% if fo.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
                                     {{ fo.natureza }}
                                 </td>
@@ -92,10 +93,11 @@
                                 <td>{{ fo.aluno.turma.serie }}</td>
                                 <td>{{ fo.aluno.turma.turma }}</td>
                                 <td>{{ fo.tipo }}</td>
+                                <td>{{ fo.status }}</td>
                                 <td>{{ fo.data_registro|date:"d/m/Y" }}</td>
 
                                 <td style="text-align: center;">
-                                    <a href="{% url 'observacao_detalhes' fo.id %}" class="btn-visualizar" title="Ver Detalhes">
+                                    <a href="{% url 'processo_detalhes' fo.id %}" class="btn-visualizar" title="Ver Detalhes">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                             <circle cx="12" cy="12" r="3"></circle>
@@ -106,7 +108,7 @@
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="7" style="text-align: center;">Nenhum F.O. encontrado.</td> </tr>
+                                <td colspan="8" style="text-align: center;">Nenhum F.O. encontrado.</td> </tr>
                             {% endfor %}
                         </tbody>
                     </table>

@@ -128,6 +128,18 @@ class FO(models.Model):
     titulo = models.CharField(max_length=100, verbose_name="O que aconteceu?", choices=TITULO_CHOICES)
     descricao = models.TextField(blank=True, null=True, verbose_name="Observação")
     data_registro = models.DateTimeField(auto_now_add=True, verbose_name="Data do Registro")
+    
+    # Novos campos para sistema de chamado
+    STATUS_CHOICES = [
+        ('Em aberto', 'Em aberto'),
+        ('Em andamento', 'Em andamento'),
+        ('Concluído', 'Concluído'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Em aberto', verbose_name="Status")
+    responsavel = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='fo_responsavel', verbose_name="Responsável")
+    relatorio = models.TextField(blank=True, null=True, verbose_name="Relatório")
+    evidencias = models.TextField(blank=True, null=True, verbose_name="Evidências (links ou descrições)")
+    data_atualizacao = models.DateTimeField(auto_now=True, verbose_name="Última Atualização")
 
     class Meta:
         verbose_name = "Fato Observado"
@@ -137,6 +149,23 @@ class FO(models.Model):
     def __str__(self):
         return f"{self.aluno.nome} - {self.titulo}"
     
+class FOHistory(models.Model):
+    fo = models.ForeignKey(FO, on_delete=models.CASCADE, related_name='historico')
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    data_alteracao = models.DateTimeField(auto_now_add=True)
+    campo_alterado = models.CharField(max_length=50)  # Ex: 'status', 'relatorio', 'evidencias'
+    valor_anterior = models.TextField(blank=True, null=True)
+    valor_novo = models.TextField(blank=True, null=True)
+    descricao = models.TextField(blank=True, null=True)  # Descrição da alteração
+
+    class Meta:
+        verbose_name = "Histórico de F.O."
+        verbose_name_plural = "Históricos de F.O."
+        ordering = ['-data_alteracao']
+
+    def __str__(self):
+        return f"{self.fo} - {self.campo_alterado} em {self.data_alteracao}"
+
 class Colegio(models.Model):
     colegio = models.CharField(max_length=100, verbose_name="Nome do Colégio", blank=True, default="")
     def __str__(self):
