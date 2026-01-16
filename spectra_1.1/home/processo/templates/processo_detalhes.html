@@ -114,7 +114,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Responsável Atual</label>
-                                    <input type="text" class="form-control read-only" value="{% if fo.responsavel %}{{ fo.responsavel.get_full_name|default:fo.responsavel.username }}{% else %}Não atribuído{% endif %}" readonly>
+                                    <input type="text" class="form-control read-only" 
+                                        value="{% if fo.status == 'Em aberto' %}Não atribuído{% else %}{{ fo.responsavel.get_full_name|default:fo.responsavel.username }}{% endif %}" 
+                                        readonly>
                                 </div>
                             </div>
 

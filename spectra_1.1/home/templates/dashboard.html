@@ -33,7 +33,7 @@
         <main class="main-content">
             
             <header class="top-header">
-                <h1>Bem Vindo, <span class="user-highlight">{{ user.first_name|default:user.username }}!</span></h1>
+                <h1>Bem Vindo, <span class="user-highlight">{{ request.user.first_name|default:request.user.username}}!</span></h1>
             </header>
 
             <div class="table-card">

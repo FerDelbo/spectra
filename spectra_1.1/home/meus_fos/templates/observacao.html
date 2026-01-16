@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Processo | Spectra</title>
+    <title>Detalhes do Processo (Visualização) | Spectra</title>
     <link rel="stylesheet" href="{% static 'css/processo.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -14,9 +14,7 @@
         {% if messages %}
             <div class="messages-container">
                 {% for message in messages %}
-                    {% if 'reaberto' in message.extra_tags %}
-                        <div class="alert alert-{{ message.tags }}" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb;">{{ message }}</div>
-                    {% endif %}
+                     <div class="alert alert-{{ message.tags }}" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb;">{{ message }}</div>
                 {% endfor %}
             </div>
         {% endif %}
@@ -40,7 +38,7 @@
                 <div class="meta-info">
                     <div class="meta-item">
                         <span class="label">Aberto por:</span>
-                        <span class="value">{{ fo.usuario.get_full_name|default:fo.usuario.username }}</span>
+                        <span class="value">{{ fo.responsavel.get_full_name|default:fo.responsavel.username }}</span>
                     </div>
                     <div class="meta-item">
                         <span class="label">Data:</span>
@@ -86,9 +84,7 @@
                 </section>
 
                 <section class="treatment-area">
-                    <h3 class="section-title">
-                        {% if can_treat %} Tratativa e Solução {% else %} Dados da Resolução {% endif %}
-                    </h3>
+                    <h3 class="section-title">Dados da Resolução</h3>
 
                     {% if fo.status == 'Concluído' %}
                         <div class="conclusion-banner">
@@ -100,76 +96,34 @@
                         </div>
                     {% endif %}
 
-                    {% if can_treat %}
-                        <form method="post" enctype="multipart/form-data" class="treatment-form">
-                            {% csrf_token %}
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="status">Atualizar Status</label>
-                                    <select name="status" id="status" class="form-control select-input">
-                                        <option value="Em aberto" {% if fo.status == 'Em aberto' %}selected{% endif %}>Em aberto</option>
-                                        <option value="Em andamento" {% if fo.status == 'Em andamento' %}selected{% endif %}>Em andamento</option>
-                                        <option value="Concluído" {% if fo.status == 'Concluído' %}selected{% endif %}>Concluído</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Responsável Atual</label>
-                                    <input type="text" class="form-control read-only" value="{% if fo.responsavel %}{{ fo.responsavel.get_full_name|default:fo.responsavel.username }}{% else %}Não atribuído{% endif %}" readonly>
-                                </div>
+                    <div class="readonly-treatment">
+                        
+                        <div class="field-group">
+                            <label>Responsável pela Tratativa</label>
+                            <div class="read-only-box">
+                                {% if fo.responsavel %}{{ fo.responsavel.get_full_name|default:fo.responsavel.username }}{% else %}Não atribuído{% endif %}
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <label for="relatorio">Relatório Técnico / Providências</label>
-                                <textarea name="relatorio" id="relatorio" class="form-control textarea-edit" rows="5">{{ fo.relatorio|default:"" }}</textarea>
+                        <div class="field-group">
+                            <label>Relatório da Coordenação / Providências</label>
+                            <div class="read-only-box">
+                                {{ fo.relatorio|default:"Aguardando tratativa..."|linebreaksbr }}
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <label>Arquivos Atuais (Clique para abrir)</label>
-                                <div class="attachment-container">
-                                    {% for anexo in anexos_fotos %}
-                                    <div class="attachment-card" onclick="openModal('{{ anexo.arquivo.url }}', 'image', '{{ anexo.nome }}')">
-                                        <img src="{{ anexo.arquivo.url }}" alt="{{ anexo.nome }}">
-                                        <button type="submit" name="excluir_anexo" value="1" class="btn-delete-file" onclick="document.getElementById('anexo_id_input').value='{{ anexo.id }}'; event.stopPropagation();">✕</button>
-                                        <div class="file-name">{{ anexo.nome }}</div>
-                                    </div>
-                                    {% endfor %}
-
-                                    {% for anexo in anexos_docs %}
-                                    <div class="attachment-card" onclick="openModal('{{ anexo.arquivo.url }}', 'pdf', '{{ anexo.nome }}')">
-                                        <div class="pdf-placeholder">📄</div>
-                                        <button type="submit" name="excluir_anexo" value="1" class="btn-delete-file" onclick="document.getElementById('anexo_id_input').value='{{ anexo.id }}'; event.stopPropagation();">✕</button>
-                                        <div class="file-name">{{ anexo.nome }}</div>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                                <input type="hidden" name="anexo_id" id="anexo_id_input">
-                            </div>
-
-                            <div class="form-group" style="margin-top: 20px;">
-                                <label for="anexos">Adicionar Novos Arquivos (Imagens/PDF)</label>
-                                <input type="file" name="anexos" id="anexos" class="form-control" multiple accept="image/*,.pdf">
-                            </div>
-
-                            <div class="form-actions">
-                                <button type="submit" class="btn-save">Salvar e Atualizar F.O.</button>
-                            </div>
-                        </form>
-
-                    {% else %}
-                        <div class="readonly-treatment">
-                            <div class="field-group">
-                                <label>Relatório da Coordenação</label>
-                                <div class="read-only-box">
-                                    {{ fo.relatorio|default:"Aguardando tratativa..."|linebreaksbr }}
-                                </div>
-                            </div>
-
+                        <div class="field-group">
+                            <label>Arquivos Anexados</label>
                             <div class="attachment-container">
                                 {% for anexo in anexos_fotos %}
                                 <div class="attachment-card" onclick="openModal('{{ anexo.arquivo.url }}', 'image', '{{ anexo.nome }}')">
                                     <img src="{{ anexo.arquivo.url }}" alt="{{ anexo.nome }}">
                                     <div class="file-name">{{ anexo.nome }}</div>
                                 </div>
+                                {% empty %}
+                                    {% if not anexos_docs %}
+                                    <p style="color: #666; font-style: italic;">Nenhum anexo disponível.</p>
+                                    {% endif %}
                                 {% endfor %}
 
                                 {% for anexo in anexos_docs %}
@@ -180,20 +134,10 @@
                                 {% endfor %}
                             </div>
                         </div>
-                    {% endif %}
+                    </div>
                 </section>
-                {% if fo.status == 'Concluído' %}
-                    {% if user_type == 'Pedagogo' or user_type == 'Monitor' and fo.tipo == 'Disciplinar' %}
-                    <section class="reopen-section">
-                        <form method="post" class="reopen-form">
-                            {% csrf_token %}
-                            <input type="hidden" name="reabrir_caso" value="1">
-                            <button type="submit" class="btn-reopen" onclick="return confirm('Tem certeza que deseja reabrir este caso?')">Reabrir Caso para Edição</button>
-                        </form>
-                    </section>
-                    {% endif %}
-                {% endif %}
-            </div>
+
+                </div>
         </div>
     </main>
 
@@ -203,7 +147,7 @@
             <span class="close-modal">&times;</span>
         </div>
         <div class="modal-body-view" id="modalBody">
-            </div>
+        </div>
     </div>
 
     <script>
@@ -215,7 +159,7 @@
         function openModal(url, type, name) {
             modal.style.display = "flex";
             captionText.innerHTML = name;
-            modalBody.innerHTML = ''; // Limpa o conteúdo anterior
+            modalBody.innerHTML = '';
 
             if (type === 'image') {
                 const img = document.createElement('img');
@@ -232,15 +176,6 @@
 
         closeBtn.onclick = () => { modal.style.display = "none"; modalBody.innerHTML = ''; };
         window.onclick = (event) => { if (event.target == modal) { modal.style.display = "none"; modalBody.innerHTML = ''; } };
-
-        // Auto-hide mensagens
-        setTimeout(() => {
-            document.querySelectorAll('.alert').forEach(alert => {
-                alert.style.transition = "opacity 0.5s ease";
-                alert.style.opacity = "0";
-                setTimeout(() => alert.remove(), 500);
-            });
-        }, 4000);
     </script>
 </body>
 </html>

@@ -57,6 +57,8 @@ def processo_detalhes(request, fo_id):
                 descricao='Caso reaberto para revisão.'
             )
             fo.status = 'Em andamento'
+            # Ao reabrir, define quem reabriu como responsável
+            fo.responsavel = request.user 
             fo.save()
             # MENSAGEM COM TAG 'reaberto' PARA APARECER NESTA PÁGINA
             messages.success(request, 'Processo reaberto!', extra_tags='reaberto')
@@ -160,8 +162,16 @@ def processo_detalhes(request, fo_id):
                     has_changes = True
 
             if has_changes:
-                fo.responsavel = request.user
+                # --- LÓGICA DO RESPONSÁVEL (MODIFICADA) ---
+                if fo.status == 'Em aberto':
+                    # Se o status for alterado (ou mantido) como 'Em aberto', remove o responsável
+                    fo.responsavel = None
+                else:
+                    # Se for 'Em andamento' ou 'Concluído', o responsável é quem fez a alteração
+                    fo.responsavel = request.user
+                
                 fo.save()
+                
                 # MENSAGEM COM TAG 'atualizado' PARA APARECER NA PÁGINA DA LISTA (PROCESSO)
                 messages.success(request, 'F.O. atualizada com sucesso!', extra_tags='atualizado')
                 return redirect('processo')
@@ -214,5 +224,11 @@ def processo(request):
     request.GET['status_list'] = status_filter
     request.GET['natureza_list'] = natureza_filter
     request.GET._mutable = False
+
+    if user_type == 'Monitor':
+        fos = fos.filter(tipo='Disciplinar')
+
+    if user_type == 'Professor':
+        fos = fos.filter(usuario=request.user)
 
     return render(request, 'processo.html', {'fos': fos, 'user_type': user_type})
