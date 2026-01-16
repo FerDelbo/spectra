@@ -4,80 +4,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes da Observação</title>
-    <link rel="stylesheet" href="{% static 'css/observacao.css' %}">
+    <title>Detalhes do Processo | Spectra</title>
+    <link rel="stylesheet" href="{% static 'css/processo.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="card">
-        <header class="card-header">
-            <div class="header-left">
-                <a href="javascript:history.back()" class="back-btn">←</a>
-                
-                <div class="avatar-circle">
-                    {{ fo.aluno.nome|slice:":1" }}
-                </div>
-                
-                <div class="student-info">
-                    <h2>{{ fo.aluno.nome }}</h2>
-                    <p>{{ fo.aluno.turma.serie }} {{ fo.aluno.turma.turma }}</p>
-                </div>
-            </div>
-
-            <div class="teacher-info">
-                <span class="teacher-label">Registrado por:</span>
-                <span class="teacher-name">
-                    {% if fo.usuario.get_full_name %}
-                        {{ fo.usuario.get_full_name }}
-                    {% else %}
-                        {{ fo.usuario.username }}
+    <main class="container">
+        {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                    {% if 'reaberto' in message.extra_tags %}
+                        <div class="alert alert-{{ message.tags }}" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb;">{{ message }}</div>
                     {% endif %}
-                </span>
+                {% endfor %}
             </div>
-        </header>
+        {% endif %}
 
-        <div class="card-body">
-
-            <div>
-                <label>Fato Observado:</label>
-                <div class="tags-container">
-                    {% if fo.natureza == 'Positivo' %}
-                        <div class="tag natureza-positivo">
-                            <span>+</span> Positivo
+        <div class="ticket-card">
+            <header class="card-header">
+                <div class="header-content">
+                    <a href="{% url 'historico_aluno' fo.aluno.id %}" class="back-btn" title="Voltar">←</a>
+                    
+                    <div class="student-profile">
+                        <div class="avatar-circle">
+                            {{ fo.aluno.nome|slice:":1" }}
                         </div>
-                    {% else %}
-                        <div class="tag natureza-negativo">
-                            <span>X</span> Negativo
+                        <div class="student-info">
+                            <h2>{{ fo.aluno.nome }}</h2>
+                            <p class="subtitle">{{ fo.aluno.turma.serie }} - {{ fo.aluno.turma.turma }} | {{ fo.aluno.colegio }}</p>
                         </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div>
-                <label>Tipo:</label>
-                <div class="tags-container">
-                    <div class="tag active-blue">
-                        {{ fo.tipo }}
                     </div>
                 </div>
-            </div>
 
-            <div>
-                <label>O que aconteceu?</label>
-                <textarea class="read-only-textarea" readonly>{{ fo.titulo }}</textarea>
-            </div>
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <span class="label">Aberto por:</span>
+                        <span class="value">{{ fo.usuario.get_full_name|default:fo.usuario.username }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Data:</span>
+                        <span class="value">{{ fo.data_registro|date:"d/m/Y H:i" }}</span>
+                    </div>
+                </div>
+            </header>
 
-            <div>
-                <label>Observação (Detalhes):</label>
-                <textarea class="read-only-textarea" readonly>{{ fo.descricao|default:"Sem observações adicionais." }}</textarea>
-            </div>
+            <div class="card-body">
+                <div class="status-bar">
+                    <div class="status-group">
+                        <span class="label-sm">Natureza</span>
+                        {% if fo.natureza == 'Positivo' %}
+                            <span class="badge badge-pos">Positivo</span>
+                        {% else %}
+                            <span class="badge badge-neg">Negativo</span>
+                        {% endif %}
+                    </div>
+                    <div class="status-group">
+                        <span class="label-sm">Tipo</span>
+                        <span class="badge badge-info">{{ fo.tipo }}</span>
+                    </div>
+                    <div class="status-group">
+                        <span class="label-sm">Situação Atual</span>
+                        <span class="badge badge-status status-{{ fo.status|slugify }}">{{ fo.status }}</span>
+                    </div>
+                </div>
 
-            <div class="footer-info">
-                Registrado em: {{ fo.data_registro|date:"d/m/Y H:i" }}
-            </div>
+                <hr class="divider">
 
+                <section class="original-report">
+                    <h3 class="section-title">Relato do Professor</h3>
+                    <div class="field-group">
+                        <label>O que aconteceu? (Título)</label>
+                        <div class="read-only-box title-box">{{ fo.titulo }}</div>
+                    </div>
+                    <div class="field-group">
+                        <label>Observação Detalhada</label>
+                        <div class="read-only-box desc-box">
+                            {{ fo.descricao|default:"Sem observações adicionais."|linebreaksbr }}
+                        </div>
+                    </div>
+                </section>
+
+                <section class="treatment-area">
+                    <h3 class="section-title">
+                        {% if can_treat %} Tratativa e Solução {% else %} Dados da Resolução {% endif %}
+                    </h3>
+
+                    {% if fo.status == 'Concluído' %}
+                        <div class="conclusion-banner">
+                            <span class="check-icon">✓</span>
+                            <div>
+                                <strong>Processo Concluído</strong><br>
+                                <small>Encerrado em: {{ fo.data_atualizacao|date:"d/m/Y H:i" }}</small>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if can_treat %}
+                        <form method="post" enctype="multipart/form-data" class="treatment-form">
+                            {% csrf_token %}
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="status">Atualizar Status</label>
+                                    <select name="status" id="status" class="form-control select-input">
+                                        <option value="Em aberto" {% if fo.status == 'Em aberto' %}selected{% endif %}>Em aberto</option>
+                                        <option value="Em andamento" {% if fo.status == 'Em andamento' %}selected{% endif %}>Em andamento</option>
+                                        <option value="Concluído" {% if fo.status == 'Concluído' %}selected{% endif %}>Concluído</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Responsável Atual</label>
+                                    <input type="text" class="form-control read-only" value="{% if fo.responsavel %}{{ fo.responsavel.get_full_name|default:fo.responsavel.username }}{% else %}Não atribuído{% endif %}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="relatorio">Relatório Técnico / Providências</label>
+                                <textarea name="relatorio" id="relatorio" class="form-control textarea-edit" rows="5">{{ fo.relatorio|default:"" }}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Arquivos Atuais (Clique para abrir)</label>
+                                <div class="attachment-container">
+                                    {% for anexo in anexos_fotos %}
+                                    <div class="attachment-card" onclick="openModal('{{ anexo.arquivo.url }}', 'image', '{{ anexo.nome }}')">
+                                        <img src="{{ anexo.arquivo.url }}" alt="{{ anexo.nome }}">
+                                        <button type="submit" name="excluir_anexo" value="1" class="btn-delete-file" onclick="document.getElementById('anexo_id_input').value='{{ anexo.id }}'; event.stopPropagation();">✕</button>
+                                        <div class="file-name">{{ anexo.nome }}</div>
+                                    </div>
+                                    {% endfor %}
+
+                                    {% for anexo in anexos_docs %}
+                                    <div class="attachment-card" onclick="openModal('{{ anexo.arquivo.url }}', 'pdf', '{{ anexo.nome }}')">
+                                        <div class="pdf-placeholder">📄</div>
+                                        <button type="submit" name="excluir_anexo" value="1" class="btn-delete-file" onclick="document.getElementById('anexo_id_input').value='{{ anexo.id }}'; event.stopPropagation();">✕</button>
+                                        <div class="file-name">{{ anexo.nome }}</div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <input type="hidden" name="anexo_id" id="anexo_id_input">
+                            </div>
+
+                            <div class="form-group" style="margin-top: 20px;">
+                                <label for="anexos">Adicionar Novos Arquivos (Imagens/PDF)</label>
+                                <input type="file" name="anexos" id="anexos" class="form-control" multiple accept="image/*,.pdf">
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-save">Salvar e Atualizar F.O.</button>
+                            </div>
+                        </form>
+
+                    {% else %}
+                        <div class="readonly-treatment">
+                            <div class="field-group">
+                                <label>Relatório da Coordenação</label>
+                                <div class="read-only-box">
+                                    {{ fo.relatorio|default:"Aguardando tratativa..."|linebreaksbr }}
+                                </div>
+                            </div>
+
+                            <div class="attachment-container">
+                                {% for anexo in anexos_fotos %}
+                                <div class="attachment-card" onclick="openModal('{{ anexo.arquivo.url }}', 'image', '{{ anexo.nome }}')">
+                                    <img src="{{ anexo.arquivo.url }}" alt="{{ anexo.nome }}">
+                                    <div class="file-name">{{ anexo.nome }}</div>
+                                </div>
+                                {% endfor %}
+
+                                {% for anexo in anexos_docs %}
+                                <div class="attachment-card" onclick="openModal('{{ anexo.arquivo.url }}', 'pdf', '{{ anexo.nome }}')">
+                                    <div class="pdf-placeholder">📄</div>
+                                    <div class="file-name">{{ anexo.nome }}</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </section>
+                {% if fo.status == 'Concluído' %}
+                    {% if user_type == 'Pedagogo' or user_type == 'Monitor' and fo.tipo == 'Disciplinar' %}
+                    <section class="reopen-section">
+                        <form method="post" class="reopen-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="reabrir_caso" value="1">
+                            <button type="submit" class="btn-reopen" onclick="return confirm('Tem certeza que deseja reabrir este caso?')">Reabrir Caso para Edição</button>
+                        </form>
+                    </section>
+                    {% endif %}
+                {% endif %}
+            </div>
         </div>
+    </main>
+
+    <div id="imageModal" class="modal-view">
+        <div class="modal-header-view">
+            <span id="caption" class="caption-modal"></span>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body-view" id="modalBody">
+            </div>
     </div>
 
+    <script>
+        const modal = document.getElementById("imageModal");
+        const modalBody = document.getElementById("modalBody");
+        const captionText = document.getElementById("caption");
+        const closeBtn = document.querySelector(".close-modal");
+
+        function openModal(url, type, name) {
+            modal.style.display = "flex";
+            captionText.innerHTML = name;
+            modalBody.innerHTML = ''; // Limpa o conteúdo anterior
+
+            if (type === 'image') {
+                const img = document.createElement('img');
+                img.src = url;
+                img.className = 'modal-content-view';
+                modalBody.appendChild(img);
+            } else if (type === 'pdf') {
+                const iframe = document.createElement('iframe');
+                window.open(url, '_blank');
+                iframe.className = 'modal-pdf-view';
+                modalBody.appendChild(iframe);
+            }
+        }
+
+        closeBtn.onclick = () => { modal.style.display = "none"; modalBody.innerHTML = ''; };
+        window.onclick = (event) => { if (event.target == modal) { modal.style.display = "none"; modalBody.innerHTML = ''; } };
+
+        // Auto-hide mensagens
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(alert => {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 4000);
+    </script>
 </body>
 </html>

@@ -4,7 +4,6 @@ from home.models import Aluno, FO, Turma, Colegio
 from django.contrib import messages
 from django.urls import reverse
 from django.http import JsonResponse
-from prof.models import UserProfile
 
 def get_user_type(user):
     try:
@@ -17,6 +16,7 @@ def get_user_type(user):
 @login_required
 def minhas_turmas(request):
     # Filtrar turmas do professor logado
+    user_type = get_user_type(request.user)
     colegios_disponiveis = Colegio.objects.filter(turma__professor=request.user).distinct().values_list('colegio', flat=True)
     turmas_do_professor = Turma.objects.filter(professor=request.user)
     series_disponiveis = turmas_do_professor.values_list('serie', flat=True).distinct()
@@ -61,8 +61,9 @@ def minhas_turmas(request):
         'alunos': alunos_filtrados,
         'turma_atual': turma_selecionada,
         'series_filtrados': series_filtrados,
-        'turmas_filtrados': turmas_filtrados
-    }
+        'turmas_filtrados': turmas_filtrados,
+        'user_type': user_type
+    } 
     
     return render(request, 'minhas_turmas.html', context)
 

@@ -5,8 +5,8 @@ from django.core.files.base import ContentFile
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from home.models import FO, FOHistory, Anexo
-from prof.models import UserProfile
 from django.contrib import messages
+from django.db.models import Q
 
 # Função Auxiliar para Compressão de Imagem
 def compress_image(image):
@@ -26,21 +26,6 @@ def get_user_type(user):
         return profile.user_type.nome if profile.user_type else None
     except:
         return None
-
-@login_required
-def processo_view(request):
-    user_type = get_user_type(request.user)
-    
-    if user_type == 'Professor':
-        fos = FO.objects.filter(usuario=request.user)
-    elif user_type == 'Monitor':
-        fos = FO.objects.filter(tipo='Disciplinar')
-    elif user_type == 'Pedagogo':
-        fos = FO.objects.all()
-    else:
-        fos = FO.objects.none()
-    
-    return render(request, 'processo.html', {'fos': fos})
 
 @login_required
 def processo_detalhes(request, fo_id):
@@ -198,3 +183,36 @@ def processo_detalhes(request, fo_id):
         'anexos_fotos': anexos_fotos,
         'anexos_docs': anexos_docs
     })
+@login_required
+def processo(request):
+    user_type = get_user_type(request.user)
+    # Pega todos os FOs
+    fos = FO.objects.all().order_by('-data_registro')
+
+    # 1. Pesquisa
+    search_query = request.GET.get('search')
+    if search_query:
+        fos = fos.filter(
+            Q(aluno__nome__icontains=search_query) |
+            Q(aluno__turma__turma__icontains=search_query) |
+            Q(tipo__icontains=search_query)
+        )
+
+    # 2. Filtros Status
+    status_filter = request.GET.getlist('status')
+    if status_filter:
+        fos = fos.filter(status__in=status_filter)
+
+    # 3. Filtros Natureza
+    natureza_filter = request.GET.getlist('natureza')
+    if natureza_filter:
+        fos = fos.filter(natureza__in=natureza_filter)
+
+    # 4. Injeção para o template manter os checkboxes marcados
+    # Sem isso, o HTML {% if 'X' in request.GET.status_list %} não funciona
+    request.GET._mutable = True
+    request.GET['status_list'] = status_filter
+    request.GET['natureza_list'] = natureza_filter
+    request.GET._mutable = False
+
+    return render(request, 'processo.html', {'fos': fos, 'user_type': user_type})
