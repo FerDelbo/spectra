@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from home.models import Colegio
 
 class UserType(models.Model):
     TIPO_CHOICES = [
@@ -16,6 +17,6 @@ class UserType(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='userprofile')
     user_type = models.ForeignKey(UserType, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Tipo de Usuário")
-
+    colegios = models.ManyToManyField(Colegio, related_name='usuarios')
     def __str__(self):
         return f"{self.user.username} - {self.user_type if self.user_type else 'Sem Tipo'}"

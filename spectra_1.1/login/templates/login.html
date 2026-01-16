@@ -7,6 +7,7 @@
     <title>Spectra Login</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
@@ -14,8 +15,17 @@
         <div class="logo">SPECTRA</div>
     </header>
 
-    <main class="container">
-        <div class="login-card">
+    <main> <div class="login-card">
+            
+            {% if messages %}
+                <div class="messages-container">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             
             <h2><span class="text-blue">Entre</span> na<br>sua conta</h2>
 
@@ -23,7 +33,7 @@
                 {% csrf_token %}
 
                 {% if form.errors %}
-                    <div style="color: red; margin-bottom: 10px; font-size: 0.9rem;">
+                    <div class="alert alert-danger">
                         Usuário ou senha incorretos. Tente novamente.
                     </div>
                 {% endif %}
@@ -44,6 +54,17 @@
 
         </div>
     </main>
+
+    <script>
+        setTimeout(function() {
+            let alerts = document.querySelectorAll('.messages-container .alert');
+            alerts.forEach(alert => {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 4000); // 4 segundos
+    </script>
 
 </body>
 </html>

@@ -29,6 +29,15 @@
                 <h1 class="page-title">Filtrar <span class="highlight-yellow">Turmas</span></h1>
             </div>
 
+            {% if messages %}
+                <div class="messages-container" style="margin-bottom: 20px; padding: 0 20px;">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb; margin-bottom: 10px;">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <div class="content-wrapper">
                 
                 <div class="serie-container">
@@ -75,7 +84,9 @@
                                 <button type="submit" class="btn-buscar">EXECUTAR BUSCA</button>
                             </div>
                         </form>
-                    </div> {% if alunos is not None %}
+                    </div> 
+
+                    {% if alunos is not None %}
                         <div class="resultados-wrapper">
                             <h2 class="titulo-resultados">
                                 <span class="highlight-yellow">{{ turma_atual.serie }} {{ turma_atual.turma }}</span>
@@ -114,10 +125,12 @@
                         </div>
                     {% endif %}
 
-                </div> </div>
+                </div> 
+            </div>
         </main>
     </div>
     <script>
+        // Lógica dos Selects (Colégio -> Série -> Turma)
         document.getElementById('colegio').addEventListener('change', function() {
             const colegio = this.value;
             if (colegio) {
@@ -152,6 +165,16 @@
                     .catch(error => console.error('Erro ao carregar turmas:', error));
             }
         });
+
+        // Lógica para esconder as mensagens automaticamente
+        setTimeout(function() {
+            let alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 4000); // 4000ms = 4 segundos
     </script>
 </body>
 </html>
