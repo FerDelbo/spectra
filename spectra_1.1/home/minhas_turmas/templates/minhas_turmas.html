@@ -91,7 +91,17 @@
 
                                     {% for aluno in alunos %}
                                         <div class="aluno-row">
-                                            <span class="aluno-nome">{{ aluno.nome }}</span>
+                                            <span class="aluno-nome">
+                                                {% if user_type == 'Monitor' or user_type == 'Pedagogo' %}
+                                                    <a href="{% url 'historico_aluno' aluno.id %}" style="color: #333; text-decoration: none; font-weight: 500;">
+                                                        {{ aluno.nome }}
+                                                    </a>
+                                                {% else %}
+                                                    <span style="color: #333; font-weight: 500; cursor: default;">
+                                                        {{ aluno.nome }}
+                                                    </span>
+                                                {% endif %}
+                                            </span>
                                             <a href="{% url 'registrar_fo' aluno.id %}" class="btn-acao-registrar">
                                                 Registrar
                                             </a>
