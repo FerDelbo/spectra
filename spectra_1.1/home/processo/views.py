@@ -57,6 +57,8 @@ def processo_detalhes(request, fo_id):
                 descricao='Caso reaberto para revisão.'
             )
             fo.status = 'Em andamento'
+            # Ao reabrir, define quem reabriu como responsável
+            fo.responsavel = request.user 
             fo.save()
             # MENSAGEM COM TAG 'reaberto' PARA APARECER NESTA PÁGINA
             messages.success(request, 'Processo reaberto!', extra_tags='reaberto')
@@ -160,8 +162,16 @@ def processo_detalhes(request, fo_id):
                     has_changes = True
 
             if has_changes:
-                fo.responsavel = request.user
+                # --- LÓGICA DO RESPONSÁVEL (MODIFICADA) ---
+                if fo.status == 'Em aberto':
+                    # Se o status for alterado (ou mantido) como 'Em aberto', remove o responsável
+                    fo.responsavel = None
+                else:
+                    # Se for 'Em andamento' ou 'Concluído', o responsável é quem fez a alteração
+                    fo.responsavel = request.user
+                
                 fo.save()
+                
                 # MENSAGEM COM TAG 'atualizado' PARA APARECER NA PÁGINA DA LISTA (PROCESSO)
                 messages.success(request, 'F.O. atualizada com sucesso!', extra_tags='atualizado')
                 return redirect('processo')
@@ -183,13 +193,24 @@ def processo_detalhes(request, fo_id):
         'anexos_fotos': anexos_fotos,
         'anexos_docs': anexos_docs
     })
+
 @login_required
 def processo(request):
     user_type = get_user_type(request.user)
-    # Pega todos os FOs
-    fos = FO.objects.all().order_by('-data_registro')
+    
+    # Pega o perfil para acessar os colégios vinculados
+    try:
+        profile = request.user.userprofile
+        # Assume que seu UserProfile tem um campo ManyToMany chamado 'colegios'
+        colegios_usuario = profile.colegios.all()
+    except AttributeError:
+        colegios_usuario = []
 
-    # 1. Pesquisa
+    # 1. FILTRAGEM INICIAL DE SEGURANÇA (A CORREÇÃO PRINCIPAL ESTÁ AQUI)
+    # Filtra FOs onde a turma do aluno pertence aos colégios do usuário
+    fos = FO.objects.filter(aluno__turma__colegio__in=colegios_usuario).order_by('-data_registro')
+
+    # 2. Pesquisa
     search_query = request.GET.get('search')
     if search_query:
         fos = fos.filter(
@@ -198,21 +219,30 @@ def processo(request):
             Q(tipo__icontains=search_query)
         )
 
-    # 2. Filtros Status
+    # 3. Filtros Status
     status_filter = request.GET.getlist('status')
     if status_filter:
         fos = fos.filter(status__in=status_filter)
 
-    # 3. Filtros Natureza
+    # 4. Filtros Natureza
     natureza_filter = request.GET.getlist('natureza')
     if natureza_filter:
         fos = fos.filter(natureza__in=natureza_filter)
 
-    # 4. Injeção para o template manter os checkboxes marcados
-    # Sem isso, o HTML {% if 'X' in request.GET.status_list %} não funciona
+    # 5. Manter checkboxes marcados no template
     request.GET._mutable = True
     request.GET['status_list'] = status_filter
     request.GET['natureza_list'] = natureza_filter
     request.GET._mutable = False
+
+    # 6. Regras específicas de Tipo de Usuário
+    if user_type == 'Monitor':
+        fos = fos.filter(tipo='Disciplinar')
+
+    # Para professores, geralmente eles veem apenas o que ELES criaram.
+    # Se você quiser que o professor veja FOs de alunos dos colégios dele (mesmo criadas por outros),
+    # remova a linha abaixo. Se ele só pode ver as dele, mantenha.
+    if user_type == 'Professor':
+        fos = fos.filter(usuario=request.user)
 
     return render(request, 'processo.html', {'fos': fos, 'user_type': user_type})
