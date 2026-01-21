@@ -26,11 +26,18 @@
                 <div class="student-info">
                     <h2>{{ aluno.nome }}</h2>
                     <p>{{ aluno.turma.serie }}{{ aluno.turma.turma }}</p>
+                    
                 </div>
             </div>
 
-            <div class="header-right">
-                <span>Histórico Completo</span>
+            <div class="header-right" style="text-align: right;">
+                <span style="display: block; font-size: 1.1rem; font-weight: 600; color: white; margin-bottom: 5px;">Score Disciplinar</span>
+                
+                <div style="font-size: 30px; font-weight: 800; line-height: 1; color: {{ aluno.score_cor }};">
+                    {{ aluno.score|floatformat:2 }}
+                </div>
+                
+                <small style="font-size: 0.7rem; color: #999;">Base: 5.00</small>
             </div>
         </header>
 
@@ -41,6 +48,8 @@
                         <tr>
                             <th>Natureza</th>
                             <th>Tipo</th>
+                            <th>Gravidade</th>
+                            <th>Pontos</th>
                             <th>O que aconteceu</th>
                             <th>Data</th>
                             <th style="text-align: center;">Detalhes</th>
@@ -54,6 +63,19 @@
                             </td>
                             
                             <td style="font-weight: 500;">{{ fo.tipo }}</td>
+                    <td style="text-transform: capitalize;">
+                                {{ fo.get_intensidade_display }}
+                            </td>
+
+                            <td style="font-weight: bold;">
+                                {% if fo.pontos > 0 %}
+                                    <span style="color: #28a745;">+{{ fo.pontos }}</span>
+                                {% elif fo.pontos < 0 %}
+                                    <span style="color: #dc3545;">{{ fo.pontos }}</span>
+                                {% else %}
+                                    <span style="color: #6c757d;">0.00</span>
+                                {% endif %}
+                            </td>
 
                             <td>{{ fo.titulo|default:"-" }}</td>
                             
