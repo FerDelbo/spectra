@@ -38,11 +38,18 @@
                 <div class="meta-info">
                     <div class="meta-item">
                         <span class="label">Aberto por:</span>
-                        <span class="value">{{ fo.responsavel.get_full_name|default:fo.responsavel.username }}</span>
+                        <span class="value">{{ fo.usuario.get_full_name|default:fo.usuario.username }}</span>
                     </div>
                     <div class="meta-item">
                         <span class="label">Data:</span>
                         <span class="value">{{ fo.data_registro|date:"d/m/Y H:i" }}</span>
+                    <div class="meta-item">
+                        <span class="label">Turma:</span>
+                        <span class="value">{{ fo.serie_original|default:fo.aluno.turma.serie }}{{ fo.turma_original|default:fo.aluno.turma.turma }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Colégio:</span>
+                        <span class="value">{{ fo.colegio_original|default:fo.aluno.colegio }}</span>
                     </div>
                 </div>
             </header>

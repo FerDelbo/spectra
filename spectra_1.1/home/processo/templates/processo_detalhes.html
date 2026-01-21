@@ -32,7 +32,7 @@
                         </div>
                         <div class="student-info">
                             <h2>{{ fo.aluno.nome }}</h2>
-                            <p class="subtitle">{{ fo.aluno.turma.serie }} - {{ fo.aluno.turma.turma }} | {{ fo.aluno.colegio }}</p>
+                            <p class="subtitle">{{ fo.serie_original|default:fo.aluno.turma.serie }} - {{ fo.turma_original|default:fo.aluno.turma.turma }} | {{ fo.colegio_original|default:fo.aluno.colegio }}</p>
                         </div>
                     </div>
                 </div>
