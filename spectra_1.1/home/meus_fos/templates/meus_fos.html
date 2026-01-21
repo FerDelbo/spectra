@@ -128,8 +128,8 @@
                                         {% endif %}
                                     </span>
                                 </td>
-                                <td>{{ fo.aluno.turma.serie }}</td>
-                                <td>{{ fo.aluno.turma.turma }}</td>
+                                <td>{{ fo.serie_original|default:fo.aluno.turma.serie }}</td>
+                                <td>{{ fo.turma_original|default:fo.aluno.turma.turma }}</td>
                                 <td>{{ fo.tipo }}</td>
                                 <td>{{ fo.status }}</td>
                                 <td>{{ fo.data_registro|date:"d/m/Y" }}</td>

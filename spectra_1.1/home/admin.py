@@ -32,7 +32,10 @@ class TurmaAdmin(admin.ModelAdmin):
 
 @admin.register(FO)
 class FOAdmin(admin.ModelAdmin):
-    list_display = ('get_aluno_nome', 'natureza', 'tipo', 'data_registro', 'get_aluno_turma')
+    list_display = ('get_aluno_nome', 'natureza', 'tipo', 'data_registro', 'serie_original', 'turma_original', 'colegio_original', 'usuario', 'titulo', 'status')
+    readonly_fields = [
+        'data_registro', 'data_atualizacao', 'serie_original', 'turma_original', 'colegio_original',
+    ]
     list_filter = ('natureza', 'tipo', 'data_registro', 'aluno__turma')
     search_fields = ('aluno__nome', 'usuario__username', 'titulo')
 

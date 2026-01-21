@@ -128,6 +128,9 @@ class FO(models.Model):
     titulo = models.CharField(max_length=100, verbose_name="O que aconteceu?", choices=TITULO_CHOICES)
     descricao = models.TextField(blank=True, null=True, verbose_name="Observação")
     data_registro = models.DateTimeField(auto_now_add=True, verbose_name="Data do Registro")
+    serie_original = models.CharField(max_length=50, blank=True, null=True, editable=False, verbose_name="Série na época")
+    turma_original = models.CharField(max_length=50, blank=True, null=True, editable=False, verbose_name="Turma na época")
+    colegio_original = models.CharField(max_length=100, blank=True, null=True, editable=False,verbose_name="Colégio na época")
     
     # Novos campos para sistema de chamado
     STATUS_CHOICES = [
@@ -148,6 +151,24 @@ class FO(models.Model):
 
     def __str__(self):
         return f"{self.aluno.nome} - {self.titulo}"
+    
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            if self.aluno.turma:
+                self.serie_original = self.aluno.turma.serie
+                self.turma_original = self.aluno.turma.turma
+            else:
+                self.serie_original = ""
+                self.turma_original = ""
+            if self.aluno.colegio:
+                self.colegio_original = str(self.aluno.colegio)
+            else:
+                self.colegio_original = ""
+            if not self.colegio and self.aluno.colegio:
+                self.colegio = self.aluno.colegio
+
+        super().save(*args, **kwargs)
     
 class FOHistory(models.Model):
     fo = models.ForeignKey(FO, on_delete=models.CASCADE, related_name='historico')
