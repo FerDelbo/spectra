@@ -1,4 +1,6 @@
-/* --- RESET E FONTES --- */
+/* =========================================
+   1. RESET & BASE
+   ========================================= */
 * {
     margin: 0;
     padding: 0;
@@ -8,25 +10,62 @@
 
 body {
     height: 100vh;
-    overflow: hidden; /* Impede rolagem na página inteira, apenas no conteúdo */
+    overflow: hidden; /* Impede rolagem na página inteira */
+    background-color: #0f1020; /* Cor de fundo de segurança */
 }
 
-/* --- LAYOUT PRINCIPAL (Sidebar + Conteúdo) --- */
+a {
+    text-decoration: none;
+}
+
+/* =========================================
+   2. LAYOUT PRINCIPAL
+   ========================================= */
 .layout {
     display: flex;
     height: 100vh;
     width: 100%;
 }
 
-/* --- SIDEBAR (Barra Lateral) --- */
+.main-content {
+    flex: 1; /* Ocupa o resto da tela */
+    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
+    overflow-y: auto; /* Rolagem interna */
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza o conteúdo */
+}
+
+/* Cabeçalho Superior (Dentro do Main Content) */
+.top-header {
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 25px;
+    color: white;
+}
+
+.top-header h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.user-highlight {
+    font-weight: 700;
+    color: #a5b4fc;
+}
+
+/* =========================================
+   3. SIDEBAR (NAVEGAÇÃO)
+   ========================================= */
 .sidebar {
     width: 260px;
-    background-color: #1a1a40; /* Azul escuro do tema */
+    background-color: #1a1a40;
     color: white;
     display: flex;
     flex-direction: column;
     padding: 20px;
-    flex-shrink: 0; /* Garante que a sidebar não encolha */
+    flex-shrink: 0;
     box-shadow: 2px 0 10px rgba(0,0,0,0.3);
     z-index: 10;
 }
@@ -46,11 +85,11 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    flex: 1;
+    flex: 1; /* Empurra o logout para o final */
 }
 
+/* Botões de Navegação */
 .nav-btn {
-    text-decoration: none;
     color: rgba(255,255,255,0.7);
     padding: 12px 15px;
     border-radius: 8px;
@@ -63,7 +102,7 @@ body {
 .nav-btn:hover {
     background-color: rgba(255,255,255,0.1);
     color: white;
-    padding-left: 20px; /* Efeito de deslize */
+    padding-left: 20px; /* Animação de deslize */
 }
 
 .nav-btn.active {
@@ -72,7 +111,7 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* Logout */
+/* Botão de Logout */
 .logout-link {
     background: none;
     border: none;
@@ -93,43 +132,16 @@ body {
     color: #ff4c4c;
 }
 
-/* --- CONTEÚDO PRINCIPAL (Direita) --- */
-.main-content {
-    flex: 1; /* Ocupa o resto da tela */
-    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%); /* Fundo degradê */
-    overflow-y: auto; /* Permite rolar se a tabela for grande */
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centraliza o card horizontalmente */
-}
-
-/* Cabeçalho do Conteúdo */
-.top-header {
-    width: 100%;
-    max-width: 1000px;
-    margin-bottom: 25px;
-    color: white;
-}
-
-.top-header h1 {
-    font-size: 1.5rem;
-    font-weight: 400;
-}
-
-.user-highlight {
-    font-weight: 700;
-    color: #a5b4fc; /* Um tom azul claro para destaque */
-}
-
-/* --- CARD BRANCO (VITRINE) --- */
+/* =========================================
+   4. COMPONENTES: CARDS
+   ========================================= */
 .table-card {
     background-color: white;
     width: 100%;
     max-width: 1000px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    overflow: hidden; /* Para os cantos arredondados */
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
@@ -142,7 +154,16 @@ body {
     border-bottom: 1px solid #eee;
 }
 
-/* --- TABELA --- */
+.card-footer {
+    padding: 15px 25px;
+    background-color: #f8f9fa;
+    text-align: right;
+    border-top: 1px solid #eee;
+}
+
+/* =========================================
+   5. COMPONENTES: TABELAS
+   ========================================= */
 .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -179,27 +200,22 @@ tr:last-child td {
     border-bottom: none;
 }
 
-/* Status (Cores do texto apenas, conforme pedido anterior) */
+/* =========================================
+   6. UTILITÁRIOS & ESTADOS
+   ========================================= */
+/* Cores de Status */
 .status-pos {
-    color: #22c55e;
+    color: #22c55e; /* Verde */
     font-weight: 600;
 }
 
 .status-neg {
-    color: #ef4444;
+    color: #ef4444; /* Vermelho */
     font-weight: 600;
 }
 
-/* Rodapé do Card */
-.card-footer {
-    padding: 15px 25px;
-    background-color: #f8f9fa;
-    text-align: right;
-    border-top: 1px solid #eee;
-}
-
+/* Links de Ação */
 .view-more {
-    text-decoration: none;
     color: #485586;
     font-weight: 600;
     font-size: 0.9rem;

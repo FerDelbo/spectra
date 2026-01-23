@@ -1,4 +1,6 @@
-/* --- RESET E LAYOUT --- */
+/* =========================================
+   1. RESET & BASE
+   ========================================= */
 * {
     margin: 0;
     padding: 0;
@@ -8,25 +10,55 @@
 
 body {
     height: 100vh;
+    overflow: hidden; /* Evita rolagem dupla com o main-content */
 }
 
+/* =========================================
+   2. LAYOUT PRINCIPAL
+   ========================================= */
 .layout {
     display: flex;
     height: 100vh;
     width: 100%;
 }
 
-/* --- SIDEBAR (Estilo Dark do Dashboard) --- */
+.main-content {
+    flex: 1;
+    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 25px;
+    text-align: center;
+    width: 100%;
+    max-width: 950px;
+}
+
+.highlight-yellow, 
+.title-highlight {
+    color: #a5b4fc;
+    font-weight: 700;
+}
+
+/* =========================================
+   3. SIDEBAR (NAVEGAÇÃO)
+   ========================================= */
 .sidebar {
-    width: 260px; /* Ajustado levemente */
-    background-color: #1a1a40; /* MUDANÇA: Azul escuro */
+    width: 260px;
+    background-color: #1a1a40;
     color: white;
     display: flex;
     flex-direction: column;
     padding: 20px;
     box-shadow: 2px 0 10px rgba(0,0,0,0.3);
     z-index: 10;
-    /* Removido border-radius para ficar igual ao dashboard */
     border-radius: 0; 
 }
 
@@ -45,7 +77,7 @@ body {
 .nav-menu {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Espaçamento ajustado */
+    gap: 10px;
     flex: 1;
 }
 
@@ -63,7 +95,7 @@ body {
 .nav-btn:hover {
     background-color: rgba(255,255,255,0.1);
     color: white;
-    padding-left: 20px; /* Efeito deslize */
+    padding-left: 20px;
 }
 
 .nav-btn.active {
@@ -81,7 +113,7 @@ body {
     font-size: 1rem;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Ajuste para seta ficar na ponta */
+    justify-content: space-between;
     padding: 15px 0;
     border-top: 1px solid rgba(255,255,255,0.1);
     transition: color 0.3s;
@@ -93,32 +125,9 @@ body {
     color: #ff4c4c;
 }
 
-/* --- CONTEÚDO PRINCIPAL (Fundo Degradê Escuro) --- */
-.main-content {
-    flex: 1;
-    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%); /* MUDANÇA: O mesmo degradê do Dashboard */
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.page-title {
-    color: white;
-    font-size: 1.5rem; /* Tamanho padronizado */
-    font-weight: 400;
-    margin-bottom: 25px;
-    text-align: center;
-    width: 100%;
-    max-width: 950px;
-}
-
-.highlight-yellow, .title-highlight {
-    color: #a5b4fc; /* Azul claro para destaque (padrão novo) ou mantenha #ffd700 */
-    font-weight: 700;
-}
-
-/* --- CARD DE DADOS --- */
+/* =========================================
+   4. COMPONENTES: CARD DE DADOS
+   ========================================= */
 .data-card {
     background: white;
     border-radius: 12px;
@@ -131,9 +140,11 @@ body {
     overflow: hidden;
 }
 
-/* --- HEADER DO CARD --- */
+/* =========================================
+   5. COMPONENTES: HEADER DO CARD (Controles)
+   ========================================= */
 .card-header {
-    background-color: #485586; /* Azul do cabeçalho do Dashboard */
+    background-color: #485586;
     padding: 20px 30px;
     display: flex;
     align-items: center;
@@ -144,27 +155,38 @@ body {
 
 /* Seta de Voltar */
 .back-arrow {
-    position: relative; /* Ajuste para fluxo flex */
-    left: auto;
     color: rgba(255,255,255,0.8);
     text-decoration: none;
     font-size: 1.2rem;
     cursor: pointer;
     margin-right: 15px;
+    transition: color 0.2s;
 }
+
 .back-arrow:hover {
     color: white;
 }
 
-/* Input de Pesquisa */
-.search-container {
-    flex: 1;
+/* Container de Pesquisa e Filtro */
+.filter-form-container {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
 }
 
 .search-input {
-    width: 60%;
+    width: 100%;
+    height: 40px;
     padding: 10px 20px;
     border-radius: 8px;
     border: none;
@@ -172,7 +194,7 @@ body {
     text-align: center;
     font-size: 0.9rem;
     color: #333;
-    background-color: rgba(255,255,255,0.9); /* Branco levemente transparente */
+    background-color: rgba(255,255,255,0.9);
     transition: background 0.3s;
 }
 
@@ -186,39 +208,86 @@ body {
     font-weight: 500;
 }
 
-/* Botão de Filtro */
+/* Botão de Filtro (Abrir Menu) */
 .filter-btn {
-    background: none;
+    height: 40px;
+    background: #333; /* Fundo escuro conforme última definição */
+    color: white;
     border: none;
+    padding: 0 15px;
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px;
-    border-radius: 5px;
-    color: white; /* Ícone branco */
+    gap: 5px;
+    font-weight: 500;
     transition: background 0.3s;
 }
 
 .filter-btn:hover {
-    background-color: rgba(255,255,255,0.1);
+    background-color: #555;
 }
 
-.filter-options {
+/* Menu Dropdown do Filtro */
+.filter-dropdown {
     display: none;
     position: absolute;
-    top: 65px;
-    right: 30px;
+    top: 50px;
+    right: 0;
     background: white;
-    padding: 15px;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-    width: 200px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    width: 250px;
+    padding: 15px;
     z-index: 100;
-    border: 1px solid #eee;
 }
 
-/* --- TABELA --- */
+.filter-dropdown.active {
+    display: block;
+}
+
+.filter-group {
+    margin-bottom: 15px;
+}
+
+.filter-group h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.filter-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.btn-apply {
+    width: 100%;
+    padding: 8px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-apply:hover {
+    background: #218838;
+}
+
+/* =========================================
+   6. COMPONENTES: TABELA
+   ========================================= */
 .table-responsive {
     flex: 1;
     overflow-y: auto;
@@ -233,7 +302,7 @@ table {
 th {
     position: sticky;
     top: 0;
-    background: #f8f9fa; /* Cinza claro */
+    background: #f8f9fa;
     padding: 15px 20px;
     font-size: 0.8rem;
     font-weight: 600;
@@ -253,18 +322,7 @@ td {
     vertical-align: middle;
 }
 
-/* Cores de Status atualizadas */
-.status-pos {
-    color: #22c55e;
-    font-weight: 600;
-}
-
-.status-neg {
-    color: #ef4444;
-    font-weight: 600;
-}
-
-/* Scrollbar Bonita */
+/* Scrollbar Personalizada */
 .table-responsive::-webkit-scrollbar {
     width: 8px;
 }
@@ -279,7 +337,19 @@ td {
     background: #bbb; 
 }
 
-/* Botão Visualizar (Olho) */
+/* =========================================
+   7. UTILITÁRIOS & STATUS
+   ========================================= */
+.status-pos {
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.status-neg {
+    color: #ef4444;
+    font-weight: 600;
+}
+
 .btn-visualizar {
     display: inline-flex;
     align-items: center;
@@ -294,110 +364,4 @@ td {
 .btn-visualizar:hover {
     color: #485586;
     background-color: #f0f0f0;
-    transform: none; /* Removido o zoom exagerado, mantendo sutil */
 }
-.search-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 20px;
-}
-
-.search-form {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 500px;
-}
-.search-input {
-     width: 100%;
-    height: 40px; /* Ajuste conforme seu CSS original */
-}
-.filter-form-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex: 1;
-        justify-content: flex-end;
-        position: relative; /* Importante para o menu dropdown */
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 10px 20px;
-        border-radius: 8px;
-        border: none;
-        outline: none;
-        text-align: center;
-        font-size: 0.9rem;
-        color: #333;
-        background-color: rgba(255,255,255,0.9);
-        transition: background 0.3s;
-    }
-
-    .filter-btn {
-        height: 40px;
-        background: #333;
-        color: white;
-        border: none;
-        padding: 15px;
-        border-radius:8px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-weight: 500;
-        transition: background 0.3s;
-    }
-
-    /* Menu Dropdown do Filtro */
-    .filter-dropdown {
-        display: none; /* Escondido por padrão */
-        position: absolute;
-        top: 50px;
-        right: 0;
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        width: 250px;
-        padding: 15px;
-        z-index: 100;
-    }
-
-    .filter-dropdown.active {
-        display: block;
-    }
-
-    .filter-group {
-        margin-bottom: 15px;
-    }
-    
-    .filter-group h4 {
-        font-size: 12px;
-        text-transform: uppercase;
-        color: #888;
-        margin-bottom: 5px;
-    }
-
-    .filter-label {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 5px;
-        font-size: 14px;
-        color: #333;
-        cursor: pointer;
-    }
-
-    .btn-apply {
-        width: 100%;
-        padding: 8px;
-        background: #28a745;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-    }

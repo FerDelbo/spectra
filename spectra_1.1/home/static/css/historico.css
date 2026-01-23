@@ -1,15 +1,17 @@
-/* --- RESET E LAYOUT GERAL (Estilo Dark) --- */
+/* =========================================
+   1. RESET & BASE
+   ========================================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif; /* Fonte atualizada */
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
     min-height: 100vh;
     width: 100%;
-    /* Mesmo degradê do Dashboard e Login */
+    /* Degradê padrão do sistema */
     background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
     display: flex;
     justify-content: center;
@@ -18,21 +20,33 @@ body {
     color: #333;
 }
 
-/* --- CARD PRINCIPAL (Estilo Clean) --- */
+/* =========================================
+   2. LAYOUT: CARD PRINCIPAL
+   ========================================= */
 .card {
     background-color: #fff;
     width: 100%;
     max-width: 1000px;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4); /* Sombra mais profunda */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
-/* --- CABEÇALHO --- */
+.card-body {
+    padding: 0; /* Padding removido para tabela full-width */
+    background-color: white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   3. COMPONENTE: CABEÇALHO (HEADER)
+   ========================================= */
 .card-header {
-    background-color: #485586; /* Azul intermediário do tema */
+    background-color: #485586;
     padding: 20px 30px;
     display: flex;
     justify-content: space-between;
@@ -44,7 +58,7 @@ body {
 .header-left {
     display: flex;
     align-items: center;
-    gap: 20px; /* Espaçamento um pouco maior */
+    gap: 20px;
 }
 
 .header-right span {
@@ -53,7 +67,7 @@ body {
     font-weight: 400;
 }
 
-/* Botão Voltar */
+/* Botão de Voltar */
 .back-btn {
     text-decoration: none;
     color: rgba(255,255,255,0.8);
@@ -74,12 +88,12 @@ body {
     transform: translateX(-2px);
 }
 
-/* Avatar */
+/* Avatar e Informações do Aluno */
 .avatar-circle {
     width: 50px;
     height: 50px;
-    background-color: #e2e8f0; /* Cinza claro suave */
-    color: #485586; /* Azul do tema */
+    background-color: #e2e8f0;
+    color: #485586;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -101,15 +115,9 @@ body {
     font-weight: 400;
 }
 
-/* --- CORPO E TABELA --- */
-.card-body {
-    padding: 0; /* Removido padding geral para a tabela encostar nas bordas se necessário */
-    background-color: white;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
+/* =========================================
+   4. COMPONENTE: TABELA
+   ========================================= */
 .table-responsive { 
     width: 100%; 
     overflow-x: auto; 
@@ -123,12 +131,12 @@ table {
 }
 
 thead tr { 
-    background-color: #f8f9fa; /* Fundo cinza claro */
+    background-color: #f8f9fa;
     border-bottom: 2px solid #e9ecef; 
 }
 
 th { 
-    text-align: center; /* Centralizado padrão */
+    text-align: center;
     padding: 15px 20px;
     color: #666; 
     font-weight: 600; 
@@ -148,7 +156,10 @@ tr:last-child td {
     border-bottom: none; 
 }
 
-/* --- CORES ESPECÍFICAS DA NATUREZA --- */
+/* =========================================
+   5. UTILITIES & AÇÕES
+   ========================================= */
+/* Cores de Status */
 .status-pos {
     color: #22c55e;
     font-weight: 600;
@@ -159,7 +170,7 @@ tr:last-child td {
     font-weight: 600;
 }
 
-/* Botão Olho (Visualizar) */
+/* Botão de Visualizar (Ícone) */
 .btn-visualizar { 
     display: inline-flex; 
     align-items: center; 
@@ -176,10 +187,10 @@ tr:last-child td {
 .btn-visualizar:hover { 
     color: #485586; 
     background-color: #f0f2f5; 
-    transform: none; /* Estilo mais sóbrio */
+    transform: none;
 }
 
-/* Mensagem de vazio */
+/* Mensagem de estado vazio */
 .empty-msg { 
     text-align: center; 
     color: #999; 

@@ -1,18 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-
+from django.contrib.auth.models import User
 def login_view(request):
     if request.method == 'POST':
         username_or_email = request.POST.get('username')
         password = request.POST.get('password')
-        
-        # Tentar autenticar com username
-        user = authenticate(request, username=username_or_email, password=password)
-        
-        if user is None:
-            # Se não conseguiu com username, tentar com email
-            from django.contrib.auth.models import User
+        user = authenticate(request, username=username_or_email, password=password)# Tentar autenticar com username
+
+        if user is None:# Se não conseguiu com username, tentar com email
             try:
                 user_obj = User.objects.get(email=username_or_email)
                 user = authenticate(request, username=user_obj.username, password=password)
