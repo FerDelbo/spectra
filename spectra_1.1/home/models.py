@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 # --- MODELO 1: TURMA ---
 # Necessário para criar os botões (A TDS, B TDS) e vincular ao Professor
@@ -19,7 +20,8 @@ class Turma(models.Model):
     professor = models.ManyToManyField(User, verbose_name="Professores Responsáveis", related_name="turmas")
 
     def __str__(self):
-        return f"{self.get_serie_display()} - {self.turma}"
+        nome_colegio = self.colegio.colegio if self.colegio else "Sem Colégio"
+        return f"{nome_colegio} - {self.get_serie_display()} {self.turma}"
 
     class Meta:
         verbose_name = "Turma"
@@ -59,6 +61,16 @@ class Aluno(models.Model):
         if s >= 5: return "#007bff" # Azul
         if s >= 3: return "#ffc107" # Amarelo
         return "#dc3545" # Vermelho
+    
+    def clean(self):
+        # Verifica se a turma selecionada pertence ao mesmo colégio do aluno
+        if self.turma and self.colegio:
+            if self.turma.colegio != self.colegio:
+                raise ValidationError("A turma selecionada não pertence a este colégio.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean() # Chama a validação acima antes de salvar
+        super().save(*args, **kwargs)
 
 
 # --- MODELO 3: FO ---
