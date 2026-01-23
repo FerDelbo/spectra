@@ -1,5 +1,4 @@
 {% load static %}
-{% load grupo_tags %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -20,13 +19,6 @@
                 <a href="{% url 'minhas_turmas' %}" class="nav-btn">Minhas Turmas</a>
                 <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
                 <a href="{% url 'processo' %}" class="nav-btn active">Processo</a>
-                {% if request.user|has_group:"Pedagogo" or request.user|has_group:"Monitor" %}
-                    <li class="nav-item">
-                        <a href="{% url 'ranking_alunos' %}" class="nav-link">
-                            <i class="fas fa-trophy"></i> <span>Ranking</span>
-                        </a>
-                    </li>
-                {% endif %}
             </nav>
             <form method="post" action="{% url 'logout' %}" style="margin-top: auto;">
                 {% csrf_token %}

@@ -21,7 +21,6 @@ from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
 from maincard import views as maincard_views
-from home.ranking import views as ranking_views
 
 urlpatterns = [
     path('maincard/', include('maincard.urls')),
@@ -33,5 +32,4 @@ urlpatterns = [
     path('meus_fos/', include('home.meus_fos.urls')),
     path('minhas-turmas/', include('home.minhas_turmas.urls')),
     path('', maincard_views.index, name='landing'),
-    path('ranking/', ranking_views.ranking_alunos, name='ranking_alunos'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
