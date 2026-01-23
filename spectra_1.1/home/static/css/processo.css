@@ -1,5 +1,5 @@
 ﻿/* =========================================
-   1. CONFIGURAÇÕES GERAIS E VARIAVEIS
+   1. VARIÁVEIS & CONFIGURAÇÕES GLOBAIS
    ========================================= */
 :root {
     --primary-color: #2c3e50;
@@ -30,11 +30,10 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
-   
 }
 
 /* =========================================
-   2. LAYOUT PRINCIPAL (SIDEBAR E MAIN)
+   2. ESTRUTURA DE LAYOUT (SIDEBAR + MAIN)
    ========================================= */
 .layout {
     display: flex;
@@ -42,7 +41,7 @@ body {
     width: 100%;
 }
 
-/* --- Sidebar --- */
+/* --- Sidebar Container --- */
 .sidebar {
     width: 260px;
     background-color: #1a1a40;
@@ -55,6 +54,7 @@ body {
     flex-shrink: 0;
 }
 
+/* --- Elementos da Sidebar --- */
 .logo {
     font-size: 1.8rem;
     font-weight: 700;
@@ -118,7 +118,7 @@ body {
     color: #ff4c4c;
 }
 
-/* --- Main Content --- */
+/* --- Conteúdo Principal --- */
 .main-content {
     flex: 1;
     background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
@@ -146,13 +146,15 @@ body {
 }
 
 /* =========================================
-   3. COMPONENTES GERAIS (Alertas, Botões)
+   3. COMPONENTES UI GERAIS
    ========================================= */
+/* --- Alertas --- */
 .alert { padding: 15px; margin-bottom: 20px; border-radius: 8px; font-weight: 500; width: 100%; max-width: 950px; }
 .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
 .alert-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 .alert-info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
 
+/* --- Botões de Navegação --- */
 .back-arrow {
     position: relative;
     color: rgba(255,255,255,0.8);
@@ -163,15 +165,36 @@ body {
 }
 .back-arrow:hover { color: white; }
 
+.back-btn { 
+    color: var(--white); 
+    text-decoration: none; 
+    font-size: 1.5rem; 
+    transition: transform 0.2s; 
+}
+.back-btn:hover { transform: translateX(-5px); }
+
+/* --- Badges e Status --- */
+.badge { padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+.badge-pos { background: #e8f5e9; color: var(--success-color); }
+.badge-neg { background: #ffebee; color: var(--danger-color); }
+.badge-info { background: #e3f2fd; color: var(--accent-color); }
+.badge-status { background: #eee; color: #333; }
+.status-concluido { background: var(--success-color); color: white; }
+.status-em-andamento { background: var(--warning-color); color: white; }
+
+/* Textos coloridos */
+.status-pos { color: #22c55e; font-weight: 600; }
+.status-neg { color: #ef4444; font-weight: 600; }
+
 /* =========================================
-   4. TELA DE LISTAGEM (Data Card e Tabela)
+   4. MÓDULO: LISTAGEM E TABELAS
    ========================================= */
 .data-card {
     background: white;
     border-radius: 12px;
     width: 100%;
     max-width: 950px;
-    height: 80%; /* Ajuste conforme necessidade */
+    height: 80%;
     display: flex;
     flex-direction: column;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
@@ -179,7 +202,7 @@ body {
 }
 
 .data-card .card-header {
-    background-color: #485586; /* Cor do header da lista */
+    background-color: #485586;
     padding: 20px 30px;
     display: flex;
     align-items: center;
@@ -188,7 +211,7 @@ body {
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* --- Search e Filtros --- */
+/* --- Filtros e Pesquisa --- */
 .filter-form-container {
     display: flex;
     align-items: center;
@@ -234,7 +257,7 @@ body {
 
 .filter-btn:hover { background-color: #555; }
 
-/* Menu Dropdown */
+/* --- Menu Dropdown de Filtro --- */
 .filter-dropdown {
     display: none;
     position: absolute;
@@ -256,7 +279,7 @@ body {
 .filter-label { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 14px; color: #333; cursor: pointer; }
 .btn-apply { width: 100%; padding: 8px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
 
-/* --- Tabela --- */
+/* --- Tabelas --- */
 .table-responsive {
     flex: 1;
     overflow-y: auto;
@@ -293,9 +316,6 @@ td {
     vertical-align: middle;
 }
 
-.status-pos { color: #22c55e; font-weight: 600; }
-.status-neg { color: #ef4444; font-weight: 600; }
-
 .btn-visualizar {
     display: inline-flex;
     align-items: center;
@@ -309,7 +329,7 @@ td {
 .btn-visualizar:hover { color: #485586; background-color: #f0f0f0; }
 
 /* =========================================
-   5. TELA DE DETALHES (Ticket Card)
+   5. MÓDULO: DETALHES (TICKET CARD)
    ========================================= */
 .container { max-width: 900px; margin: 40px auto; padding: 0 20px; width: 100%; }
 
@@ -320,7 +340,6 @@ td {
     overflow: hidden;
 }
 
-/* Header Específico do Detalhe */
 .ticket-card .card-header {
     background-color: var(--primary-color);
     color: var(--white);
@@ -329,8 +348,6 @@ td {
 }
 
 .header-content { display: flex; align-items: center; gap: 20px; }
-.back-btn { color: var(--white); text-decoration: none; font-size: 1.5rem; transition: transform 0.2s; }
-.back-btn:hover { transform: translateX(-5px); }
 
 .student-profile { display: flex; align-items: center; gap: 15px; }
 
@@ -347,23 +364,14 @@ td {
 .meta-info { display: flex; gap: 30px; margin-top: 20px; font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
 .label { opacity: 0.7; margin-right: 5px; }
 
-/* Body do Detalhe */
+/* --- Corpo e Formulários --- */
 .card-body { padding: 30px; }
 
 .status-bar { display: flex; justify-content: space-between; margin-bottom: 25px; }
 
-.badge { padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
-.badge-pos { background: #e8f5e9; color: var(--success-color); }
-.badge-neg { background: #ffebee; color: var(--danger-color); }
-.badge-info { background: #e3f2fd; color: var(--accent-color); }
-.badge-status { background: #eee; color: #333; }
-.status-concluido { background: var(--success-color); color: white; }
-.status-em-andamento { background: var(--warning-color); color: white; }
-
 .divider { border: 0; border-top: 1px solid var(--gray-border); margin: 25px 0; }
 .section-title { font-size: 1.1rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
 
-/* Formulários de Edição */
 .field-group { margin-bottom: 20px; }
 .field-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--text-muted); }
 
@@ -384,6 +392,7 @@ td {
 }
 .textarea-edit { resize: vertical; }
 
+/* Ações do Formulário */
 .btn-save {
     background-color: var(--accent-color);
     color: white;
@@ -419,7 +428,7 @@ td {
 }
 
 /* =========================================
-   6. ANEXOS (Cards e Grid)
+   6. MÓDULO: ANEXOS (GRID & CARDS)
    ========================================= */
 .attachment-container, .attachment-grid {
     display: grid;
@@ -436,7 +445,7 @@ td {
     background: #fff;
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
-    height: 160px; /* Altura fixa para uniformidade */
+    height: 160px;
     display: flex;
     flex-direction: column;
 }
@@ -514,7 +523,41 @@ td {
 }
 
 /* =========================================
-   7. MODAIS
+   7. MÓDULO: RANKING & CLASSIFICAÇÃO
+   ========================================= */
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: white;
+}
+.rank-1 { background-color: #FFD700; box-shadow: 0 2px 5px rgba(255, 215, 0, 0.4); } /* Ouro */
+.rank-2 { background-color: #C0C0C0; box-shadow: 0 2px 5px rgba(192, 192, 192, 0.4); } /* Prata */
+.rank-3 { background-color: #CD7F32; box-shadow: 0 2px 5px rgba(205, 127, 50, 0.4); } /* Bronze */
+.rank-default { background-color: #e9ecef; color: #495057; }
+
+.score-display {
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.sort-link {
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+.sort-link:hover { color: #007bff; }
+
+/* =========================================
+   8. MODAIS E OVERLAYS
    ========================================= */
 .modal-view {
     display: none;
@@ -582,35 +625,3 @@ td {
     from {transform: scale(0.7)} 
     to {transform: scale(1)}
 }
-
-/* Estilos específicos para o Ranking */
-        .rank-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: white;
-        }
-        .rank-1 { background-color: #FFD700; box-shadow: 0 2px 5px rgba(255, 215, 0, 0.4); } /* Ouro */
-        .rank-2 { background-color: #C0C0C0; box-shadow: 0 2px 5px rgba(192, 192, 192, 0.4); } /* Prata */
-        .rank-3 { background-color: #CD7F32; box-shadow: 0 2px 5px rgba(205, 127, 50, 0.4); } /* Bronze */
-        .rank-default { background-color: #e9ecef; color: #495057; }
-        
-        .score-display {
-            font-weight: 800;
-            font-size: 1.1rem;
-        }
-
-        .sort-link {
-            color: inherit;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-        }
-        .sort-link:hover { color: #007bff; }

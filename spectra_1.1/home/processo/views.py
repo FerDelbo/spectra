@@ -239,9 +239,6 @@ def processo(request):
     if user_type == 'Monitor':
         fos = fos.filter(tipo='Disciplinar')
 
-    # Para professores, geralmente eles veem apenas o que ELES criaram.
-    # Se você quiser que o professor veja FOs de alunos dos colégios dele (mesmo criadas por outros),
-    # remova a linha abaixo. Se ele só pode ver as dele, mantenha.
     if user_type == 'Professor':
         fos = fos.filter(usuario=request.user)
 

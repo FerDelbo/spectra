@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Aluno, Turma
-
 from .models import FO
-# Create your views here.
+
 @login_required
 def home_view(request):
     fos_recentes = FO.objects.filter(usuario=request.user).order_by('-data_registro')[:5]

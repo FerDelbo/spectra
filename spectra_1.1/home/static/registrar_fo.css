@@ -1,15 +1,14 @@
-/* home/static/registrar_fo.css */
-
-/* --- CONFIGURAÇÕES GERAIS E FUNDO (Estilo Dark) --- */
+/* =========================================
+   1. RESET & BASE
+   ========================================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif; /* Fonte atualizada */
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
-    /* Mesmo degradê do Dashboard e Login */
     background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
     height: 100vh;
     margin: 0;
@@ -19,20 +18,31 @@ body {
     overflow-y: auto; /* Garante rolagem se a tela for pequena */
 }
 
-/* --- O CARTÃO PRINCIPAL (Estilo Clean) --- */
+/* =========================================
+   2. LAYOUT: CARD PRINCIPAL
+   ========================================= */
 .card-registro {
-    background: white; /* Fundo branco puro */
+    background: white;
     width: 700px;
-    border-radius: 12px; /* Arredondamento suave padrão */
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4); /* Sombra mais profunda */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     position: relative;
-    margin: 20px; /* Margem de segurança para telas menores */
+    margin: 20px;
 }
 
-/* --- CABEÇALHO DO CARD --- */
+.card-body {
+    padding: 30px 40px;
+    text-align: left;
+    background-color: white;
+    padding-bottom: 100px; /* Espaço extra para dropdowns */
+}
+
+/* =========================================
+   3. COMPONENTE: CABEÇALHO (HEADER)
+   ========================================= */
 .card-header {
-    background-color: #485586; /* Azul intermediário do tema */
+    background-color: #485586;
     color: white;
     padding: 20px 25px;
     display: flex;
@@ -47,7 +57,7 @@ body {
     font-size: 24px;
     margin-right: 10px;
     transition: color 0.2s;
-    display: flex; /* Centralizar ícone */
+    display: flex;
     align-items: center;
 }
 
@@ -56,9 +66,9 @@ body {
 }
 
 .avatar-circle {
-    width: 50px; /* Ajuste leve para proporção */
+    width: 50px;
     height: 50px;
-    background-color: #e2e8f0; /* Cinza claro suave */
+    background-color: #e2e8f0;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -88,29 +98,68 @@ body {
     font-size: 0.9rem;
 }
 
-/* --- CORPO DO FORMULÁRIO --- */
-.card-body {
-    padding: 30px 40px;
-    text-align: left;
-    background-color: white;
-    padding-bottom: 100px; /* Espaço extra para dropdowns abrirem para baixo */
-}
-
-/* Rótulos das seções */
+/* =========================================
+   4. COMPONENTE: FORMULÁRIO & INPUTS
+   ========================================= */
 .section-label {
     font-weight: 600;
-    color: #485586; /* Azul do tema */
+    color: #485586;
     font-size: 1rem;
     margin-bottom: 12px;
     display: block;
 }
 
-/* Grupo de botões */
+/* Inputs, Selects e Textareas Gerais */
+select, textarea, .titulo-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    color: #333;
+    background-color: #fcfcfc;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.titulo-input:focus,
+select:focus,
+textarea:focus {
+    border-color: #485586;
+    background-color: white;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Tratamento especial para Datalist/Opções longas */
+.titulo-select {
+    position: relative;
+    margin-bottom: 50px;
+    z-index: 10;
+}
+
+.titulo-select option,
+datalist option {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    word-break: break-all;
+}
+
+/* =========================================
+   5. COMPONENTE: BOTÕES DE OPÇÃO (RADIOS)
+   ========================================= */
 .btn-group-row {
     display: flex;
     gap: 15px;
     margin-bottom: 25px;
-    flex-wrap: wrap; /* Segurança para mobile */
+    flex-wrap: wrap;
 }
 
 /* Esconder o rádio padrão */
@@ -118,13 +167,13 @@ input[type="radio"] {
     display: none; 
 }
 
-/* Estilo dos Botões de Opção (Unselected) */
+/* Estilo padrão do botão (Não selecionado) */
 .btn-option {
     padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
-    border: 1px solid #ddd; /* Borda mais sutil */
+    border: 1px solid #ddd;
     background: #f8f9fa;
     color: #555;
     transition: all 0.2s ease;
@@ -139,99 +188,137 @@ input[type="radio"] {
     transform: translateY(-2px);
 }
 
-/* --- ESTADOS SELECIONADOS (Cores do Tema) --- */
+/* --- Estados Selecionados (Cores) --- */
 
-/* Natureza Positiva (Verde) */
+/* Natureza Positiva */
 input[id="nat_pos"]:checked + label { 
-    background: #dcfce7; /* Fundo verde bem claro */
+    background: #dcfce7;
     border-color: #22c55e; 
     color: #166534; 
     box-shadow: 0 2px 5px rgba(34, 197, 94, 0.2);
 }
 
-/* Natureza Negativa (Vermelho) */
+/* Natureza Negativa */
 input[id="nat_neg"]:checked + label { 
-    background: #fee2e2; /* Fundo vermelho bem claro */
+    background: #fee2e2;
     border-color: #ef4444; 
     color: #991b1b; 
     box-shadow: 0 2px 5px rgba(239, 68, 68, 0.2);
 }
 
-/* Tipo (Azul do Tema) */
+/* Tipo (Genérico/Azul) */
 input[name="tipo"]:checked + label {
-    background: #e0e7ff; /* Azul bem claro */
+    background: #e0e7ff;
     border-color: #485586; 
     color: #1a1a40;
     font-weight: 600;
     box-shadow: 0 2px 5px rgba(72, 85, 134, 0.2);
 }
 
-/* Ícones simulados */
+/* Ícones decorativos */
 .icon-plus::before { content: "+"; font-weight: bold; }
 .icon-close::before { content: "×"; font-weight: bold; font-size: 1.2rem; }
 
-/* Inputs e Selects */
-select, textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ccc;
+/* =========================================
+   6. COMPONENTE: RODAPÉ & AÇÕES
+   ========================================= */
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.btn-enviar {
+    background-color: #1a1a40;
+    color: #ffffff;
+    padding: 12px 35px;
+    border: none;
     border-radius: 8px;
-    margin-bottom: 20px;
-    font-family: 'Poppins', sans-serif; /* Força a fonte nos inputs */
-    font-size: 0.95rem;
-    color: #333;
-    background-color: #fcfcfc;
-    outline: none;
-    transition: border-color 0.3s;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.titulo-select option {
-    word-wrap: break-word;
-    white-space: normal;
-    overflow-wrap: break-word;
-    max-width: 100%;
-    word-break: break-all;
+.btn-enviar:hover { 
+    background-color: #485586;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
 
-.titulo-select {
-    position: relative;
-    margin-bottom: 50px; /* Espaço extra para o dropdown abrir para baixo */
-    z-index: 10;
+/* =========================================
+   7. COMPONENTE: MENSAGENS FLUTUANTES (ALERTS)
+   ========================================= */
+.messages-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 300px;
 }
 
-.titulo-input {
-    width: 100%;
-    min-width: 300px; /* Largura mínima para caber textos longos */
-    padding: 12px 15px;
-    border: 1px solid #ccc;
+.alert {
+    padding: 15px 20px;
     border-radius: 8px;
-    margin-bottom: 20px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.95rem;
-    color: #333;
-    background-color: #fcfcfc;
-    outline: none;
-    transition: border-color 0.3s;
-    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: sans-serif;
+    font-size: 14px;
+    opacity: 1;
+    transition: opacity 0.5s, transform 0.5s;
+    border-left: 5px solid #ccc;
 }
 
-.titulo-input:focus {
-    border-color: #485586;
-    background-color: white;
+.alert-icon {
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
 }
 
-datalist option {
-    white-space: normal;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+/* Variantes de cor */
+.alert.success {
+    border-left-color: #28a745;
+    background-color: #d4edda;
+    color: #155724;
+}
+.alert.success .alert-icon {
+    background-color: #28a745;
+    color: white;
 }
 
-textarea {
-    resize: vertical; /* Permite redimensionar apenas verticalmente */
-    min-height: 100px;
+.alert.error, .alert.danger {
+    border-left-color: #dc3545;
+    background-color: #f8d7da;
+    color: #721c24;
+}
+.alert.error .alert-icon {
+    background-color: #dc3545;
+    color: white;
 }
 
-/* --- ANIMAÇÕES --- */
+.alert.warning {
+    border-left-color: #ffc107;
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* =========================================
+   8. ANIMAÇÕES & ESTADOS
+   ========================================= */
 .hidden-step { 
     display: none; 
     opacity: 0; 
@@ -245,104 +332,4 @@ textarea {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- RODAPÉ / BOTÃO ENVIAR --- */
-.form-footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-    padding-top: 20px;
-    border-top: 1px solid #f0f0f0;
-}
-
-.btn-enviar {
-    background-color: #1a1a40; /* Botão principal escuro (Sidebar color) */
-    color: #ffffff;
-    padding: 12px 35px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.btn-enviar:hover { 
-    background-color: #485586; /* Fica mais claro no hover */
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-}
-
-/* --- MENSAGENS FLUTUANTES --- */
-/* registrar_fo.css */
-
-/* Container fixo para as mensagens ficarem sobrepostas */
-.messages-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 9999; /* Garante que fique acima de tudo */
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    min-width: 300px;
-}
-
-/* Estilo base do alerta */
-.alert {
-    padding: 15px 20px;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: sans-serif;
-    font-size: 14px;
-    opacity: 1; /* Necessário para a animação de saída funcionar */
-    transition: opacity 0.5s, transform 0.5s;
-    border-left: 5px solid #ccc;
-}
-
-/* Ícone */
-.alert-icon {
-    font-weight: bold;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-}
-
-/* Cores para Sucesso (success) */
-.alert.success {
-    border-left-color: #28a745;
-    background-color: #d4edda;
-    color: #155724;
-}
-.alert.success .alert-icon {
-    background-color: #28a745;
-    color: white;
-}
-
-/* Cores para Erro (error/danger) */
-.alert.error, .alert.danger {
-    border-left-color: #dc3545;
-    background-color: #f8d7da;
-    color: #721c24;
-}
-.alert.error .alert-icon {
-    background-color: #dc3545;
-    color: white;
-}
-
-/* Cores para Aviso (warning) */
-.alert.warning {
-    border-left-color: #ffc107;
-    background-color: #fff3cd;
-    color: #856404;
 }

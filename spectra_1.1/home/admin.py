@@ -1,9 +1,6 @@
 from django.contrib import admin
 from .models import Aluno, FO, Turma, Colegio
 
-# @admin.register já faz o registro automaticamente
-# Não precisa usar admin.site.register() lá embaixo
-
 @admin.register(Aluno)
 class AlunoAdmin(admin.ModelAdmin):
     list_display = ('nome', 'matricula', 'turma')
@@ -12,21 +9,12 @@ class AlunoAdmin(admin.ModelAdmin):
 
 @admin.register(Turma)
 class TurmaAdmin(admin.ModelAdmin):
-    # ERRO ANTIGO: list_display = ('turma', 'serie', 'professor') 
-    # OCORRIA PORQUE 'professor' AGORA É UMA LISTA, NÃO UM ÚNICO NOME.
-    
-    # SOLUÇÃO: Usar a função 'ver_professores' criada abaixo
     list_display = ('serie', 'turma', 'ver_professores')
+    search_fields = ('serie', 'turma', 'professor__first_name')# Adicione a busca para facilitar
     
-    # Adicione a busca para facilitar
-    search_fields = ('serie', 'turma', 'professor__first_name')
-
-    # Esta função transforma a lista de professores em um texto único (ex: "Ana, João")
-    def ver_professores(self, obj):
-        # Pega todos os professores daquela turma
-        lista = obj.professor.all()
-        # Junta os nomes com vírgula
-        return ", ".join([p.first_name for p in lista])
+    def ver_professores(self, obj):# Esta função transforma a lista de professores em um texto único (ex: "Ana, João")
+        lista = obj.professor.all() # Pega todos os professores daquela turma
+        return ", ".join([p.first_name for p in lista]) # Junta os nomes com vírgula
     
     ver_professores.short_description = "Professores"
 

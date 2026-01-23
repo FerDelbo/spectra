@@ -70,6 +70,10 @@
                                     <input type="checkbox" class="filter-checkbox" name="status" value="Concluído" 
                                     {% if 'Concluído' in request.GET.status_list %}checked{% endif %}> Concluído
                                 </label>
+                                                                <label class="filter-label">
+                                    <input type="checkbox" class="filter-checkbox" name="status" value="Anulado" 
+                                    {% if 'Anulado' in request.GET.status_list %}checked{% endif %}> Anulado
+                                </label>
                             </div>
 
                             <div class="filter-group">

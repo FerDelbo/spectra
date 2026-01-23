@@ -47,11 +47,7 @@ class Aluno(models.Model):
     @property
     def score(self):
         nota_atual = 5.0
-        
-        # --- ALTERAÇÃO AQUI ---
-        # Antes: for fo in self.fo_set.all(): (Pegava tudo)
-        # Agora: Usamos .filter(status='Concluído')
-        # Isso ignora automaticamente 'Em aberto', 'Em andamento' e 'Anulado'
+
         for fo in self.fo_set.filter(status='Concluído'):
             nota_atual += fo.pontos
             
@@ -184,21 +180,17 @@ class FO(models.Model):
 
     @property
     def score_cor(self):
-        s = self.score # Nota: O modelo FO não tem 'score', isso daria erro. O 'score' é do Aluno.
-        # Se você quiser a cor da pontuação individual da FO, teria que fazer lógica baseada em self.pontos.
-        # Vou assumir que você queria usar a cor baseada no score do ALUNO, mas aqui dentro não temos acesso direto ao score total sem acessar self.aluno.score
-        # Se for para colorir o valor da FO (ex: -0.25 vermelho, +0.25 verde):
+        s = self.score 
         p = self.pontos
         if p > 0: return "#28a745"
         if p < 0: return "#dc3545"
-        return "#6c757d" # Cinza para 0
+        return "#6c757d" 
 
-    # Novos campos para sistema de chamado
     STATUS_CHOICES = [
         ('Em aberto', 'Em aberto'),
         ('Em andamento', 'Em andamento'),
         ('Concluído', 'Concluído'),
-        ('Anulado', 'Anulado') # Opção Anulado já presente
+        ('Anulado', 'Anulado') 
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Em aberto', verbose_name="Status")
     responsavel = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='fo_responsavel', verbose_name="Responsável")
@@ -231,7 +223,6 @@ class FO(models.Model):
                 self.colegio = self.aluno.colegio
         
         mapa_de_pesos = {
-            # ... (Mantive o mapa de pesos igual para economizar espaço, ele não muda) ...
             # --- POSITIVOS ---
             'Cumpriu ativamente com todas as atribuições, quando Chefe de Turma e ou Subchefe de Turma': 'bom',
             'Apresentou-se como voluntário para participar de atividade extra curricular representando o colégio': 'bom',
