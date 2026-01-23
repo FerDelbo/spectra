@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -20,7 +21,7 @@
                 <a href="{% url 'minhas_turmas' %}" class="nav-btn">Minhas Turmas</a>
                 <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
                 <a href="{% url 'processo' %}" class="nav-btn">Processo</a>
-            </nav>
+                </nav>
 
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
@@ -79,7 +80,7 @@
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="6" style="text-align: center; padding: 40px; color: #999; font-style: italic;">
+                                <td colspan="7" style="text-align: center; padding: 40px; color: #999; font-style: italic;">
                                     Nenhum F.O. registrado recentemente.
                                 </td>
                             </tr>

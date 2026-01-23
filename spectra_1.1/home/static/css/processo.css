@@ -582,3 +582,35 @@ td {
     from {transform: scale(0.7)} 
     to {transform: scale(1)}
 }
+
+/* Estilos específicos para o Ranking */
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+        }
+        .rank-1 { background-color: #FFD700; box-shadow: 0 2px 5px rgba(255, 215, 0, 0.4); } /* Ouro */
+        .rank-2 { background-color: #C0C0C0; box-shadow: 0 2px 5px rgba(192, 192, 192, 0.4); } /* Prata */
+        .rank-3 { background-color: #CD7F32; box-shadow: 0 2px 5px rgba(205, 127, 50, 0.4); } /* Bronze */
+        .rank-default { background-color: #e9ecef; color: #495057; }
+        
+        .score-display {
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .sort-link {
+            color: inherit;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .sort-link:hover { color: #007bff; }
