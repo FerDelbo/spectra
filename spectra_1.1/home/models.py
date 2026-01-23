@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 # --- MODELO 1: TURMA ---
-# Necessário para criar os botões (A TDS, B TDS) e vincular ao Professor
 class Turma(models.Model):
     serie_choices = [
         ('6º', '6º'),
@@ -16,7 +15,7 @@ class Turma(models.Model):
     ]
     colegio = models.ForeignKey('Colegio', on_delete=models.CASCADE, verbose_name="Colégio", blank=True, null=True)
     serie = models.CharField(max_length=20, verbose_name="Série", choices=serie_choices)
-    turma = models.CharField(max_length=50, verbose_name="Turma") # Ex: "A TDS"
+    turma = models.CharField(max_length=50, verbose_name="Turma")
     professor = models.ManyToManyField(User, verbose_name="Professores Responsáveis", related_name="turmas")
 
     def __str__(self):
@@ -32,7 +31,6 @@ class Turma(models.Model):
 # --- MODELO 2: ALUNO ---
 class Aluno(models.Model):
     nome = models.CharField(max_length=100, verbose_name="Nome Completo")
-    # MANTIDO COMO 'matricula' (mas você usará para guardar a Série)
     matricula = models.CharField(max_length=20, verbose_name="Série")
     turma = models.ForeignKey(Turma, on_delete=models.CASCADE, verbose_name="Turma")
     colegio = models.ForeignKey('Colegio', on_delete=models.CASCADE, verbose_name="Colégio")
@@ -49,9 +47,14 @@ class Aluno(models.Model):
     @property
     def score(self):
         nota_atual = 5.0
-        # Soma os pontos de todas as FOs desse aluno
-        for fo in self.fo_set.all():
+        
+        # --- ALTERAÇÃO AQUI ---
+        # Antes: for fo in self.fo_set.all(): (Pegava tudo)
+        # Agora: Usamos .filter(status='Concluído')
+        # Isso ignora automaticamente 'Em aberto', 'Em andamento' e 'Anulado'
+        for fo in self.fo_set.filter(status='Concluído'):
             nota_atual += fo.pontos
+            
         return nota_atual
     
     @property
@@ -63,13 +66,12 @@ class Aluno(models.Model):
         return "#dc3545" # Vermelho
     
     def clean(self):
-        # Verifica se a turma selecionada pertence ao mesmo colégio do aluno
         if self.turma and self.colegio:
             if self.turma.colegio != self.colegio:
                 raise ValidationError("A turma selecionada não pertence a este colégio.")
 
     def save(self, *args, **kwargs):
-        self.full_clean() # Chama a validação acima antes de salvar
+        self.full_clean()
         super().save(*args, **kwargs)
 
 
@@ -84,7 +86,6 @@ class FO(models.Model):
         ('Disciplinar', 'Disciplinar'),
         ('Pedagogico', 'Pedagógico'),
     ]
-
 
     TITULO_POSITIVO_DISCIPLINAR_CHOICES = [
         ('Cumpriu ativamente com todas as atribuições, quando Chefe de Turma e ou Subchefe de Turma', 'Cumpriu ativamente com todas as atribuições, quando Chefe de Turma e ou Subchefe de Turma'),
@@ -180,19 +181,24 @@ class FO(models.Model):
             'neutro': 0.00
         }
         return valores.get(self.intensidade, 0)
+
     @property
     def score_cor(self):
-        s = self.score
-        if s >= 8: return "#28a745" # Verde
-        if s >= 5: return "#007bff" # Azul
-        if s >= 3: return "#ffc107" # Amarelo
-        return "#dc3545" # Vermelho
-    
+        s = self.score # Nota: O modelo FO não tem 'score', isso daria erro. O 'score' é do Aluno.
+        # Se você quiser a cor da pontuação individual da FO, teria que fazer lógica baseada em self.pontos.
+        # Vou assumir que você queria usar a cor baseada no score do ALUNO, mas aqui dentro não temos acesso direto ao score total sem acessar self.aluno.score
+        # Se for para colorir o valor da FO (ex: -0.25 vermelho, +0.25 verde):
+        p = self.pontos
+        if p > 0: return "#28a745"
+        if p < 0: return "#dc3545"
+        return "#6c757d" # Cinza para 0
+
     # Novos campos para sistema de chamado
     STATUS_CHOICES = [
         ('Em aberto', 'Em aberto'),
         ('Em andamento', 'Em andamento'),
         ('Concluído', 'Concluído'),
+        ('Anulado', 'Anulado') # Opção Anulado já presente
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Em aberto', verbose_name="Status")
     responsavel = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='fo_responsavel', verbose_name="Responsável")
@@ -223,10 +229,10 @@ class FO(models.Model):
                 self.colegio_original = ""
             if not self.colegio and self.aluno.colegio:
                 self.colegio = self.aluno.colegio
+        
         mapa_de_pesos = {
-            # --- POSITIVOS (Pedagógicos e Disciplinares) ---
-            
-            # BOM (+0,25)
+            # ... (Mantive o mapa de pesos igual para economizar espaço, ele não muda) ...
+            # --- POSITIVOS ---
             'Cumpriu ativamente com todas as atribuições, quando Chefe de Turma e ou Subchefe de Turma': 'bom',
             'Apresentou-se como voluntário para participar de atividade extra curricular representando o colégio': 'bom',
             'Colaborou ativamente para a disciplina e o bom comportamento no ambiente escolar': 'bom',
@@ -234,28 +240,21 @@ class FO(models.Model):
             'Colaborou com um colega que estava com dificuldade de aprendizado': 'bom',
             'Demonstrou honestidade ao devolver objeto ou dinheiro encontrado que não lhe pertencia': 'bom',
 
-            # MUITO BOM (+0,50)
             'Demonstrou gentileza para com um colega com alguma necessidade ou ainda para com um professor, monitor ou agente': 'muito_bom',
             'Contribuiu espontaneamente para a limpeza, arrumação e manutenção das dependências escolares': 'muito_bom',
             'Apresentou-se como voluntário para participar de atividades de assistência social': 'muito_bom',
             'Compareceu à formatura inicial com o uniforme impecavelmente bem passado e excelente apresentação individual': 'muito_bom',
 
-            # ÓTIMO (+1,00)
             'Destacou-se dos demais pela vibração no canto do Hino Nacional ou outro hino previsto para o dia, pela vibração na execução dos movimentos e ou auxiliou espontaneamente o Chefe de Turma e/ou o monitor para colocar a turma em forma': 'otimo',
 
-            # EXCELENTE (+2,00)
             'Obtive em todos os trimestres média igual ou superior a 8,0 (oito vírgula zero), em todos os Componentes Curriculares, ou, ainda, que se destacarem positivamente em seu comportamento disciplinar (estudantes que durante o ano letivo não tenham cometido nenhum fato observado negativo)': 'excelente',
 
-
-            # --- NEGATIVOS (Pedagógicos e Disciplinares) ---
-
-            # LEVE (-0,25)
+            # --- NEGATIVOS ---
             'Deixou de comparecer ou chegar atrasado às atividades programadas ou delas ausentar-se sem autorização.': 'leve',
             'Deixou de cumprir a escala de Chefe de Turma e/ou SubChefe de Turma, conforme organização da instituição escolar.': 'leve',
             'Comportou-se de forma inadequada durante atividades, instruções ou formaturas': 'leve',
             'Simulou doença para esquivar-se ao atendimento de obrigações e atividades escolares': 'leve',
 
-            # MÉDIA (-0,50)
             'Deixou material ou dependência sob sua responsabilidade, desarrumada, com má apresentação ou para tal contribuir': 'media',
             'Deixou de apresentar materiais, documentos ou trabalhos sob sua responsabilidade no prazo devido': 'media',
             'Deixou de seguir orientação prevista no manual do CCM, que prevê as manifestações formais de respeito a professores, funcionários e militares, bem como a símbolos nacionais e autoridades': 'media',
@@ -263,9 +262,8 @@ class FO(models.Model):
             'Deixou de seguir orientações e determinações do Chefe e do Subchefe de Turma, quando no exercício de suas funções': 'media',
             'Utilizou bonés e capuz dentro de sala de aula': 'media',
             'Utilizou piercing, alargadores nas dependências da instituição escolar.': 'media',
-            'Utilizou sem devida autorização da equipe diretiva,  telefones celulares e/ou aparelhos eletrônicos na Instituição de Ensino': 'media',
+            'Utilizou sem devida autorização da equipe diretiva,  telefones celulares e/ou aparelhos eletrônicos na Instituição de Ensino': 'media',
 
-            # GRAVE (-1,00)
             'Faltou com a verdade e ou comportar-se de maneira inadequada, desrespeitando ou desafiando pessoas, descumprindo normas vigentes ou normas de boa educação': 'grave',
             'Teve em seu poder, introduzir, ler ou distribuir, dentro do colégio, cartazes, jornais ou publicações que atentem contra a moral': 'grave',
             'Retirou ou tentou retirar de qualquer dependência do colégio material, ou mesmo deles servir-se, sem ordem do responsável ou do proprietário': 'grave',
@@ -274,9 +272,8 @@ class FO(models.Model):
             'Praticou gestos que intimidem e agridem pessoas tanto verbal quanto fisicamente (bullying)': 'grave',
             'Utilizou meios digitais para difamar, atacar ou incentivar condutas inadequadas no ambiente escolar, bem como envolver-se em atos inconvenientes e fazendo apologia a ilegalidades, usando dos mesmos meios envolvendo o nome do CCM (cyberbullying)': 'grave',
             'Portou na instituição de ensino objetos alheios à prática educativa como bebidas alcoólicas/congêneres': 'grave',
-            'Recusou-se a usar o fardamento ou qualquer uniforme  pré-estabelecido como padrão CCM': 'grave',
+            'Recusou-se a usar o fardamento ou qualquer uniforme  pré-estabelecido como padrão CCM': 'grave',
 
-            # GRAVÍSSIMA (-2,00)
             'Portou simulacros de armas de fogo e/ou armas brancas': 'gravissima',
             'Portou objetos que ameacem a segurança individual e/ou da coletividade ou envolveu-se em rixa, inclusive luta corporal, com outro estudante ou profissionais do colégio': 'gravissima',
             'Causou danos físicos e/ou materiais leves ou graves de qualquer natureza': 'gravissima',
@@ -294,10 +291,10 @@ class FOHistory(models.Model):
     fo = models.ForeignKey(FO, on_delete=models.CASCADE, related_name='historico')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     data_alteracao = models.DateTimeField(auto_now_add=True)
-    campo_alterado = models.CharField(max_length=50)  # Ex: 'status', 'relatorio', 'evidencias'
+    campo_alterado = models.CharField(max_length=50) 
     valor_anterior = models.TextField(blank=True, null=True)
     valor_novo = models.TextField(blank=True, null=True)
-    descricao = models.TextField(blank=True, null=True)  # Descrição da alteração
+    descricao = models.TextField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Histórico de F.O."

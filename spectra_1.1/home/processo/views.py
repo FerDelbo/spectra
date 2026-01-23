@@ -66,7 +66,7 @@ def processo_detalhes(request, fo_id):
 
     # 3. Lógica de permissão de edição
     can_treat = False
-    if fo.status != 'Concluído':
+    if fo.status != 'Concluído' and fo.status != 'Anulado':
         if user_type == 'Pedagogo' or (user_type == 'Monitor' and fo.tipo == 'Disciplinar'):
             can_treat = True
 
