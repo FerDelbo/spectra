@@ -25,7 +25,6 @@ jobs:
 
         local-dir: ./spectra_1.1/
 
-        protocol: ftp
         
         exclude: |
           **/.git*
