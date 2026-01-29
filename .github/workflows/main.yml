@@ -18,7 +18,7 @@ jobs:
       with:
         # Verifique se no GitHub Secrets você escreveu em MAIÚSCULO ou minúsculo
         server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
+        username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASSWORD }}
         
         server-dir: /public_html/spectra_1.1/
