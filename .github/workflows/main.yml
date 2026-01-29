@@ -1,0 +1,34 @@
+name: 🚀 Deploy website on push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+    
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        # Verifique se no GitHub Secrets você escreveu em MAIÚSCULO ou minúsculo
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        
+        server-dir: /public_html/spectra_1.1/
+
+        local-dir: ./spectra/spectra_1.1/
+
+        protocol: ftp
+        
+        exclude: |
+          **/.git*
+          **/.github*
+          **/node_modules/**
+          README.md
