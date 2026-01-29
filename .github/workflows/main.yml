@@ -25,9 +25,12 @@ jobs:
 
         local-dir: ./spectra_1.1/
 
-        
+        protocol: ftp
+
         exclude: |
           **/.git*
           **/.github*
           **/node_modules/**
           README.md
+          **/venv/**
+          **/*.log
