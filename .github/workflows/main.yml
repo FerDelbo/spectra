@@ -23,7 +23,7 @@ jobs:
         
         server-dir: /public_html/spectra_1.1/
 
-        local-dir: ./spectra/spectra_1.1/
+        local-dir: ./spectra_1.1/
 
         protocol: ftp
         
