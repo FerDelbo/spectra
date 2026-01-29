@@ -17,4 +17,4 @@ jobs:
         server: ${{ secrets.ftp_server }}
         username: ${{ secrets.ftp_user }}
         password: ${{ secrets.ftp_password }}
-        server-dir: public_html/spectra_1.1
+        server-dir: public_html/spectra_1.1/
