@@ -34,3 +34,5 @@ jobs:
           README.md
           **/venv/**
           **/*.log
+          .htaccess
+          passenger_wsgi.py
