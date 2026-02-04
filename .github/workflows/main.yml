@@ -31,13 +31,3 @@ jobs:
           touch tmp/restart.txt
           
           echo "✅ Deploy Finalizado com Sucesso!"
-
-        exclude: |
-          **/.git*
-          **/.github*
-          **/node_modules/**
-          README.md
-          **/venv/**
-          **/*.log
-          .htaccess
-          passenger_wsgi.py
