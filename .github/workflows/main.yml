@@ -15,9 +15,8 @@ jobs:
     - name: 📡 Executar comandos no VPS
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.HOST_IP }}      
+        host: ${{ secrets.FTP_SERVER }}      
         username: ${{ secrets.HOST_USER }} 
-        server: ${{ secrets.FTP_SERVER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
