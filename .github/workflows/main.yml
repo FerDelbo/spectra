@@ -1,31 +1,35 @@
-name: 🚀 Deploy website on push
+name: 🚀 Deploy via SSH (VPS)
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  web-deploy:
+  deploy:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Get latest code
+    - name: 🚚 Obter código
       uses: actions/checkout@v4
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+
+    - name: 📡 Executar comandos no VPS
+      uses: appleboy/ssh-action@v1.0.3
       with:
-        # Verifique se no GitHub Secrets você escreveu em MAIÚSCULO ou minúsculo
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USER }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        
-        server-dir: /public_html/spectra_1.1/
-
-        local-dir: ./spectra_1.1/
-
-        protocol: ftp
+        host: ${{ secrets.HOST_IP }}      # IP do seu VPS
+        username: ${{ secrets.HOST_USER }} # Seu usuário (root ou o do cPanel)
+        key: ${{ secrets.SSH_PRIVATE_KEY }} # A chave que criamos
+        port: 22
+        script: |
+          cd /home/utiusys/public_html/spectra_1.1
+          git pull origin main
+          source venv/bin/activate
+          pip install -r requirements.txt
+          python manage.py collectstatic --noinput
+          python manage.py migrate
+          mkdir -p tmp
+          touch tmp/restart.txt
+          
+          echo "✅ Deploy Finalizado com Sucesso!"
 
         exclude: |
           **/.git*
