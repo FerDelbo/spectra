@@ -27,8 +27,16 @@ SECRET_KEY = 'django-insecure-4eu1lxrq2=vmj@e#lbyk2x55s+b)996j74@$j4$#oi+a=lkwq0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS')
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://utiusys.com.br',
+    'https://www.utiusys.com.br',
+]
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
 
 # Application definition
 
