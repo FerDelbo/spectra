@@ -15,9 +15,10 @@ jobs:
     - name: 📡 Executar comandos no VPS
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.HOST_IP }}      # IP do seu VPS
-        username: ${{ secrets.HOST_USER }} # Seu usuário (root ou o do cPanel)
-        key: ${{ secrets.SSH_PRIVATE_KEY }} # A chave que criamos
+        host: ${{ secrets.HOST_IP }}      
+        username: ${{ secrets.HOST_USER }} 
+        server: ${{ secrets.FTP_SERVER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
           cd /home/utiusys/public_html/spectra_1.1
