@@ -20,7 +20,7 @@ jobs:
         username: ${{ secrets.FTP_USER }} 
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        port: 2222
+        port: 22022
         debug: true
         script: |
           cd /home/utiusys/public_html/spectra_1.1
