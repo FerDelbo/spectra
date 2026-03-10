@@ -3,6 +3,7 @@ name: 🚀 Deploy via SSH (VPS)
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   deploy:
