@@ -20,7 +20,8 @@ jobs:
         username: ${{ secrets.HOST_USER }} 
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        port: 22
+        port: 2222
+        debug: true
         script: |
           cd /home/utiusys/public_html/spectra_1.1
           git pull origin main
