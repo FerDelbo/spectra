@@ -23,7 +23,7 @@ jobs:
         script_stop: true
         script: |
           cd /home/wwutiu/utiusys.com.br/GTX1650/public_html/spectra_1.1
-          git pull origin main
+          git pull origin main || (git init && git remote add origin https://github.com/FerDelbo/spectra.git && git pull origin main)
           source venv/bin/activate
           pip install -r requirements.txt
           python manage.py collectstatic --noinput
