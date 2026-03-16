@@ -17,19 +17,23 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ENV_PATH = BASE_DIR.parent.parent / '.env'
-if ENV_PATH.exists():
-    config = Config(RepositoryEnv(str(ENV_PATH)))
+ENV_PATH = os.path.join(BASE_DIR.parent.parent, '.env')
+if os.path.exists(ENV_PATH):
+    config = Config(RepositoryEnv(ENV_PATH))
 else:
-    from decouple import config
+    from decouple import config config
 
 config = Config(RepositoryEnv(ENV_PATH))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
+raw_allowed_hosts = config('ALLOWED_HOSTS', default='localhost,127.0.0.1')
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=Csv())
-
-print(f"\n>>> DEBUG: ALLOWED_HOSTS carregado como: {ALLOWED_HOSTS} (Tipo: {type(ALLOWED_HOSTS)})\n")
+if isinstance(raw_allowed_hosts, str):
+    ALLOWED_HOSTS = [host.strip() for host in raw_allowed_hosts.split(',') if host.strip()]
+else:
+    ALLOWED_HOSTS = raw_allowed_hosts
+if not ALLOWED_HOSTS:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://utiusys.com.br',
