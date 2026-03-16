@@ -24,7 +24,8 @@ config = Config(RepositoryEnv(ENV_PATH))
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+raw_hosts = config('ALLOWED_HOSTS', default='localhost,127.0.0.1')
+ALLOWED_HOSTS = [host.strip() for host in raw_hosts.split(',') if host.strip()]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://utiusys.com.br',
