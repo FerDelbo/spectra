@@ -26,14 +26,13 @@ else:
 config = Config(RepositoryEnv(ENV_PATH))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-raw_allowed_hosts = config('ALLOWED_HOSTS', default='localhost,127.0.0.1')
-
-if isinstance(raw_allowed_hosts, str):
-    ALLOWED_HOSTS = [host.strip() for host in raw_allowed_hosts.split(',') if host.strip()]
+raw_hosts = config('ALLOWED_HOSTS', default='127.0.0.1')
+if isinstance(raw_hosts, str):
+    ALLOWED_HOSTS = [h.strip() for h in raw_hosts.split(',') if h.strip()]
 else:
-    ALLOWED_HOSTS = raw_allowed_hosts
-if not ALLOWED_HOSTS:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+    ALLOWED_HOSTS = list(raw_hosts)
+if not isinstance(ALLOWED_HOSTS, (list, tuple)):
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://utiusys.com.br',
