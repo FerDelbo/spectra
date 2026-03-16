@@ -16,24 +16,25 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# Caminho absoluto para evitar erro de interpretação
+ENV_PATH = os.path.abspath(os.path.join(BASE_DIR, '..', '..', '.env'))
 
-ENV_PATH = os.path.join(BASE_DIR.parent.parent, '.env')
 if os.path.exists(ENV_PATH):
     config = Config(RepositoryEnv(ENV_PATH))
+    print(f"✅ Arquivo .env encontrado em: {ENV_PATH}")
 else:
-    from decouple import config config
+    from decouple import config
+    print(f"⚠️ Arquivo .env NÃO encontrado em: {ENV_PATH}. Usando defaults.")
 
-config = Config(RepositoryEnv(ENV_PATH))
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-raw_hosts = config('ALLOWED_HOSTS', default='127.0.0.1')
-if isinstance(raw_hosts, str):
-    ALLOWED_HOSTS = [h.strip() for h in raw_hosts.split(',') if h.strip()]
+# Forçamos a conversão para lista aqui
+raw_value = config('ALLOWED_HOSTS', default='127.0.0.1')
+
+if isinstance(raw_value, str):
+    ALLOWED_HOSTS = [h.strip() for h in raw_value.split(',') if h.strip()]
 else:
-    ALLOWED_HOSTS = list(raw_hosts)
-if not isinstance(ALLOWED_HOSTS, (list, tuple)):
-    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+    ALLOWED_HOSTS = list(raw_value)
 
+print(f"🚀 ALLOWED_HOSTS final: {ALLOWED_HOSTS} | Tipo: {type(ALLOWED_HOSTS)}")
 CSRF_TRUSTED_ORIGINS = [
     'https://utiusys.com.br',
     'https://www.utiusys.com.br',
