@@ -18,14 +18,18 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 ENV_PATH = BASE_DIR.parent.parent / '.env'
+if ENV_PATH.exists():
+    config = Config(RepositoryEnv(str(ENV_PATH)))
+else:
+    from decouple import config
 
 config = Config(RepositoryEnv(ENV_PATH))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=Csv())
 
-raw_hosts = config('ALLOWED_HOSTS', default='localhost,127.0.0.1')
-ALLOWED_HOSTS = [host.strip() for host in raw_hosts.split(',') if host.strip()]
+print(f"\n>>> DEBUG: ALLOWED_HOSTS carregado como: {ALLOWED_HOSTS} (Tipo: {type(ALLOWED_HOSTS)})\n")
 
 CSRF_TRUSTED_ORIGINS = [
     'https://utiusys.com.br',
