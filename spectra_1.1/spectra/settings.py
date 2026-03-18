@@ -32,7 +32,6 @@ if isinstance(raw_value, str):
 else:
     ALLOWED_HOSTS = list(raw_value)
 
-print(f"🚀 ALLOWED_HOSTS final: {ALLOWED_HOSTS} | Tipo: {type(ALLOWED_HOSTS)}")
 CSRF_TRUSTED_ORIGINS = [
     'https://utiusys.com.br',
     'https://www.utiusys.com.br',
