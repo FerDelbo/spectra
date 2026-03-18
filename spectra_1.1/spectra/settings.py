@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config, Csv, RepositoryEnv
+from decouple import config, Csv, RepositoryEnv, Config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,10 +21,8 @@ ENV_PATH = os.path.abspath(os.path.join(BASE_DIR, '..', '..', '.env'))
 
 if os.path.exists(ENV_PATH):
     config = Config(RepositoryEnv(ENV_PATH))
-    print(f"✅ Arquivo .env encontrado em: {ENV_PATH}")
 else:
     from decouple import config
-    print(f"⚠️ Arquivo .env NÃO encontrado em: {ENV_PATH}. Usando defaults.")
 
 # Forçamos a conversão para lista aqui
 raw_value = config('ALLOWED_HOSTS', default='127.0.0.1')
