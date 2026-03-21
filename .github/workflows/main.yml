@@ -19,16 +19,16 @@ jobs:
         host: ${{ secrets.FTP_SERVER }}      
         username: ${{ secrets.FTP_USER }} 
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22022
+        port: 22022 
         script_stop: true
         script: |
           cd /home/wwutiu/utiusys.com.br/GTX1650/public_html/spectra_1.1
           git fetch origin main && git reset --hard origin/main
-          python3 -m venv venv && source venv/bin/activate
+          if [ ! -d "venv" ]; then python3 -m venv venv; fi
+          source venv/bin/activate
           pip install -r requirements.txt
           python manage.py collectstatic --noinput
           python manage.py migrate
-          mkdir -p tmp
-          touch tmp/restart.txt
+          touch index.cgi 
           
           echo "✅ Deploy Finalizado com Sucesso!"
