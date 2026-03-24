@@ -10,25 +10,35 @@ jobs:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Obter código
-      uses: actions/checkout@v4
-
     - name: 📡 Executar comandos no VPS
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.FTP_SERVER }}      
         username: ${{ secrets.FTP_USER }} 
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22022
+        port: 22022 
         script_stop: true
         script: |
+          echo "Buscando atualizações do GitHub..."
           cd /home/wwutiu/utiusys.com.br/GTX1650/public_html/spectra_1.1
-          git fetch origin main && git reset --hard origin/main
-          python3 -m venv venv && source venv/bin/activate
+          
+          # Força o código local a ficar idêntico ao repositório main
+          git fetch origin main 
+          git reset --hard origin/main
+          
+          echo "Configurando ambiente virtual..."
+          if [ ! -d "venv" ]; then python3 -m venv venv; fi
+          source venv/bin/activate
+          
+          echo "Instalando dependências..."
+          pip install --upgrade pip
           pip install -r requirements.txt
+          
+          echo "Atualizando arquivos estáticos e banco de dados..."
           python manage.py collectstatic --noinput
           python manage.py migrate
-          mkdir -p tmp
-          touch tmp/restart.txt
+          
+          echo "Reiniciando a aplicação..."
+          touch index.cgi 
           
           echo "✅ Deploy Finalizado com Sucesso!"
