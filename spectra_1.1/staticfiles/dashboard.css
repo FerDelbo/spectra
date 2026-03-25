@@ -1,0 +1,228 @@
+/* =========================================
+   1. RESET & BASE
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden; /* Impede rolagem na página inteira */
+    background-color: #0f1020; /* Cor de fundo de segurança */
+}
+
+a {
+    text-decoration: none;
+}
+
+/* =========================================
+   2. LAYOUT PRINCIPAL
+   ========================================= */
+.layout {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.main-content {
+    flex: 1; /* Ocupa o resto da tela */
+    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
+    overflow-y: auto; /* Rolagem interna */
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza o conteúdo */
+}
+
+/* Cabeçalho Superior (Dentro do Main Content) */
+.top-header {
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 25px;
+    color: white;
+}
+
+.top-header h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.user-highlight {
+    font-weight: 700;
+    color: #a5b4fc;
+}
+
+/* =========================================
+   3. SIDEBAR (NAVEGAÇÃO)
+   ========================================= */
+.sidebar {
+    width: 260px;
+    background-color: #1a1a40;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    flex-shrink: 0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: center;
+    letter-spacing: 2px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 20px;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1; /* Empurra o logout para o final */
+}
+
+/* Botões de Navegação */
+.nav-btn {
+    color: rgba(255,255,255,0.7);
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.nav-btn:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    padding-left: 20px; /* Animação de deslize */
+}
+
+.nav-btn.active {
+    background-color: #485586;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Botão de Logout */
+.logout-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ff6b6b;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    transition: color 0.3s;
+    width: 100%;
+}
+
+.logout-link:hover {
+    color: #ff4c4c;
+}
+
+/* =========================================
+   4. COMPONENTES: CARDS
+   ========================================= */
+.table-card {
+    background-color: white;
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    padding: 20px 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #485586;
+    border-bottom: 1px solid #eee;
+}
+
+.card-footer {
+    padding: 15px 25px;
+    background-color: #f8f9fa;
+    text-align: right;
+    border-top: 1px solid #eee;
+}
+
+/* =========================================
+   5. COMPONENTES: TABELAS
+   ========================================= */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead tr {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+}
+
+th {
+    text-align: left;
+    padding: 15px 20px;
+    color: #666;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================================
+   6. UTILITÁRIOS & ESTADOS
+   ========================================= */
+/* Cores de Status */
+.status-pos {
+    color: #22c55e; /* Verde */
+    font-weight: 600;
+}
+
+.status-neg {
+    color: #ef4444; /* Vermelho */
+    font-weight: 600;
+}
+
+/* Links de Ação */
+.view-more {
+    color: #485586;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.view-more:hover {
+    color: #2c3e50;
+    text-decoration: underline;
+}
