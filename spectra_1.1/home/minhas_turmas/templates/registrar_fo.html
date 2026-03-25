@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Fato - {{ aluno.nome }}</title>
+    <link rel="stylesheet" href="{% static 'registrar_fo.css' %}">
+</head>
+<body>
+    <div class="card-registro">
+        <div class="card-header">
+            <a href="javascript:history.back()" class="btn-voltar">←</a>
+            
+            <div class="avatar-circle"></div>
+            
+            <div class="header-info">
+                <h2>{{ aluno.nome }}</h2>
+                <span>{{ aluno.turma.serie }} {{ aluno.turma.turma }}</span>
+            </div>
+            
+            <div class="turma-tag">{{ aluno.turma.serie }} {{ aluno.turma.turma }}</div>
+        </div>
+
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div>
+                    <span class="section-label">Fato Observado:</span>
+                    <div class="btn-group-row">
+                        <input type="radio" name="natureza" id="nat_pos" value="Positivo" onclick="showStep2('Positivo')">
+                        <label for="nat_pos" class="btn-option">
+                            <span class="icon-plus"></span> Positivo
+                        </label>
+
+                        <input type="radio" name="natureza" id="nat_neg" value="Negativo" onclick="showStep2('Negativo')">
+                        <label for="nat_neg" class="btn-option">
+                            <span class="icon-close"></span> Negativo
+                        </label>
+                    </div>
+                </div>
+
+                <div id="step-tipo" class="hidden-step">
+                    <span class="section-label">Tipo:</span>
+                    <div class="btn-group-row">
+                        <input type="radio" name="tipo" id="tp_disc" value="Disciplinar" onclick="showStep3()">
+                        <label for="tp_disc" class="btn-option">Disciplinar</label>
+
+                        <input type="radio" name="tipo" id="tp_pedag" value="Pedagogico" onclick="showStep3()">
+                        <label for="tp_pedag" class="btn-option">Pedagógico</label>
+                    </div>
+                </div>
+                <div id="step-opcoes" class="hidden-step">
+                    <span class="section-label">O que aconteceu?</span>
+                    <input type="text" name="titulo" id="select-motivo" list="titulos-list" placeholder="Selecione ou digite uma opção..." class="titulo-input">
+                    <datalist id="titulos-list">
+                        <!-- Opções serão populadas via JS -->
+                    </datalist>
+
+                    <span class="section-label" style="margin-top: 15px;">Observação (Opcional):</span>
+                    <textarea name="descricao" rows="3" placeholder="Digite detalhes adicionais aqui..."></textarea>
+
+                    <div class="form-footer">
+                        <button type="submit" class="btn-enviar">Enviar</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showStep2(natureza) {
+            document.getElementById('step-tipo').className = 'show-step';
+            
+            // Se mudar a natureza, esconde o passo 3 para obrigar a escolher o tipo de novo
+            document.getElementById('step-opcoes').className = 'hidden-step';
+            document.getElementById('tp_disc').checked = false;
+            document.getElementById('tp_pedag').checked = false;
+        }
+
+        function showStep3() {
+            const natureza = document.querySelector('input[name="natureza"]:checked').value;
+            const tipo = document.querySelector('input[name="tipo"]:checked').value;
+            
+            // Busca as opções de título via AJAX
+            fetch('{% url "get_titulos" %}?natureza=' + encodeURIComponent(natureza) + '&tipo=' + encodeURIComponent(tipo))
+                .then(response => response.json())
+                .then(data => {
+                    const datalist = document.getElementById('titulos-list');
+                    datalist.innerHTML = '';
+                    
+                    data.titulos.forEach(titulo => {
+                        let option = document.createElement('option');
+                        option.value = titulo;
+                        datalist.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar títulos:', error));
+            
+            document.getElementById('step-opcoes').className = 'show-step';
+        }
+        // Função para remover alertas automaticamente após 4 segundos
+        document.addEventListener("DOMContentLoaded", function() {
+            const alerts = document.querySelectorAll('.alert');
+            if (alerts.length > 0) {
+                setTimeout(function() {
+                    alerts.forEach(function(alert) {
+                        alert.style.transition = "opacity 0.5s, transform 0.5s";
+                        alert.style.opacity = "0";
+                        alert.style.transform = "translateY(-20px)";
+                        setTimeout(() => alert.remove(), 500);
+                    });
+                }, 4000); // 4000ms = 4 segundos
+            }
+        });
+    </script>
+</body>
+</html>

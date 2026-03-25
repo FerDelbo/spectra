@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Séries</title>
+    <link rel="stylesheet" href="{% static 'css/turmas_style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">SPECTRA</div>
+            <nav class="nav-menu">
+                <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
+                <a href="#" class="nav-btn active">Minhas Turmas</a>
+                <a href="{% url 'meus_fos' %}" class="nav-btn">Meus F.O.'s</a>
+                <a href="{% url 'processo' %}" class="nav-btn">Processo</a>
+            </nav>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-link">Logout <span class="icon">➜</span></button>
+            </form>
+        </aside>
+
+        <main class="main-content">
+            
+            <div class="header-bar">
+                <h1 class="page-title">Filtrar <span class="highlight-yellow">Turmas</span></h1>
+            </div>
+
+            {% if messages %}
+                <div class="messages-container" style="margin-bottom: 20px; padding: 0 20px;">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb; margin-bottom: 10px;">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="content-wrapper">
+                
+                <div class="serie-container">
+                    
+                    <div class="serie-header">
+                        <span>Seleção de Classe</span>
+                        <a href="{% url 'home' %}" class="btn-voltar" style="text-decoration: none; color: white; font-size: 1.5rem; position: absolute; top: 30px; left: 40px;">←</a> 
+                    </div>
+
+                    <div class="serie-body form-body">
+                        <form method="GET" action="." class="filter-form">
+                            
+                            <div class="form-group">
+                                <label for="colegio">Colégio</label>
+                                <select id="colegio" name="colegio" class="custom-select">
+                                    <option value="" disabled selected>Colégio...</option>
+                                    {% for c in colegios_opcoes %}
+                                        <option value="{{ c }}" {% if request.GET.colegio == c %}selected{% endif %}>{{ c }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="serie">Série</label>
+                                <select id="serie" name="serie" class="custom-select" required>
+                                    <option value="" disabled selected>Série...</option>
+                                    {% for s in series_filtrados %}
+                                        <option value="{{ s }}" {% if request.GET.serie == s %}selected{% endif %}>{{ s }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="turma">Turma</label>
+                                <select id="turma" name="turma" class="custom-select" required>
+                                    <option value="" disabled selected>Turma...</option>
+                                    {% for t in turmas_filtrados %}
+                                        <option value="{{ t }}" {% if request.GET.turma == t %}selected{% endif %}>{{ t }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group btn-container">
+                                <button type="submit" class="btn-buscar">EXECUTAR BUSCA</button>
+                            </div>
+                        </form>
+                    </div> 
+
+                    {% if alunos is not None %}
+                        <div class="resultados-wrapper">
+                            <h2 class="titulo-resultados">
+                                <span class="highlight-yellow">{{ turma_atual.serie }} {{ turma_atual.turma }}</span>
+                            </h2>
+
+                            {% if alunos %}
+                                <div class="tabela-container">
+                                    
+                                    <div class="tabela-header">
+                                        <span style="text-align: left; padding-left: 10px;">NOME DO ALUNO</span>
+                                        <span>AÇÃO</span>
+                                    </div>
+
+                                    {% for aluno in alunos %}
+                                        <div class="aluno-row">
+                                            <span class="aluno-nome">
+                                                {% if user_type == 'Monitor' or user_type == 'Pedagogo' %}
+                                                    <a href="{% url 'historico_aluno' aluno.id %}" style="color: #333; text-decoration: none; font-weight: 500;">
+                                                        {{ aluno.nome }}
+                                                    </a>
+                                                {% else %}
+                                                    <span style="color: #333; font-weight: 500; cursor: default;">
+                                                        {{ aluno.nome }}
+                                                    </span>
+                                                {% endif %}
+                                            </span>
+                                            <a href="{% url 'registrar_fo' aluno.id %}" class="btn-acao-registrar">
+                                                Registrar
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="msg-vazio">Nenhum aluno encontrado nesta turma.</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                </div> 
+            </div>
+        </main>
+    </div>
+    <script>
+        // Lógica dos Selects (Colégio -> Série -> Turma)
+        document.getElementById('colegio').addEventListener('change', function() {
+            const colegio = this.value;
+            if (colegio) {
+                fetch('{% url "get_series" %}?colegio=' + encodeURIComponent(colegio))
+                    .then(response => response.json())
+                    .then(data => {
+                        const serieSelect = document.getElementById('serie');
+                        serieSelect.innerHTML = '<option value="" disabled selected>Série...</option>';
+                        data.series.forEach(serie => {
+                            serieSelect.innerHTML += `<option value="${serie}">${serie}</option>`;
+                        });
+                        // Limpar turmas quando colégio muda
+                        document.getElementById('turma').innerHTML = '<option value="" disabled selected>Turma...</option>';
+                    })
+                    .catch(error => console.error('Erro ao carregar séries:', error));
+            }
+        });
+
+        document.getElementById('serie').addEventListener('change', function() {
+            const colegio = document.getElementById('colegio').value;
+            const serie = this.value;
+            if (colegio && serie) {
+                fetch('{% url "get_turmas" %}?colegio=' + encodeURIComponent(colegio) + '&serie=' + encodeURIComponent(serie))
+                    .then(response => response.json())
+                    .then(data => {
+                        const turmaSelect = document.getElementById('turma');
+                        turmaSelect.innerHTML = '<option value="" disabled selected>Turma...</option>';
+                        data.turmas.forEach(turma => {
+                            turmaSelect.innerHTML += `<option value="${turma}">${turma}</option>`;
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar turmas:', error));
+            }
+        });
+
+        // Lógica para esconder as mensagens automaticamente
+        setTimeout(function() {
+            let alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 4000); // 4000ms = 4 segundos
+    </script>
+</body>
+</html>

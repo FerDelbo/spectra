@@ -1,0 +1,367 @@
+/* =========================================
+   1. RESET & BASE
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden; /* Evita rolagem dupla com o main-content */
+}
+
+/* =========================================
+   2. LAYOUT PRINCIPAL
+   ========================================= */
+.layout {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 25px;
+    text-align: center;
+    width: 100%;
+    max-width: 950px;
+}
+
+.highlight-yellow, 
+.title-highlight {
+    color: #a5b4fc;
+    font-weight: 700;
+}
+
+/* =========================================
+   3. SIDEBAR (NAVEGAÇÃO)
+   ========================================= */
+.sidebar {
+    width: 260px;
+    background-color: #1a1a40;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    z-index: 10;
+    border-radius: 0; 
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: center;
+    letter-spacing: 2px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.nav-btn {
+    text-decoration: none;
+    color: rgba(255,255,255,0.7);
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.nav-btn:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    padding-left: 20px;
+}
+
+.nav-btn.active {
+    background-color: #485586;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.logout-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ff6b6b;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    transition: color 0.3s;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+.logout-link:hover {
+    color: #ff4c4c;
+}
+
+/* =========================================
+   4. COMPONENTES: CARD DE DADOS
+   ========================================= */
+.data-card {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 950px;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+/* =========================================
+   5. COMPONENTES: HEADER DO CARD (Controles)
+   ========================================= */
+.card-header {
+    background-color: #485586;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Seta de Voltar */
+.back-arrow {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: color 0.2s;
+}
+
+.back-arrow:hover {
+    color: white;
+}
+
+/* Container de Pesquisa e Filtro */
+.filter-form-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.search-input {
+    width: 100%;
+    height: 40px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #333;
+    background-color: rgba(255,255,255,0.9);
+    transition: background 0.3s;
+}
+
+.search-input:focus {
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
+}
+
+.search-input::placeholder {
+    color: #888;
+    font-weight: 500;
+}
+
+/* Botão de Filtro (Abrir Menu) */
+.filter-btn {
+    height: 40px;
+    background: #333; /* Fundo escuro conforme última definição */
+    color: white;
+    border: none;
+    padding: 0 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.filter-btn:hover {
+    background-color: #555;
+}
+
+/* Menu Dropdown do Filtro */
+.filter-dropdown {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    width: 250px;
+    padding: 15px;
+    z-index: 100;
+}
+
+.filter-dropdown.active {
+    display: block;
+}
+
+.filter-group {
+    margin-bottom: 15px;
+}
+
+.filter-group h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.filter-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.btn-apply {
+    width: 100%;
+    padding: 8px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-apply:hover {
+    background: #218838;
+}
+
+/* =========================================
+   6. COMPONENTES: TABELA
+   ========================================= */
+.table-responsive {
+    flex: 1;
+    overflow-y: auto;
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    padding: 15px 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    border-bottom: 2px solid #e9ecef;
+    text-align: center;
+    z-index: 2;
+}
+
+td {
+    padding: 15px 20px;
+    font-size: 0.9rem;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Scrollbar Personalizada */
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+}
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #ccc; 
+    border-radius: 4px;
+}
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #bbb; 
+}
+
+/* =========================================
+   7. UTILITÁRIOS & STATUS
+   ========================================= */
+.status-pos {
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.status-neg {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+.btn-visualizar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.btn-visualizar:hover {
+    color: #485586;
+    background-color: #f0f0f0;
+}

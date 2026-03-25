@@ -1,0 +1,335 @@
+/* =========================================
+   1. RESET & BASE
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f1020 0%, #1a1a40 100%);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto; /* Garante rolagem se a tela for pequena */
+}
+
+/* =========================================
+   2. LAYOUT: CARD PRINCIPAL
+   ========================================= */
+.card-registro {
+    background: white;
+    width: 700px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    position: relative;
+    margin: 20px;
+}
+
+.card-body {
+    padding: 30px 40px;
+    text-align: left;
+    background-color: white;
+    padding-bottom: 100px; /* Espaço extra para dropdowns */
+}
+
+/* =========================================
+   3. COMPONENTE: CABEÇALHO (HEADER)
+   ========================================= */
+.card-header {
+    background-color: #485586;
+    color: white;
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-voltar {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 24px;
+    margin-right: 10px;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.btn-voltar:hover {
+    color: white;
+}
+
+.avatar-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #485586;
+    font-weight: 700;
+}
+
+.header-info h2 { 
+    margin: 0; 
+    font-size: 1.1rem; 
+    font-weight: 600; 
+}
+
+.header-info span { 
+    font-size: 0.9rem; 
+    opacity: 0.8; 
+    font-weight: 400;
+}
+
+.turma-tag { 
+    margin-left: auto; 
+    font-weight: 600; 
+    background: rgba(255,255,255,0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   4. COMPONENTE: FORMULÁRIO & INPUTS
+   ========================================= */
+.section-label {
+    font-weight: 600;
+    color: #485586;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    display: block;
+}
+
+/* Inputs, Selects e Textareas Gerais */
+select, textarea, .titulo-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    color: #333;
+    background-color: #fcfcfc;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.titulo-input:focus,
+select:focus,
+textarea:focus {
+    border-color: #485586;
+    background-color: white;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Tratamento especial para Datalist/Opções longas */
+.titulo-select {
+    position: relative;
+    margin-bottom: 50px;
+    z-index: 10;
+}
+
+.titulo-select option,
+datalist option {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    word-break: break-all;
+}
+
+/* =========================================
+   5. COMPONENTE: BOTÕES DE OPÇÃO (RADIOS)
+   ========================================= */
+.btn-group-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+/* Esconder o rádio padrão */
+input[type="radio"] { 
+    display: none; 
+}
+
+/* Estilo padrão do botão (Não selecionado) */
+.btn-option {
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    border: 1px solid #ddd;
+    background: #f8f9fa;
+    color: #555;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+}
+
+.btn-option:hover {
+    background: #eee;
+    transform: translateY(-2px);
+}
+
+/* --- Estados Selecionados (Cores) --- */
+
+/* Natureza Positiva */
+input[id="nat_pos"]:checked + label { 
+    background: #dcfce7;
+    border-color: #22c55e; 
+    color: #166534; 
+    box-shadow: 0 2px 5px rgba(34, 197, 94, 0.2);
+}
+
+/* Natureza Negativa */
+input[id="nat_neg"]:checked + label { 
+    background: #fee2e2;
+    border-color: #ef4444; 
+    color: #991b1b; 
+    box-shadow: 0 2px 5px rgba(239, 68, 68, 0.2);
+}
+
+/* Tipo (Genérico/Azul) */
+input[name="tipo"]:checked + label {
+    background: #e0e7ff;
+    border-color: #485586; 
+    color: #1a1a40;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(72, 85, 134, 0.2);
+}
+
+/* Ícones decorativos */
+.icon-plus::before { content: "+"; font-weight: bold; }
+.icon-close::before { content: "×"; font-weight: bold; font-size: 1.2rem; }
+
+/* =========================================
+   6. COMPONENTE: RODAPÉ & AÇÕES
+   ========================================= */
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.btn-enviar {
+    background-color: #1a1a40;
+    color: #ffffff;
+    padding: 12px 35px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.btn-enviar:hover { 
+    background-color: #485586;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+/* =========================================
+   7. COMPONENTE: MENSAGENS FLUTUANTES (ALERTS)
+   ========================================= */
+.messages-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 300px;
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: sans-serif;
+    font-size: 14px;
+    opacity: 1;
+    transition: opacity 0.5s, transform 0.5s;
+    border-left: 5px solid #ccc;
+}
+
+.alert-icon {
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+/* Variantes de cor */
+.alert.success {
+    border-left-color: #28a745;
+    background-color: #d4edda;
+    color: #155724;
+}
+.alert.success .alert-icon {
+    background-color: #28a745;
+    color: white;
+}
+
+.alert.error, .alert.danger {
+    border-left-color: #dc3545;
+    background-color: #f8d7da;
+    color: #721c24;
+}
+.alert.error .alert-icon {
+    background-color: #dc3545;
+    color: white;
+}
+
+.alert.warning {
+    border-left-color: #ffc107;
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* =========================================
+   8. ANIMAÇÕES & ESTADOS
+   ========================================= */
+.hidden-step { 
+    display: none; 
+    opacity: 0; 
+}
+
+.show-step { 
+    display: block; 
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Processo (Visualização) | Spectra</title>
+    <link rel="stylesheet" href="{% static 'css/processo.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <main class="container">
+        {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                     <div class="alert alert-{{ message.tags }}" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb;">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="ticket-card">
+            <header class="card-header">
+                <div class="header-content">
+                    <a href="{% url 'historico_aluno' fo.aluno.id %}" class="back-btn" title="Voltar">←</a>
+                    
+                    <div class="student-profile">
+                        <div class="avatar-circle">
+                            {{ fo.aluno.nome|slice:":1" }}
+                        </div>
+                        <div class="student-info">
+                            <h2>{{ fo.aluno.nome }}</h2>
+                            <p class="subtitle">{{ fo.aluno.turma.serie }} - {{ fo.aluno.turma.turma }} | {{ fo.aluno.colegio }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <span class="label">Aberto por:</span>
+                        <span class="value">{{ fo.usuario.get_full_name|default:fo.usuario.username }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Data:</span>
+                        <span class="value">{{ fo.data_registro|date:"d/m/Y H:i" }}</span>
+                    <div class="meta-item">
+                        <span class="label">Turma:</span>
+                        <span class="value">{{ fo.serie_original|default:fo.aluno.turma.serie }}{{ fo.turma_original|default:fo.aluno.turma.turma }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Colégio:</span>
+                        <span class="value">{{ fo.colegio_original|default:fo.aluno.colegio }}</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="card-body">
+                <div class="status-bar">
+                    <div class="status-group">
+                        <span class="label-sm">Natureza</span>
+                        {% if fo.natureza == 'Positivo' %}
+                            <span class="badge badge-pos">Positivo</span>
+                        {% else %}
+                            <span class="badge badge-neg">Negativo</span>
+                        {% endif %}
+                    </div>
+                    <div class="status-group">
+                        <span class="label-sm">Tipo</span>
+                        <span class="badge badge-info">{{ fo.tipo }}</span>
+                    </div>
+                    <div class="status-group">
+                        <span class="label-sm">Situação Atual</span>
+                        <span class="badge badge-status status-{{ fo.status|slugify }}">{{ fo.status }}</span>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <section class="original-report">
+                    <h3 class="section-title">Relato do Professor</h3>
+                    <div class="field-group">
+                        <label>O que aconteceu? (Título)</label>
+                        <div class="read-only-box title-box">{{ fo.titulo }}</div>
+                    </div>
+                    <div class="field-group">
+                        <label>Observação Detalhada</label>
+                        <div class="read-only-box desc-box">
+                            {{ fo.descricao|default:"Sem observações adicionais."|linebreaksbr }}
+                        </div>
+                    </div>
+                </section>
+
+                <section class="treatment-area">
+                    <h3 class="section-title">Dados da Resolução</h3>
+
+                    {% if fo.status == 'Concluído' %}
+                        <div class="conclusion-banner">
+                            <span class="check-icon">✓</span>
+                            <div>
+                                <strong>Processo Concluído</strong><br>
+                                <small>Encerrado em: {{ fo.data_atualizacao|date:"d/m/Y H:i" }}</small>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="readonly-treatment">
+                        
+                        <div class="field-group">
+                            <label>Responsável pela Tratativa</label>
+                            <div class="read-only-box">
+                                {% if fo.responsavel %}{{ fo.responsavel.get_full_name|default:fo.responsavel.username }}{% else %}Não atribuído{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label>Relatório da Coordenação / Providências</label>
+                            <div class="read-only-box">
+                                {{ fo.relatorio|default:"Aguardando tratativa..."|linebreaksbr }}
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label>Arquivos Anexados</label>
+                            <div class="attachment-container">
+                                {% for anexo in anexos_fotos %}
+                                <div class="attachment-card" onclick="openModal('{{ anexo.arquivo.url }}', 'image', '{{ anexo.nome }}')">
+                                    <img src="{{ anexo.arquivo.url }}" alt="{{ anexo.nome }}">
+                                    <div class="file-name">{{ anexo.nome }}</div>
+                                </div>
+                                {% empty %}
+                                    {% if not anexos_docs %}
+                                    <p style="color: #666; font-style: italic;">Nenhum anexo disponível.</p>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% for anexo in anexos_docs %}
+                                <div class="attachment-card" onclick="openModal('{{ anexo.arquivo.url }}', 'pdf', '{{ anexo.nome }}')">
+                                    <div class="pdf-placeholder">📄</div>
+                                    <div class="file-name">{{ anexo.nome }}</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                </div>
+        </div>
+    </main>
+
+    <div id="imageModal" class="modal-view">
+        <div class="modal-header-view">
+            <span id="caption" class="caption-modal"></span>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body-view" id="modalBody">
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("imageModal");
+        const modalBody = document.getElementById("modalBody");
+        const captionText = document.getElementById("caption");
+        const closeBtn = document.querySelector(".close-modal");
+
+        function openModal(url, type, name) {
+            modal.style.display = "flex";
+            captionText.innerHTML = name;
+            modalBody.innerHTML = '';
+
+            if (type === 'image') {
+                const img = document.createElement('img');
+                img.src = url;
+                img.className = 'modal-content-view';
+                modalBody.appendChild(img);
+            } else if (type === 'pdf') {
+                const iframe = document.createElement('iframe');
+                window.open(url, '_blank');
+                iframe.className = 'modal-pdf-view';
+                modalBody.appendChild(iframe);
+            }
+        }
+
+        closeBtn.onclick = () => { modal.style.display = "none"; modalBody.innerHTML = ''; };
+        window.onclick = (event) => { if (event.target == modal) { modal.style.display = "none"; modalBody.innerHTML = ''; } };
+    </script>
+</body>
+</html>

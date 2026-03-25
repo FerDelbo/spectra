@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectra - Meus F.O.'s</title>
+    <link rel="stylesheet" href="{% static 'css/processo.css' %}"> 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        
+        <aside class="sidebar">
+            <div class="logo">SPECTRA</div>
+
+            <nav class="nav-menu">
+                <a href="{% url 'home' %}" class="nav-btn">Tela inicial</a>
+                <a href="{% url 'minhas_turmas' %}" class="nav-btn">Minhas Turmas</a>
+                <a href="{% url 'meus_fos' %}" class="nav-btn active">Meus F.O.'s</a>
+                <a href="{% url 'processo' %}" class="nav-btn">Processo</a>
+            </nav>
+
+            <form method="post" action="{% url 'logout' %}" style="margin-top: auto;">
+                {% csrf_token %}
+                <button type="submit" class="logout-link">
+                    Logout <span class="icon">➜</span>
+                </button>
+            </form>
+        </aside>
+
+        <main class="main-content">
+            
+            <a href="{% url 'home' %}" class="back-arrow" style="text-decoration: none; color: white; font-size: 1.5rem; position: absolute; top: 30px; left: 40px;">←</a>
+            
+            <h1 class="page-title">Meus <span class="highlight-yellow">F.O.'s</span></h1>
+
+            <div class="data-card">
+                
+                <div class="card-header">
+                    <a href="{% url 'home' %}" class="back-arrow">←</a>
+
+                    <div class="filter-form-container">
+                        <input type="text" 
+                            id="searchInput"
+                            placeholder="Pesquisar..." 
+                            class="search-input" 
+                            value="{{ request.GET.search|default:'' }}"
+                            onkeypress="handleEnter(event)">
+
+                        <button type="button" class="filter-btn" onclick="toggleFilter()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 21V14M4 10V3M12 21V12M12 8V3M20 21V16M20 12V3M1 14H7M9 8H15M17 16H23"/>
+                            </svg>
+                            Filtros
+                        </button>
+                    
+                        <div id="filterMenu" class="filter-dropdown">
+                            <div class="filter-group">
+                                <h4>Status</h4>
+                                <label class="filter-label">
+                                    <input type="checkbox" class="filter-checkbox" name="status" value="Em aberto" 
+                                    {% if 'Em aberto' in request.GET.status_list %}checked{% endif %}> Em aberto
+                                </label>
+                                <label class="filter-label">
+                                    <input type="checkbox" class="filter-checkbox" name="status" value="Em andamento" 
+                                    {% if 'Em andamento' in request.GET.status_list %}checked{% endif %}> Em andamento
+                                </label>
+                                <label class="filter-label">
+                                    <input type="checkbox" class="filter-checkbox" name="status" value="Concluído" 
+                                    {% if 'Concluído' in request.GET.status_list %}checked{% endif %}> Concluído
+                                </label>
+                                                                <label class="filter-label">
+                                    <input type="checkbox" class="filter-checkbox" name="status" value="Anulado" 
+                                    {% if 'Anulado' in request.GET.status_list %}checked{% endif %}> Anulado
+                                </label>
+                            </div>
+
+                            <div class="filter-group">
+                                <h4>Natureza</h4>
+                                <label class="filter-label">
+                                    <input type="checkbox" class="filter-checkbox" name="natureza" value="Positivo" 
+                                    {% if 'Positivo' in request.GET.natureza_list %}checked{% endif %}> Positivo
+                                </label>
+                                <label class="filter-label">
+                                    <input type="checkbox" class="filter-checkbox" name="natureza" value="Negativo" 
+                                    {% if 'Negativo' in request.GET.natureza_list %}checked{% endif %}> Negativo
+                                </label>
+                            </div>
+
+                            <button type="button" class="btn-apply" onclick="aplicarFiltros()">Aplicar Filtros</button>
+                            
+                            <a href="{% url 'meus_fos' %}" style="display: block; text-align: center; margin-top: 10px; font-size: 12px; color: #666;">Limpar tudo</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Natureza</th>
+                                <th>Colégio</th>
+                                <th>Nome</th>
+                                <th>Série</th>
+                                <th>Turma</th>
+                                <th>Tipo</th>
+                                <th>Status</th>
+                                <th>Data</th>
+                                <th style="text-align: center;">Detalhes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for fo in meus_fos %} <tr> 
+                                <td>
+                                    <span class="{% if fo.natureza == 'Positivo' %}status-pos{% else %}status-neg{% endif %}">
+                                        {{ fo.natureza }}
+                                    </span>
+                                </td>
+                                <td>{{ fo.aluno.colegio }}</td>
+                                <td>
+                                    <span class="aluno-nome">
+                                        {% if user_type == 'Monitor' or user_type == 'Pedagogo' %}
+                                            <a href="{% url 'historico_aluno' fo.aluno.id %}" style="color: #333; text-decoration: none; font-weight: 500;">
+                                                {{ fo.aluno.nome }}
+                                            </a>
+                                        {% else %}
+                                            <span style="color: #333; font-weight: 500; cursor: default;">
+                                                {{ fo.aluno.nome }}
+                                            </span>
+                                        {% endif %}
+                                    </span>
+                                </td>
+                                <td>{{ fo.serie_original|default:fo.aluno.turma.serie }}</td>
+                                <td>{{ fo.turma_original|default:fo.aluno.turma.turma }}</td>
+                                <td>{{ fo.tipo }}</td>
+                                <td>{{ fo.status }}</td>
+                                <td>{{ fo.data_registro|date:"d/m/Y" }}</td>
+                                <td style="text-align: center;">
+                                    <a href="{% url 'processo_detalhes' fo.id %}" class="btn-visualizar" title="Ver Detalhes">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 30px; color: #888;">Nenhum F.O. encontrado.</td> 
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </main>
+    </div>
+
+    <script>
+        // 1. Alternar visibilidade do menu
+        function toggleFilter() {
+            var menu = document.getElementById('filterMenu');
+            menu.classList.toggle('active');
+        }
+
+        // 2. Fechar menu ao clicar fora
+        document.addEventListener('click', function(event) {
+            var menu = document.getElementById('filterMenu');
+            var btn = document.querySelector('.filter-btn');
+            
+            // Se o menu estiver aberto E o clique não for no menu E não for no botão
+            if (menu.classList.contains('active') && !menu.contains(event.target) && !btn.contains(event.target)) {
+                menu.classList.remove('active');
+            }
+        });
+
+        // 3. Detectar ENTER na caixa de pesquisa
+        function handleEnter(e) {
+            if(e.key === 'Enter'){
+                aplicarFiltros();
+            }
+        }
+
+        // 4. Lógica Principal: Junta pesquisa + checkboxes e recarrega a página
+        function aplicarFiltros() {
+            // Pega o valor do texto
+            const searchValue = document.getElementById('searchInput').value;
+            
+            // Pega os checkboxes marcados
+            const checkboxes = document.querySelectorAll('.filter-checkbox:checked');
+            
+            // Cria os parâmetros da URL
+            const params = new URLSearchParams();
+            
+            if (searchValue) {
+                params.set('search', searchValue);
+            }
+
+            checkboxes.forEach((checkbox) => {
+                params.append(checkbox.name, checkbox.value);
+            });
+
+            // Redireciona
+            window.location.href = window.location.pathname + '?' + params.toString();
+        }
+    </script>
+</body>
+</html>

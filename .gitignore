@@ -1,3 +1,5 @@
+media/
+virtual
 # .env
 .env
 # env professor
@@ -6,10 +8,10 @@ my_env_spectra
 __pycache__/
 *.py[codz]
 *$py.class
-
+staticfiles/
 # C extensions
 *.so
-
+.env.local
 # Distribution / packaging
 .Python
 build/
