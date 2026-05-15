@@ -37,7 +37,6 @@ jobs:
           source $VENV_NAME/bin/activate
 
           echo "Instalando dependências..."
-          python -m pip install --upgrade pip || echo "Aviso: Falha ao atualizar pip, mas seguindo adiante..."
           python -m pip install -r requirements.txt
           
           echo "Atualizando arquivos estáticos e banco de dados..."
