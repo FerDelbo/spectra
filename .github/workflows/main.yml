@@ -44,6 +44,6 @@ jobs:
           python manage.py migrate
           
           echo "Reiniciando a aplicação..."
-          touch index.cgi 
+          touch index.fcgi 
           
           echo "✅ Deploy Finalizado com Sucesso!" 
