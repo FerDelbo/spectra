@@ -27,9 +27,12 @@ jobs:
           git reset --hard origin/main
           
           echo "Configurando ambiente virtual..."
-          if [ ! -d "venv" ] || [[ ! $(./venv/bin/python --version) == *"3.12"* ]]; then
-          rm -rf venv
-          python3.12 -m venv venv
+          if [ ! -d "venv" ] || [[ ! $(./venv/bin/python --version 2>&1) == *"3.12"* ]]; then
+              echo "Recriando venv com Python 3.12..."
+              rm -rf venv
+              python3.12 -m venv venv
+          fi
+          
           source venv/bin/activate
           
           echo "Instalando dependências..."
