@@ -36,9 +36,11 @@ jobs:
 
           source $VENV_NAME/bin/activate
           
+          chmod -R 755 $VENV_NAME
+
           echo "Instalando dependências..."
-          pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip || echo "Aviso: Falha ao atualizar pip, mas seguindo adiante..."
+          python -m pip install -r requirements.txt
           
           echo "Atualizando arquivos estáticos e banco de dados..."
           python manage.py collectstatic --noinput
