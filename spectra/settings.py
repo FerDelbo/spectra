@@ -150,7 +150,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Media files (uploads)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/wwutiu/utiusys.com.br/GTX1650/public_html/spectra_1.1/media/'
+MEDIA_ROOT = '/home/wwutiu/utiusys.com.br/GTX1650/public_html/media/'
 
 #para onde ir apos login bem-sucedido
 LOGIN_REDIRECT_URL = '/home/'
