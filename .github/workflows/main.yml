@@ -35,8 +35,6 @@ jobs:
           fi
 
           source $VENV_NAME/bin/activate
-          
-          chmod -R 755 $VENV_NAME
 
           echo "Instalando dependências..."
           python -m pip install --upgrade pip || echo "Aviso: Falha ao atualizar pip, mas seguindo adiante..."
