@@ -46,4 +46,4 @@ jobs:
           echo "Reiniciando a aplicação..."
           touch index.cgi 
           
-          echo "✅ Deploy Finalizado com Sucesso!"
+          echo "✅ Deploy Finalizado com Sucesso!" 
