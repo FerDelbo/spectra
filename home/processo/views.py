@@ -7,6 +7,45 @@ from django.contrib.auth.decorators import login_required
 from home.models import FO, FOHistory, Anexo
 from django.contrib import messages
 from django.db.models import Q
+from django.views.static import serve
+from django.http import Http404
+
+@login_required
+def baixar_anexo_seguro(request, path):
+    # 1. Busca o objeto Anexo usando o caminho do arquivo (armazenado no campo 'arquivo')
+    # O 'path' que vem da URL é o nome do arquivo dentro da pasta media/anexo/
+    anexo = get_object_or_404(Anexo, arquivo__icontains=path)
+    fo = anexo.fo  # Pegamos o processo correspondente a esse anexo
+    
+    # 2. Resgata o tipo de usuário e colégios (exatamente como você fez nas outras views)
+    user_type = get_user_type(request.user)
+    
+    try:
+        profile = request.user.userprofile
+        colegios_usuario = profile.colegios.all()
+    except AttributeError:
+        colegios_usuario = []
+
+    # 3. VALIDAÇÃO DE SEGURANÇA 1: O usuário pertence ao colégio deste processo?
+    if fo.aluno.turma.colegio not in colegios_usuario:
+        raise Http404("Acesso negado: Colégio não vinculado ao seu perfil.")
+
+    # 4. VALIDAÇÃO DE SEGURANÇA 2: Regras de tipo de usuário (Espelho da sua view processo_detalhes)
+    can_view = False
+    if user_type == 'Professor' and fo.usuario == request.user:
+        can_view = True
+    elif user_type == 'Monitor' and fo.tipo == 'Disciplinar':
+        can_view = True
+    elif user_type == 'Pedagogo':
+        can_view = True
+
+    # Se não passou em nenhuma regra, barra o download imediatamente
+    if not can_view:
+        raise Http404("Acesso negado para este tipo de usuário.")
+
+    # 5. Se passou em todas as checagens, define a pasta raiz e serve o arquivo de forma protegida
+    caminho_anexos = os.path.join(settings.MEDIA_ROOT, 'anexo')
+    return serve(request, path, document_root=caminho_anexos)
 
 # Função Auxiliar para Compressão de Imagem
 def compress_image(image):
