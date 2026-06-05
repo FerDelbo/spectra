@@ -297,7 +297,7 @@ class FOHistory(models.Model):
 
 class Anexo(models.Model):
     fo = models.ForeignKey(FO, on_delete=models.CASCADE, related_name='anexos')
-    arquivo = models.FileField(upload_to='anexos/')
+    arquivo = models.FileField(upload_to='anexo/')
     nome = models.CharField(max_length=100, blank=True)
     data_upload = models.DateTimeField(auto_now_add=True)
 
