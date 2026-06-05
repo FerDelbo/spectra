@@ -16,13 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.urls import path
-from django.urls import include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from maincard import views as maincard_views
-from django.urls import re_path
 from django.views.static import serve
+from home.processo import views as processo_views
 
 urlpatterns = [
     path('maincard/', include('maincard.urls')),
@@ -34,6 +33,7 @@ urlpatterns = [
     path('meus_fos/', include('home.meus_fos.urls')),
     path('minhas-turmas/', include('home.minhas_turmas.urls')),
     path('', maincard_views.index, name='landing'),
+    path('media/anexo/<path:path>', processo_views.baixar_anexo_seguro, name='baixar_anexo_seguro')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
