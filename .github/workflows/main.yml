@@ -38,11 +38,9 @@ jobs:
 
           echo "Instalando dependências..."
           python -m pip install -r requirements.txt
-          cd spectra_1.1
           
           echo "Atualizando arquivos estáticos e banco de dados..."
           python manage.py collectstatic --noinput --clear
-          cd ..
           python manage.py migrate
           
           echo "Reiniciando a aplicação..."
