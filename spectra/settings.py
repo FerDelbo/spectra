@@ -144,7 +144,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'login' / 'static', BASE_DIR / 'home' / 'static']
 
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = '/home/wwutiu/utiusys.com.br/GTX1650/public_html/static/'
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
