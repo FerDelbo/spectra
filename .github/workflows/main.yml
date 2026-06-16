@@ -38,8 +38,7 @@ jobs:
 
           echo "Instalando dependências..."
           python -m pip install -r requirements.txt
-          rm -rf static/*
-          python manage.py collectstatic --noinput
+          rm -rf staticfiles/*
           
           echo "Atualizando arquivos estáticos e banco de dados..."
           python manage.py collectstatic --noinput
