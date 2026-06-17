@@ -166,5 +166,5 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  
-    'home.backends.EmailOrUsernameBackend',       
+    'spectra.backends.EmailOrUsernameBackend',       
 ]
